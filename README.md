@@ -91,4 +91,5 @@ Splash will support several different user types depending on the objective they
 
 ![Example Image](pools_dashboard.JPG)
 ![Example Image2](Listings_Page.jpg)
+![Example Image3](buyers_dashboard.JPG)
 
