@@ -43,7 +43,7 @@ Splash will support several different user types depending on the objective they
 - **Listings Dashboard:** Users will be able to view all listings and filter by preferences
 - **User Dashboard**
   - **Seller side Dashboard:** View funding progress towards item seller is selling, select a broker / view a broker to help with the transaction.
-  - **Buyer side Dashboard:** View investment breakdown, breakdown of investments purchased history, appreciation / depreciation of assets, and pool’s their part of.
+  - **Buyer side Dashboard:** View investment breakdown, breakdown of investments purchased history, appreciation / depreciation of assets, and pools they're a part of.
 - **Pools Dashboard:** View open pools, filter pools, join pools.
 
 ## Additional Functionality
@@ -72,6 +72,7 @@ Splash will support several different user types depending on the objective they
 2. Blockchain based fractional ownership - Users transferring fractional shares (blockchain tokens/regular)
 3. Payment/ Mock payment
 4. Approval process for listing -> to be approved by admin so illegal items cannot be sold.
+5. event-locked fundraisers/bidding - One time in-person event "lobby" accessible by passcode in order to facilitate bidding in-person and cultivate local interest in investment opportunities
 
 # Breakdown of Minimal Requirements into Smaller Tasks
 
@@ -80,12 +81,14 @@ Splash will support several different user types depending on the objective they
 2. Add search bar to listings page to look for investments
 3. Add scrolling functionality to move between pictures of a listing
 4. Sorting
+5. Make relevant webpages responsive
 
 ## Buyer Dashboard
 1. Add API route to retrieve all assets owned by logged in user
 2. Allow user to edit their optional information (name, address, etc)
 3. Create visual for user to view the overall appreciation/depreciation of assets
 4. Create UI list for user to view pools they are part of
+5. Make relevant webpages responsive
 
 # Prototypes
 
