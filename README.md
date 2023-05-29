@@ -92,7 +92,7 @@ Splash will support several different user types depending on the objective they
 
 # Prototypes
 
-![Example Image](pools_dashboard.JPG)
-![Example Image2](Listings_Page.jpg)
-![Example Image3](buyers_dashboard.JPG)
+![Example Image](sketches/pools_dashboard.JPG)
+![Example Image2](sketches/Listings_Page.jpg)
+![Example Image3](sketches/buyers_dashboard.JPG)
 
