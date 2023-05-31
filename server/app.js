@@ -1,10 +1,10 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv").config();
+const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv').config();
 const PORT = process.env.PORT || 5001;
-const bodyParser = require("body-parser");
-const connectDB = require("./config/connectDB");
-const cors = require("cors");
+const bodyParser = require('body-parser');
+const connectDB = require('./config/connectDB');
+const cors = require('cors');
 
 // Initialize express
 const app = express();
