@@ -1,7 +1,9 @@
+import UserDashboard from "./components/UserDashboard/UserDashboard";
+
 const App = () => {
   return (
     <div className="App">
-      <h1 className="text-blue-500"> React App</h1>
+      <UserDashboard />
     </div>
   );
 };
