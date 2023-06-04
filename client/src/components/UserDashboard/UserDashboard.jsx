@@ -7,7 +7,7 @@ import ProfileOverview from './ProfileOverview'
 const UserDashboard = () => {
   const [toggle, setToggle] = useState(true);
   return (
-    <div className="flex flex-col justify-center items-center mt-8 mx-8">
+    <div className="flex flex-col justify-center items-center pt-16 mx-8">
       <div className="min-h-screen">
         <ProfileOverview />
         <Toggle

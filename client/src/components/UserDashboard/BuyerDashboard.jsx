@@ -50,9 +50,10 @@ const BuyerDashboard = () => {
             <h1 className="text-sm sm:text-md text-gray-600 font-bold"> Current Price </h1>
           </div>
         </div>
-        {assets.map((asset) => {
+        {assets.map((asset, idx) => {
           return (
             <PurchaseCard
+              key={idx}
               name={asset.name}
               id={asset.id}
               purchasePrice={asset.purchasePrice}
@@ -65,11 +66,7 @@ const BuyerDashboard = () => {
   };
 
   const UserPools = () => {
-      return (
-        <div className="md:w-1/3 bg-red-200 h-auto md:px-8">
-          
-        </div>
-      );
+    return <div className="md:w-1/3 bg-red-200 h-auto md:px-8"></div>;
   };
 
   return (

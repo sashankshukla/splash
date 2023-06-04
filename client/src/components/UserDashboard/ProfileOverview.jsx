@@ -35,33 +35,33 @@ const ProfileOverview = () => {
             <p className="mt-2 text-gray-500">Part of Pools: 4</p>
           </div>
           <div
-            class="px-4 py-6 mt-8 md:-mt-12 mb-4 text-green-800 border border-green-300 rounded-lg bg-green-50 w-full md:w-2/3"
+            className="px-4 py-6 mt-8 md:-mt-12 mb-4 text-green-800 border border-green-300 rounded-lg bg-green-50 w-full md:w-2/3"
           >
-            <div class="flex items-center">
+            <div className="flex items-center">
               <svg
                 aria-hidden="true"
-                class="w-5 h-5 mr-2"
+                className="w-5 h-5 mr-2"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 ></path>
               </svg>
-              <span class="sr-only">Info</span>
-              <h3 class="text-lg font-medium">Deposit funds to trade on Splash</h3>
+              <span className="sr-only">Info</span>
+              <h3 className="text-lg font-medium">Deposit funds to trade on Splash</h3>
             </div>
-            <div class="mt-2 mb-4 text-sm">
+            <div className="mt-2 mb-4 text-sm">
               Move funds from other bank accounts, including TFSA's, RRSP's, and more. We'll cover
               the transfer fee. Invest in all types of assets either individually or through pools.
             </div>
-            <div class="flex">
+            <div className="flex">
               <button
                 type="button"
-                class="text-white bg-green-800 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center"
+                className="text-white bg-green-800 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center"
               >
                 Add Funds
               </button>
