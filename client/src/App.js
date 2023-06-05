@@ -1,6 +1,6 @@
-import Navbar from "./components/Navbar/Navbar";
-import UserDashboard from "./components/UserDashboard/UserDashboard";
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar';
+import UserDashboard from './components/UserDashboard/UserDashboard';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const App = () => {
   return (

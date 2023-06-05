@@ -1,18 +1,18 @@
 import React from 'react';
 
 const ProfileOverview = () => {
-    let current_hour = (new Date()).getHours();
-    let greeting;
-    if (current_hour < 12) {
-      greeting = 'Good morning';
-    } else if (current_hour < 18) {
-      greeting = 'Good afternoon';
-    } else {
-      greeting = 'Good evening';
-    }
+  let current_hour = new Date().getHours();
+  let greeting;
+  if (current_hour < 12) {
+    greeting = 'Good morning';
+  } else if (current_hour < 18) {
+    greeting = 'Good afternoon';
+  } else {
+    greeting = 'Good evening';
+  }
 
   return (
-    <div className="w-full h-full bg-white rounded-xl shadow-md overflow-hidden px-12">
+    <div className="w-full h-full flex flex-col justify-center items-center bg-white rounded-xl shadow-md overflow-hidden px-12">
       <div className="p-8">
         <div className="text-md font-semibold text-gray-400">
           {greeting}, Sashank. Your portfolio is worth
@@ -34,9 +34,7 @@ const ProfileOverview = () => {
             <p className="mt-2 text-gray-500">Assets Value: $1867.31</p>
             <p className="mt-2 text-gray-500">Part of Pools: 4</p>
           </div>
-          <div
-            className="px-4 py-6 mt-8 md:-mt-12 mb-4 text-green-800 border border-green-300 rounded-lg bg-green-50 w-full md:w-2/3"
-          >
+          <div className="px-4 py-6 mt-8 md:-mt-12 mb-4 text-green-800 border border-green-300 rounded-lg bg-green-50 w-full md:w-2/3">
             <div className="flex items-center">
               <svg
                 aria-hidden="true"

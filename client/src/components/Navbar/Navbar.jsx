@@ -13,7 +13,7 @@ const Navbar = () => {
     { title: 'Profile', path: '/profile' },
   ];
   return (
-    <section className="w-screen mb-8 font-Roboto300 fixed z-20 border-b-[1px] border-gray-900">
+    <section className="w-screen fixed z-20 border-b-[1px] border-gray-900">
       <nav className="bg-white w-full border-b md:border-0 md:static">
         <div className="items-center px-4 max-w-screen-xl mx-auto md:flex md:px-8">
           <div className="flex items-center justify-between py-3 md:py-5 md:block">

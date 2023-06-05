@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Toggle = ({name1, name2 , toggle ,setToggle}) => {
+const Toggle = ({ name1, name2, toggle, setToggle }) => {
   return (
     <div className="flex items-center justify-center mt-6">
       <div className="p-4">

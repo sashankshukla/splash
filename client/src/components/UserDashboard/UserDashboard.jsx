@@ -1,8 +1,8 @@
-import React, {useState} from 'react'
-import BuyerDashboard from './BuyerDashboard'
-import SellerDashboard from './SellerDashboard'
-import Toggle from './Toggle'
-import ProfileOverview from './ProfileOverview'
+import React, { useState } from 'react';
+import BuyerDashboard from './BuyerDashboard/BuyerDashboard';
+import SellerDashboard from './SellerDashboard/SellerDashboard';
+import Toggle from './Toggle';
+import ProfileOverview from './ProfileOverview';
 
 const UserDashboard = () => {
   const [toggle, setToggle] = useState(true);
@@ -20,6 +20,6 @@ const UserDashboard = () => {
       </div>
     </div>
   );
-}
+};
 
-export default UserDashboard
+export default UserDashboard;
