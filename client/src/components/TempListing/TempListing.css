@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.listing-container {
+  @apply bg-white rounded-lg shadow-lg p-4 w-64;
+}
+
+.listing-image {
+  /* Add image styles here */
+}
+
+.listing-title {
+  @apply text-2xl font-bold mb-2;
+}
+
+.listing-info {
+  @apply text-gray-600 mb-2;
+}
+
+.expanded-listing-container {
+  @apply bg-white rounded-lg shadow-lg p-4;
+  width: 550px;
+  max-width: 550px;
+  height: 550px;
+  max-height: 550px;
+}
+
+.expanded-listing-title {
+  @apply text-3xl font-bold mb-2;
+}
+
+.expanded-listing-image {
+  @apply max-h-48 m-4;
+  float: right;
+}
