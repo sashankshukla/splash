@@ -20,6 +20,10 @@
     max-width: 550px;
     height: 550px;
     max-height: 550px;
+
+    position: absolute;
+    left: 25%;
+    z-index: 10;
   }
   
   .expanded-listing-title {
