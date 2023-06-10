@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar/Navbar';
 import UserDashboard from './components/UserDashboard/UserDashboard';
+import Listings from './components/Listings/Listings';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
         <Navbar />
         <Routes>
           <Route path="/profile" element={<UserDashboard />} />
+          <Route path="/listings" element={<Listings />} />
         </Routes>
       </Router>
     </div>
