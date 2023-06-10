@@ -1,10 +1,8 @@
-import React from 'react'
+import React from 'react';
 
 // TODO
 const PriceChart = () => {
-  return (
-    <div>PriceChart</div>
-  )
-}
+  return <div>PriceChart</div>;
+};
 
-export default PriceChart
+export default PriceChart;
