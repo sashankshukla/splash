@@ -8,7 +8,7 @@ const cors = require('cors');
 
 // Initialize express
 const app = express();
-// connectDB();
+connectDB();
 
 // Middleware
 app.use(express.json());

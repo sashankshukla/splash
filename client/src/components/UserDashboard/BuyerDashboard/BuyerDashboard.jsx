@@ -1,6 +1,6 @@
 import React from 'react';
 import PurchaseCard from './PurchaseCard';
-import Pool from './Pool';
+import Pool from '../../PoolDashboard/Pool';
 import StockChart from './StockChart.webp';
 
 const BuyerDashboard = () => {
