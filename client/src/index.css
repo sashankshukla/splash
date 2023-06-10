@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .listing-container {
-  @apply bg-white rounded-lg shadow-lg p-4 w-64;
+  @apply bg-white rounded-lg shadow-lg p-4 m-2 w-64;
 }
 
 .listing-image {
@@ -19,7 +19,7 @@
 }
 
 .expanded-listing-container {
-  @apply bg-white rounded-lg shadow-lg p-4;
+  @apply bg-white rounded-lg shadow-lg p-4 m-2;
   width: 550px;
   max-width: 550px;
   height: 550px;
