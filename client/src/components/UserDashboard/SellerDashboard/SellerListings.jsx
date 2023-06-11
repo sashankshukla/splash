@@ -53,13 +53,23 @@ const SellerListings = () => {
   const scrollContainer = useRef(null);
 
   const scroll = (scrollOffset) => {
-    scrollContainer.current.scrollBy({ left: scrollOffset, behavior: 'smooth' });
+    const container = scrollContainer.current;
+    const maxScrollLeft = container.scrollWidth - container.clientWidth;
+
+    if (
+      (container.scrollLeft + scrollOffset > maxScrollLeft && scrollOffset > 0) ||
+      (container.scrollLeft + scrollOffset < 0 && scrollOffset < 0)
+    ) {
+      return;
+    } else {
+      container.scrollBy({ left: scrollOffset, behavior: 'smooth' });
+    }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="flex w-full max-w-6xl overflow-x-hidden">
-        <button onClick={() => scroll(-300)} className="text-3xl font-bold mr-8">
+    <div className="flex flex-col items-center justify-center">
+      <div className="flex w-screen max-w-6xl overflow-x-hidden">
+        <button onClick={() => scroll(-335)} className="text-3xl font-bold mr-8">
           <FaArrowAltCircleLeft />
         </button>
         <div
@@ -69,16 +79,16 @@ const SellerListings = () => {
           {listings.map((listing, index) => (
             <div key={index} className="flex-none md:w-1/2 lg:w-1/3">
               <Listing {...listing} />
-              <div
+              {/* <div
                 key={index}
                 className={`p-4 m-2 ${listing.status ? 'text-green-800' : 'text-red-500'}`}
               >
                 {listing.status ? 'Active' : 'Closed'}
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
-        <button onClick={() => scroll(325)} className="text-3xl font-bold ml-8">
+        <button onClick={() => scroll(335)} className="text-3xl font-bold ml-8">
           <FaArrowAltCircleRight />
         </button>
       </div>

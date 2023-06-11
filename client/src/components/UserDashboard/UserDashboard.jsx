@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import BuyerDashboard from './BuyerDashboard/BuyerDashboard';
 import SellerDashboard from './SellerDashboard/SellerDashboard';
-import Toggle from './Toggle';
+import Toggle from '../Toggle/Toggle';
 import ProfileOverview from './ProfileOverview';
 
 const UserDashboard = () => {
