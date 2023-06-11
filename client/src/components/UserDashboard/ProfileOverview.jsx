@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ProfileOverview = () => {
   let current_hour = new Date().getHours();
@@ -57,12 +58,14 @@ const ProfileOverview = () => {
               the transfer fee. Invest in all types of assets either individually or through pools.
             </div>
             <div className="flex">
-              <button
-                type="button"
-                className="text-white bg-green-800 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center"
-              >
-                Add Funds
-              </button>
+              <Link to="/payment">
+                <button
+                  type="button"
+                  className="text-white bg-green-800 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center"
+                >
+                  Add Funds
+                </button>
+              </Link>
             </div>
           </div>
         </div>
