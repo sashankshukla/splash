@@ -22,7 +22,7 @@ const Home = () => {
   return (
     <section>
       <div className="w-screen h-screen mx-auto px-4 py-28 gap-12 text-gray-600 bg-green-50 md:px-16 xl:flex">
-        <div className="space-y-5 md:mt-28 max-w-2xl mx-auto text-center xl:text-left">
+        <div className="space-y-5 lg:mt-28 max-w-2xl mx-auto text-center xl:text-left">
           <div className="flex flex-wrap items-center justify-center gap-6 xl:justify-start">
             {features.map((item, idx) => (
               <div key={idx} className="flex items-center gap-x-2 text-gray-500 text-sm">
