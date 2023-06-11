@@ -4,6 +4,7 @@ import Listings from './components/Listings/Listings';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/Home/Home';
 import AddFunds from './components/UserDashboard/AddFunds';
+import SellerListings from './components/UserDashboard/SellerDashboard/SellerListings';
 
 const App = () => {
   return (
@@ -14,7 +15,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<UserDashboard />} />
           <Route path="/listings" element={<Listings />} />
-          <Route path="/payment" element={<AddFunds />} />
+          <Route path="/payment" element={<SellerListings />} />
         </Routes>
       </Router>
     </div>
