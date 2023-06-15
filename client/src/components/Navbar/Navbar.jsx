@@ -2,8 +2,17 @@ import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from './logo.png';
+import { GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
+import { clearUser , addUser } from '../../Actions';
+import { useSelector , useDispatch} from 'react-redux';
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+    //grabs items from global store -> setup in index.js config store
+    const users = useSelector((store) => store.LoginData.token);
+    // const givenName = useSelector((store) => store.LoginData.profile.given_name);
+
   const [state, setState] = useState(false);
   const navigation = [
     { title: 'Home', path: '/' },
@@ -76,6 +85,21 @@ const Navbar = () => {
               })}
             </ul>
           </div>
+          <div>
+            <GoogleLogin onSuccess={credentialResponse => {
+                console.log(credentialResponse.credential);
+                const decoded = jwt_decode(credentialResponse.credential);
+                console.log(decoded);
+                dispatch(addUser(decoded));
+                // console.log("stored user is currently:" + decoded.given_name);
+                console.log("who am I?" + users);
+                console.log(users);
+            }}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+            useOneTap
+  /></div>
         </div>
       </nav>
     </section>

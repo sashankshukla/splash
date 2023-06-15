@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector , useDispatch} from 'react-redux';
 
 const ProfileOverview = () => {
+  const users = useSelector((store) => store.LoginData.token);
   let current_hour = new Date().getHours();
   let greeting;
   if (current_hour < 12) {
@@ -16,17 +18,17 @@ const ProfileOverview = () => {
     <div className="w-full h-full flex flex-col justify-center items-center bg-white rounded-xl shadow-md overflow-hidden px-12">
       <div className="p-8">
         <div className="text-md font-semibold text-gray-400">
-          {greeting}, Sashank. Your portfolio is worth
+          {greeting}, {users.name}. Your portfolio is worth
         </div>
         <div className="text-5xl font-bold">
           $2,345.61 <span className="text-2xl text-gray-500">CAD</span>
         </div>
         <hr className="my-4" />
         <div className="uppercase tracking-wide text-sm text-green-800 font-semibold">
-          Sashank Shukla
+        {users.name}
         </div>
         <p className="block mt-1 text-lg leading-tight font-medium text-black">
-          ayaz.shukla@gmail.com
+        {users.email}
         </p>
         <div className="flex flex-col md:flex-row justify-between">
           <div className="flex flex-col justify-start items-start w-full md:w-1/3">
