@@ -73,6 +73,9 @@ const Navbar = () => {
           >
             <ul className="justify-center items-center space-y-8 md:flex md:space-x-6 md:space-y-0">
               {navigation.map((item, idx) => {
+                if (item.title === 'Profile' && !users.name) {
+                  return null; // Skip rendering the "Profile" navigation item if no token is present
+                }
                 return (
                   <li
                     key={idx}
