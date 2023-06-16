@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from './logo.png';
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
@@ -8,9 +8,10 @@ import { clearUser , addUser } from '../../Actions';
 import { useSelector , useDispatch} from 'react-redux';
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
     //grabs items from global store -> setup in index.js config store
-    const users = useSelector((store) => store.LoginData.token);
+    const token = useSelector((store) => store.LoginData.token);
     // const givenName = useSelector((store) => store.LoginData.profile.given_name);
 
   const [state, setState] = useState(false);
@@ -73,7 +74,7 @@ const Navbar = () => {
           >
             <ul className="justify-center items-center space-y-8 md:flex md:space-x-6 md:space-y-0">
               {navigation.map((item, idx) => {
-                if (item.title === 'Profile' && !users.name) {
+                if (item.title === 'Profile' && !token.name) {
                   return null; // Skip rendering the "Profile" navigation item if no token is present
                 }
                 return (
@@ -95,8 +96,9 @@ const Navbar = () => {
                 console.log(decoded);
                 dispatch(addUser(decoded));
                 // console.log("stored user is currently:" + decoded.given_name);
-                console.log("who am I?" + users);
-                console.log(users);
+                console.log("who am I?" + token);
+                console.log(token);
+                navigate('/profile');
             }}
             onError={() => {
               console.log('Login Failed');
