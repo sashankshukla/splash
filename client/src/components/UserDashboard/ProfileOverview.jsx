@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector , useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const ProfileOverview = () => {
   const users = useSelector((store) => store.LoginData.token);
@@ -25,11 +25,9 @@ const ProfileOverview = () => {
         </div>
         <hr className="my-4" />
         <div className="uppercase tracking-wide text-sm text-green-800 font-semibold">
-        {users.name}
+          {users.name}
         </div>
-        <p className="block mt-1 text-lg leading-tight font-medium text-black">
-        {users.email}
-        </p>
+        <p className="block mt-1 text-lg leading-tight font-medium text-black">{users.email}</p>
         <div className="flex flex-col md:flex-row justify-between">
           <div className="flex flex-col justify-start items-start w-full md:w-1/3">
             <p className="mt-2 text-gray-500">Member since: Jan 2023</p>
