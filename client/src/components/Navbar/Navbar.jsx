@@ -12,7 +12,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector((store) => store.LoginData.token);
-  // const givenName = useSelector((store) => store.LoginData.profile.given_name);
 
   const [state, setState] = useState(false);
   const navigation = [
@@ -90,7 +89,7 @@ const Navbar = () => {
               })}
             </ul>
           </div>
-          <div>
+          <div className='hidden lg:block'>
             {Object.keys(token).length == 0 ? (
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
@@ -98,7 +97,6 @@ const Navbar = () => {
                   const decoded = jwt_decode(credentialResponse.credential);
                   console.log(decoded);
                   dispatch(addUser(decoded));
-                  // console.log("stored user is currently:" + decoded.given_name);
                   console.log('who am I?' + token);
                   console.log(token);
                   navigate('/profile');

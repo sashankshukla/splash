@@ -37,14 +37,14 @@ function AccountOptions() {
       />
       {visible && (
         <div className="absolute right-0 top-0 mt-12 w-48 bg-white rounded-md shadow-2xl">
-          <ul className="text-primary-green">
-            <li className="py-2 font-semibold cursor-pointer text-center hover:bg-light hover:text-primary">
+          <ul className="text-primary">
+            <li className="py-2 cursor-pointer text-center hover:bg-light hover:text-primary">
               <Link to="/profile">View Profile</Link>
             </li>
-            <li className="py-2 font-semibold cursor-pointer text-center hover:bg-light hover:text-primary">
+            <li className="py-2 cursor-pointer text-center hover:bg-light hover:text-primary">
               <Link to="/payment">Add Funds</Link>
             </li>
-            <li className="py-2 font-semibold cursor-pointer text-center hover:bg-light hover:text-primary">
+            <li className="py-2 cursor-pointer text-center hover:bg-light hover:text-primary">
               Withdraw Funds
             </li>
             {/* Add more options as needed */}
