@@ -1,17 +1,16 @@
 import React from 'react';
 
-const ListingForm = ({modalVisible, setModalVisible}) => {
-
+const ListingForm = ({ modalVisible, setModalVisible }) => {
   const toggleModalVisibility = () => {
     setModalVisible(!modalVisible);
   };
 
-  const handleSubmit = (e) => { 
+  const handleSubmit = (e) => {
     e.preventDefault();
     // Add listing to database
     // Redirect to listings page
     setModalVisible(false);
-  }
+  };
 
   return (
     <main className="py-14 mx-8">
@@ -115,7 +114,10 @@ const ListingForm = ({modalVisible, setModalVisible}) => {
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
                       />
                     </div>
-                    <button onClick={handleSubmit} className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-indigo-500 active:bg-primary-green rounded-lg duration-150">
+                    <button
+                      onClick={handleSubmit}
+                      className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-indigo-500 active:bg-primary-green rounded-lg duration-150"
+                    >
                       Add Listing
                     </button>
                   </form>

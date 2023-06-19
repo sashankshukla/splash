@@ -65,7 +65,8 @@ const Listings = () => {
         className="px-4 py-2 mt-8 flex flex-row justify-center align-center text-white font-medium bg-primary-darkgreen rounded-lg duration-150"
         onClick={() => setModalVisible(true)}
       >
-        <FaPlusCircle className='mt-1 mr-1'/><span>Add New Listing</span>
+        <FaPlusCircle className="mt-1 mr-1" />
+        <span>Add New Listing</span>
       </button>
       <ListingForm modalVisible={modalVisible} setModalVisible={setModalVisible} />
       <ListingModal selectedItem={item} onClose={() => setItem(null)} />

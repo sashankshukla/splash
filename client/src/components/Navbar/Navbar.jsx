@@ -20,7 +20,6 @@ const Navbar = () => {
     { title: 'Pools', path: '/pools' },
     { title: 'Contact Us', path: '/contact' },
     { title: 'Profile', path: '/profile' },
-    { title: 'Form', path: '/form' },
   ];
   return (
     <section className="w-screen fixed z-20 border-b-[1px] border-gray-900">
@@ -89,7 +88,7 @@ const Navbar = () => {
               })}
             </ul>
           </div>
-          <div className='hidden lg:block'>
+          <div className="hidden lg:block">
             {Object.keys(token).length == 0 ? (
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
