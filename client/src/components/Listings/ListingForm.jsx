@@ -1,14 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { FaMinusCircle } from 'react-icons/fa';
 
 const ListingForm = ({ modalVisible, setModalVisible }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    street: '',
+    city: '',
+    country: '',
+    postalCode: '',
+    investmentType: '',
+    price: '',
+    description: '',
+    images: [],
+    extraFields: [],
+  });
+
   const toggleModalVisibility = () => {
     setModalVisible(!modalVisible);
   };
 
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleExtraFieldChange = (e, index) => {
+    const newExtraFields = formData.extraFields;
+    newExtraFields[index][e.target.name] = e.target.value;
+    setFormData({
+      ...formData,
+      extraFields: newExtraFields,
+    });
+  };
+
+  const handleImageUpload = (e) => {
+    setFormData({
+      ...formData,
+      images: [...e.target.files],
+    });
+  };
+
+  const addExtraField = () => {
+    setFormData({
+      ...formData,
+      extraFields: [
+        ...formData.extraFields,
+        {
+          name: '',
+          value: '',
+        },
+      ],
+    });
+  };
+
+  const removeExtraField = (indexToRemove) => {
+    setFormData({
+      ...formData,
+      extraFields: formData.extraFields.filter((_, index) => index !== indexToRemove),
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add listing to database
-    // Redirect to listings page
+    console.log(formData);
     setModalVisible(false);
   };
 
@@ -23,7 +79,6 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
             >
               X
             </button>
-
             <main className="py-14 px-8">
               <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
                 <div className="max-w-lg mx-auto pt-8 space-y-3 sm:text-center">
@@ -33,11 +88,14 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                   <p>Empower people from all economic backgrounds to invest</p>
                 </div>
                 <div className="mt-4 max-w-lg mx-auto">
-                  <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
+                  <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
                       <label className="font-medium">Name</label>
                       <input
                         type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
                         required
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
                       />
@@ -46,6 +104,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                       <label className="font-medium">Address</label>
                       <input
                         type="text"
+                        name="street"
+                        value={formData.street}
+                        onChange={handleChange}
                         required
                         placeholder="Street"
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -55,6 +116,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                           <label className="font-medium">City</label>
                           <input
                             type="text"
+                            name="city"
+                            value={formData.city}
+                            onChange={handleChange}
                             placeholder="City"
                             required
                             className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -64,6 +128,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                           <label className="font-medium">Country</label>
                           <input
                             type="text"
+                            name="country"
+                            value={formData.country}
+                            onChange={handleChange}
                             placeholder="Country"
                             required
                             className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -72,6 +139,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                       </div>
                       <input
                         type="text"
+                        name="postalCode"
+                        value={formData.postalCode}
+                        onChange={handleChange}
                         required
                         placeholder="Postal Code"
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -79,8 +149,13 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                     </div>
                     <div>
                       <label className="font-medium">Investment Type</label>
-                      <select className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg">
-                        <option value="" disabled selected>
+                      <select
+                        name="investmentType"
+                        value={formData.investmentType}
+                        onChange={handleChange}
+                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                      >
+                        <option value="" disabled>
                           Select a category
                         </option>
                         <option value="1">House/ Living Accomodation</option>
@@ -93,6 +168,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                       <label className="font-medium">Price</label>
                       <input
                         type="number"
+                        name="price"
+                        value={formData.price}
+                        onChange={handleChange}
                         required
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
                       />
@@ -100,6 +178,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                     <div>
                       <label className="font-medium">Description</label>
                       <textarea
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
                         required
                         className="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
                       ></textarea>
@@ -108,15 +189,57 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                       <label className="font-medium">Images</label>
                       <input
                         type="file"
-                        required
+                        name="images"
                         multiple
                         accept="image/*"
+                        onChange={handleImageUpload}
+                        required
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
                       />
                     </div>
+                    <div>
+                      {formData.extraFields.map((extraField, index) => (
+                        <div className="flex" key={index}>
+                          <div className="w-1/2 pr-2">
+                            <label className="font-medium">Field Name</label>
+                            <input
+                              type="text"
+                              name="name"
+                              value={extraField.name}
+                              onChange={(e) => handleExtraFieldChange(e, index)}
+                              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                            />
+                          </div>
+                          <div className="w-1/2 pl-2">
+                            <label className="font-medium">Field Value</label>
+                            <input
+                              type="text"
+                              name="value"
+                              value={extraField.value}
+                              onChange={(e) => handleExtraFieldChange(e, index)}
+                              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeExtraField(index)}
+                            className="ml-2 mt-8 text-red-500 hover:text-red-700"
+                          >
+                            <FaMinusCircle />
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={addExtraField}
+                        className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-indigo-500 active:bg-primary-green rounded-lg duration-150 mt-4"
+                      >
+                        + Add new field
+                      </button>
+                    </div>
                     <button
-                      onClick={handleSubmit}
-                      className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-indigo-500 active:bg-primary-green rounded-lg duration-150"
+                      type="submit"
+                      className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-indigo-500 active:bg-primary-green rounded-lg duration-150 mt-4"
                     >
                       Add Listing
                     </button>
