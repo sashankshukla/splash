@@ -232,14 +232,14 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                       <button
                         type="button"
                         onClick={addExtraField}
-                        className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-indigo-500 active:bg-primary-green rounded-lg duration-150 mt-4"
+                        className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-primary-darkgreen active:bg-primary-green rounded-lg duration-150 mt-4"
                       >
                         + Add new field
                       </button>
                     </div>
                     <button
                       type="submit"
-                      className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-indigo-500 active:bg-primary-green rounded-lg duration-150 mt-4"
+                      className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-primary-darkgreen active:bg-primary-green rounded-lg duration-150 mt-4"
                     >
                       Add Listing
                     </button>
