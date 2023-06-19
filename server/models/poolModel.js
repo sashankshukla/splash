@@ -1,21 +1,39 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const contribution = new mongoose.Schema({
-  userId: { type: String, required: true },
-  contribution: { type: Number, required: true },
-});
-
-const poolSchema = new mongoose.Schema(
+const poolSchema = new Schema(
   {
-    poolId: { type: String, required: true },
-    listingId: { type: String, required: true },
-    title: { type: String, required: true },
-    totalFunding: { type: Number, required: true },
-    participants: { type: [contribution], required: true },
-    createdBy: { type: String, required: true },
-    status: Boolean,
+    poolId: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    private : {
+      type: Boolean,
+      required: true,
+    },
+    users: [
+      {
+        userId: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+          required: true,
+        },
+        equity: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    listingId: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true },
 );
 
-export const Pool = mongoose.model('Pool', poolSchema);
+module.exports = mongoose.model('Pool', poolSchema);
