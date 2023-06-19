@@ -7,6 +7,25 @@ const listingSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    address: {
+      street: {
+        type: String,
+        required: true,
+      },
+      city: {
+        type: String,
+        required: true,
+      },
+      country: {
+        type: String,
+        required: true,
+      },
+      postalCode: {
+        type: String,
+        required: true,
+      },
+      required: true,
+    },
     description: String,
     details: {
       type: Mongoose.Schema.Types.Mixed,

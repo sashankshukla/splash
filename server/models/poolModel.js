@@ -11,7 +11,7 @@ const poolSchema = new Schema(
       type: String,
       required: true,
     },
-    private : {
+    private: {
       type: Boolean,
       required: true,
     },
