@@ -6,6 +6,7 @@ import Home from './components/Home/Home';
 import AddFunds from './components/UserDashboard/AddFunds';
 import { GoogleLogin } from '@react-oauth/google';
 import { useSelector, useDispatch } from 'react-redux';
+import ListingForm from './components/Listings/ListingForm';
 
 const App = () => {
   const token = useSelector((store) => store.LoginData.token);
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/profile" element={<UserDashboard />} />
           <Route path="/listings" element={<Listings />} />
           <Route path="/payment" element={<AddFunds />} />
+          <Route path="/form" element={<ListingForm />} />
         </Routes>
       </Router>
     </div>

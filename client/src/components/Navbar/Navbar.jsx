@@ -6,11 +6,11 @@ import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
 import { clearUser, addUser } from '../../Actions';
 import { useSelector, useDispatch } from 'react-redux';
+import AccountOptions from './AccountOptions';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  //grabs items from global store -> setup in index.js config store
   const token = useSelector((store) => store.LoginData.token);
   // const givenName = useSelector((store) => store.LoginData.profile.given_name);
 
@@ -21,6 +21,7 @@ const Navbar = () => {
     { title: 'Pools', path: '/pools' },
     { title: 'Contact Us', path: '/contact' },
     { title: 'Profile', path: '/profile' },
+    { title: 'Form', path: '/form' },
   ];
   return (
     <section className="w-screen fixed z-20 border-b-[1px] border-gray-900">
@@ -108,7 +109,7 @@ const Navbar = () => {
                 useOneTap
               />
             ) : (
-              <img className="rounded-3xl" src={token.picture} height={40} width={40} />
+              <AccountOptions />
             )}
           </div>
         </div>
