@@ -1,11 +1,23 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
-    userId: { type: String, required: true },
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    portfolioValue: { type: Number, required: true },
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    pools: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Pool',
+      },
+    ],
   },
   { timestamps: true },
 );
