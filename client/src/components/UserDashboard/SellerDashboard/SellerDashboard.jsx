@@ -1,6 +1,7 @@
 import React from 'react';
 import SellerListings from './SellerListings';
 import ApprovalCard from './ApprovalCard';
+import { useSelector } from 'react-redux';
 
 const SellerDashboard = () => {
   const approvalData = [
@@ -27,11 +28,15 @@ const SellerDashboard = () => {
     // add more objects here...
   ];
 
+  const token = useSelector((store) => store.LoginData.token);
+
   return (
     <div className="h-screen mt-48 pb-48 w-screen flex flex-col justify-center items-center">
       <h1 className="text-3xl font-bold">Your Listings</h1>
       <SellerListings />
-      <h1 className="text-3xl my-6 font-bold">Buyers awaiting your approval Sashank...</h1>
+      <h1 className="text-3xl my-6 font-bold">{`Buyers awaiting your approval ${
+        token.name.split(' ')[0]
+      }...`}</h1>
       <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
         {approvalData.map((data, index) => (
           <ApprovalCard
