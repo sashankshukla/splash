@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaUser, FaMoneyBill } from 'react-icons/fa';
+import JoinForm from './JoinForm';
 
 const Pool = ({ title, id, members, totalValue, remaining, contribution }) => {
+  const [modalVisible, setModalVisible] = useState(false);
   const progress = ((totalValue - remaining) / totalValue) * 100;
 
   return (
-    <div className="max-w-sm mx-auto bg-white rounded-xl shadow-md overflow-hidden m-4 p-4">
+    <div className="bg-white rounded-xl shadow-md m-4 p-4">
       <div className="text-green-900 font-bold text-xl mb-2">{title}</div>
       <div className="text-gray-700 text-base">
         <p>Listing ID: {id}</p>
@@ -26,6 +28,13 @@ const Pool = ({ title, id, members, totalValue, remaining, contribution }) => {
           ></div>
         </div>
       </div>
+      <button
+        className="px-4 py-2 text-white bg-primary-green rounded-lg"
+        onClick={() => setModalVisible(true)}
+      >
+        <span>Join Pool</span>
+      </button>
+      <JoinForm modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </div>
   );
 };

@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 
-const PoolForm = ({ modalVisible, setModalVisible }) => {
+const JoinForm = ({ modalVisible, setModalVisible }) => {
   const [formData, setFormData] = useState({
-    title: '',
-    listingId: '',
-    description: '',
-    private: false,
+    contribution: 0
   });
 
   const toggleModalVisibility = () => {
@@ -40,60 +37,28 @@ const PoolForm = ({ modalVisible, setModalVisible }) => {
               <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
                 <div className="max-w-lg mx-auto pt-8 space-y-3 sm:text-center">
                   <p className="text-primary-darkgreen rounded-lg text-3xl font-semibold sm:text-4xl">
-                    New Pool
+                    Join Pool
                   </p>
                   <p>Empower people from all economic backgrounds to invest</p>
                 </div>
                 <div className="mt-4 max-w-lg mx-auto">
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                      <label className="font-medium">Title</label>
+                      <label className="font-medium">Contribution</label>
                       <input
-                        type="text"
-                        name="title"
-                        value={formData.title}
+                        type="number"
+                        name="contribution"
+                        value={formData.contribution}
                         onChange={handleChange}
                         required
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
                       />
-                    </div>
-                    <div>
-                      <label className="font-medium">Listing ID</label>
-                      <input
-                        type="text"
-                        name="listingId"
-                        value={formData.listingId}
-                        onChange={handleChange}
-                        required
-                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
-                      />
-                    </div>
-                    <div>
-                      <label className="font-medium">Description</label>
-                      <textarea
-                        name="description"
-                        value={formData.description}
-                        onChange={handleChange}
-                        required
-                        className="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
-                      ></textarea>
-                    </div>
-                    <div>
-                      <input
-                        type="checkbox"
-                        name="private"
-                        value={formData.private}
-                        onChange={handleChange}
-                        required
-                        className="m-2"
-                      />
-                      <label className="font-medium">Private</label>
                     </div>
                     <button
                       type="submit"
                       className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-primary-darkgreen active:bg-primary-green rounded-lg duration-150 mt-4"
                     >
-                      Add Pool
+                      Join Pool
                     </button>
                   </form>
                 </div>
@@ -106,4 +71,4 @@ const PoolForm = ({ modalVisible, setModalVisible }) => {
   );
 };
 
-export default PoolForm;
+export default JoinForm;

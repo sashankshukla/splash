@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { FaPlusCircle } from 'react-icons/fa';
 
 import Pool from '../Pool/Pool';
 
 import Filter from '../Filter/Filter';
+import PoolForm from './PoolForm';
 
 const Pools = () => {
+  const [modalVisible, setModalVisible] = useState(false);
   const pools = [
     {
       title: 'Tech Stocks Pool',
@@ -46,9 +49,17 @@ const Pools = () => {
       className="flex flex-col justify-center items-center pt-16 mx-4"
     >
       <Filter />
+      <button
+        className="px-4 py-2 mt-8 flex flex-row justify-center align-center text-white font-medium bg-primary-darkgreen rounded-lg duration-150"
+        onClick={() => setModalVisible(true)}
+      >
+        <FaPlusCircle className="mt-1 mr-1" />
+        <span>Add New Pool</span>
+      </button>
+      <PoolForm modalVisible={modalVisible} setModalVisible={setModalVisible} />
       <div
         id="pools-container"
-        className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"
+        className="flex"
       >
         {pools.map((pool, idx) => {
           return (
