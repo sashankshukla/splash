@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FaPlusCircle } from 'react-icons/fa';
+import ListingForm from './ListingForm';
 
 import './Listings.css';
 
@@ -9,6 +11,7 @@ import Filter from '../Filter/Filter';
 
 const Listings = () => {
   const [item, setItem] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
   const listings = [
     {
       address: '123 Main St',
@@ -58,6 +61,14 @@ const Listings = () => {
       className="flex flex-col justify-center items-center pt-16 mx-4"
     >
       <Filter />
+      <button
+        className="px-4 py-2 mt-8 flex flex-row justify-center align-center text-white font-medium bg-primary-darkgreen rounded-lg duration-150"
+        onClick={() => setModalVisible(true)}
+      >
+        <FaPlusCircle className="mt-1 mr-1" />
+        <span>Add New Listing</span>
+      </button>
+      <ListingForm modalVisible={modalVisible} setModalVisible={setModalVisible} />
       <ListingModal selectedItem={item} onClose={() => setItem(null)} />
       <div
         id="listings-container"
