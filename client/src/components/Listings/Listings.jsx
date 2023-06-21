@@ -12,20 +12,22 @@ import Filter from '../Filter/Filter';
 import './Listings.css';
 
 const Listings = () => {
+  const [item, setItem] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const listings = useSelector((state) => state.listings);
 
   const renderedListings = listings.map((listing, index) => (
-    <Listing  key = {index}
-              id = {listing.listingId}
-              title = {listing.title}
-              description = {listing.description}
-              price = {listing.price}
-              location = {listing.location}
-              images = {listing.images}
-              seller = {listing.seller}
-              status = {listing.status}
-              onClick = {null}
+    <Listing  key = {listing.listingId}
+              id = {listing.listingId}            //str
+              title = {listing.title}             //str
+              location = {listing.location}       //str
+              description = {listing.description} //str
+              price = {listing.price}             //float
+              images = {listing.images}           //[urlstr] (array of strings representing urls)
+              seller = {listing.seller}           //str
+              status = {listing.status}           //bool
+              onClick = {() => setItem(listing)}
     />
             // listingId: "0123456789",
             // title: "",

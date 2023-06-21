@@ -2,63 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = [
     {
-        listingId: "0123456789",
-        title: "A",
+        listingId: "0123456789", //_id in listingModel
+        title: "Pokemon startup", //name in listingModel
+        location: "Pallet Town", //concat of all parts of address obj in listingModel
         description: "TEST",
-        price: 12345,
-        location: "Pallet Town",
-        images: "https://archives.bulbagarden.net/media/upload/f/fb/0001Bulbasaur.png", //What to do for this?
-        seller: "Ash",
-        status: true
-    },
-    {
-        listingId: "0123456789",
-        title: "A",
-        description: "TEST",
-        price: 12345,
-        location: "Pallet Town",
-        images: "https://archives.bulbagarden.net/media/upload/f/fb/0001Bulbasaur.png", //What to do for this?
-        seller: "Ash",
-        status: true
-    },
-    {
-        listingId: "0123456789",
-        title: "A",
-        description: "TEST",
-        price: 12345,
-        location: "Pallet Town",
-        images: "https://archives.bulbagarden.net/media/upload/f/fb/0001Bulbasaur.png", //What to do for this?
-        seller: "Ash",
-        status: true
-    },
-    {
-        listingId: "0123456789",
-        title: "A",
-        description: "TEST",
-        price: 12345,
-        location: "Pallet Town",
-        images: "https://archives.bulbagarden.net/media/upload/f/fb/0001Bulbasaur.png", //What to do for this?
-        seller: "Ash",
-        status: true
-    },
-    {
-        listingId: "0123456789",
-        title: "A",
-        description: "TEST",
-        price: 12345,
-        location: "Pallet Town",
-        images: "https://archives.bulbagarden.net/media/upload/f/fb/0001Bulbasaur.png", //What to do for this?
-        seller: "Ash",
-        status: true
-    },
-    {
-        listingId: "0123456789",
-        title: "A",
-        description: "TEST",
-        price: 12345,
-        location: "Pallet Town",
-        images: "https://archives.bulbagarden.net/media/upload/f/fb/0001Bulbasaur.png", //What to do for this?
-        seller: "Ash",
+        price: 12345.65, //needs to be a float bc money
+        images: [
+            "https://archives.bulbagarden.net/media/upload/f/fb/0001Bulbasaur.png",
+            "https://archives.bulbagarden.net/media/upload/2/27/0004Charmander.png",
+            "https://archives.bulbagarden.net/media/upload/5/54/0007Squirtle.png"
+        ], //would this mean spread operation, map, filter, etc are mutating state bc no deep copy for nested?
+        seller: "Ash", //createdBy in listingModel (would probably use id to reference user instance and grab name)
         status: true
     }
 ];
