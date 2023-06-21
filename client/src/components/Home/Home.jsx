@@ -2,8 +2,17 @@ import React from 'react';
 import { FaStar, FaMoneyBillWave, FaCheckCircle, FaArrowRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import HomeImage from './HomeImage.jpg';
+import { GoogleLogin } from '@react-oauth/google';
+import { useSelector, useDispatch } from 'react-redux';
+import jwt_decode from 'jwt-decode';
+import { addUser } from '../../Actions';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const token = useSelector((store) => store.LoginData.token);
+
   const features = [
     {
       name: 'Trusted',
@@ -47,13 +56,25 @@ const Home = () => {
               Browse Listings
               <FaArrowRight className="w-5 h-5" />
             </Link>
-            <Link
-              to="/profile"
-              className="flex items-center justify-center gap-x-2 py-2 px-4 text-gray-800 border-[1px] font-medium bg-white duration-150 hover:bg-gray-100 rounded-lg md:inline-flex"
-            >
-              Sign in
+            <div className="flex items-center justify-center gap-x-2 py-2 px-4 text-gray-800 border-[1px] font-medium bg-white duration-150 hover:bg-gray-100 rounded-lg md:inline-flex">
+              {Object.keys(token).length !== 0 ? (
+                <Link to="/profile">Profile</Link>
+              ) : (
+                <GoogleLogin
+                  onSuccess={(credentialResponse) => {
+                    console.log(credentialResponse.credential);
+                    const decoded = jwt_decode(credentialResponse.credential);
+                    console.log(decoded);
+                    dispatch(addUser(decoded));
+                    navigate('/profile');
+                  }}
+                  onError={() => {
+                    console.log('Login Failed');
+                  }}
+                />
+              )}
               <FaArrowRight className="w-5 h-5" />
-            </Link>
+            </div>
           </div>
         </div>
         <div className="flex-1 max-w-xl mx-auto mt-14 pb-16 xl:mt-24">
