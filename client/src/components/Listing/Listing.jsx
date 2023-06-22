@@ -18,6 +18,7 @@ const Listing = ({id, title, description, price, location, images, seller, statu
     <div id={id} className="listing-container" onClick={onClick}>
       <img src={images[0]} alt=""></img>
       {moreImages(images)}
+      {/* TODO: have this render more inconspicuously near the bottom right corner of the image */}
       <h2 className="listing-title">{title}</h2>
       <h5 className="listing-location">Located in {location}</h5>
       <p className="listing-info">Price: {price}</p>

@@ -16,9 +16,12 @@ const Listings = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const listings = useSelector((state) => state.listings);
+  const dispatch = useDispatch();
+  // const filters = useSelector((state) => state.filters);
 
+  // TODO: THIS WOULD BE WHERE LOGIC FOR CLIENT SIDE VERSION OF FILTERS IS
   const renderedListings = listings.map((listing, index) => (
-    <Listing  key = {listing.listingId}
+    <Listing  key = {index}                       //TEMPORARY
               id = {listing.listingId}            //str
               title = {listing.title}             //str
               location = {listing.location}       //str
@@ -29,14 +32,6 @@ const Listings = () => {
               status = {listing.status}           //bool
               onClick = {() => setItem(listing)}
     />
-            // listingId: "0123456789",
-            // title: "",
-            // description: "",
-            // price: 0,
-            // location: "",
-            // images: "", //What to do for this?
-            // seller: "",
-            // status: true
   ));
 
   return (
@@ -53,7 +48,14 @@ const Listings = () => {
         <span>Add New Listing</span>
       </button>
       <ListingForm modalVisible={modalVisible} setModalVisible={setModalVisible} />
-      <ListingModal selectedItem={item} onClose={() => setItem(null)} />
+      <ListingModal
+          selectedItem={item}
+          onClose={() => setItem(null)}
+          onDel={() => {
+            dispatch({type: "listings/deleteListing", payload: parseInt(item.listingId)});
+            setItem(null);
+          }}
+      />
       <div
         id="listings-container"
         className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"
