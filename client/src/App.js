@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import ListingForm from './components/Listings/ListingForm';
 
 const App = () => {
-  const token = useSelector((store) => store.LoginData.token);
+  const token = useSelector((store) => store.auth.token);
 
   return (
     <div className="App">

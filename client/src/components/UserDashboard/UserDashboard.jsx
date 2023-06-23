@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
-  const token = useSelector((store) => store.LoginData.token);
+  const token = useSelector((store) => store.auth.token);
   const [toggle, setToggle] = useState(true);
   useEffect(() => {
     if (Object.keys(token).length === 0) {

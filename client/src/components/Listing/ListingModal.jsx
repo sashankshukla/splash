@@ -1,9 +1,16 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
-const ListingModal = ({ selectedItem, onClose }) => {
+const ListingModal = ({ selectedItem, onClose, onDel }) => {
+  const dispatch = useDispatch();
+
   if (!selectedItem) return null;
 
-  const { address, price, owner, imageSrc, openPools } = selectedItem;
+  const { listingId, title, location, description, price, images, seller, status } = selectedItem;
+
+  const renderedImages = images.map((image, img_index) => (
+    <img key={img_index} src={image} alt="" className="object-cover w-48 h-48 rounded-md mx-auto" />
+  ));
 
   return (
     <div
@@ -13,36 +20,48 @@ const ListingModal = ({ selectedItem, onClose }) => {
     >
       <div className="relative bg-white rounded-lg shadow w-screen h-auto max-w-md max-h-full overflow-y-auto">
         <div className="p-6 text-center">
-          <img
-            className="object-cover w-48 h-48 rounded-md mx-auto"
-            src={imageSrc}
-            alt="listing"
-          ></img>
+          <button
+            className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+            onClick={onClose}
+          >
+            X
+          </button>
+          {/* TODO: add role indicator for screen readers */}
 
-          <h1 className="mt-4 text-2xl font-semibold text-gray-700 capitalize">{address}</h1>
+          {renderedImages}
+          {/*
+            TODO: format into an image carousel
+            See: https://www.material-tailwind.com/docs/react/carousel
+          */}
+
+          <h1 className="mt-4 text-2xl font-semibold text-gray-700 capitalize">{title}</h1>
+          <h3 className="mt-4 text-xl font-semibold text-gray-700 capitalize">{location}</h3>
 
           <p className="mt-4 text-md text-justify text-gray-900">
             <span className="font-bold">Description: </span>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ut gravida tortor. Nunc
-            luctus sapien tellus, ut dapibus nisl sagittis vel. Nunc blandit libero non nunc
-            imperdiet, eget finibus magna luctus. Quisque luctus ultrices nulla, id imperdiet sapien
-            lacinia id. Donec pellentesque in odio a volutpat. Nam ligula ligula, feugiat nec est a,
-            interdum tincidunt enim.
+            {description}
           </p>
           <p className="mt-2 text-md text-gray-900">
             <span className="font-bold">Open Pools: </span>
-            {openPools}
+            TODO
           </p>
           <p className="mt-2 text-md text-gray-900">
             <span className="font-bold">Price: </span>
             {price}
           </p>
           <p className="mt-2 text-md text-gray-900">
-            <span className="font-bold">Owner: </span>
-            {owner}
+            <span className="font-bold">Seller: </span>
+            {seller}
+          </p>
+          <p className="mt-2 text-md text-gray-900">
+            <span className="font-bold">Status: </span>
+            {status}
           </p>
           <button onClick={onClose} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
-            Close
+            Edit Listing
+          </button>
+          <button onClick={onDel} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
+            Delete Listing
           </button>
         </div>
       </div>

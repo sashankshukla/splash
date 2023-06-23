@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function AccountOptions() {
-  const token = useSelector((store) => store.LoginData.token);
+  const token = useSelector((store) => store.auth.token);
   const [visible, setVisible] = useState(false);
   const ref = useRef(null);
 

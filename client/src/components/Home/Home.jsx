@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector((store) => store.LoginData.token);
+  const token = useSelector((store) => store.auth.token);
 
   const features = [
     {
