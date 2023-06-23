@@ -51,10 +51,19 @@ const poolsSlice = createSlice({
         },
         editPool: (state, action) => {
             return state; //placeholder
+        },
+        joinPool: (state, action) => {
+          const poolId = action.payload.poolId;
+          const pool = state.filter(pool => pool.poolId === poolId)[0];
+          const contribution = parseFloat(action.payload.contribution);
+          
+          pool.members += 1;
+          pool.remaining -= contribution;
+          pool.contribution += contribution;
         }
     }
 });
 
-export const {addPool: addPool, deletePool: deletePool, editPool: editPool} = poolsSlice.actions;
+export const {addPool, deletePool, editPool} = poolsSlice.actions;
 
 export default poolsSlice.reducer;

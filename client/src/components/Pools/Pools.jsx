@@ -34,8 +34,9 @@ const Pools = () => {
           return (
             <Pool
               key={idx}
+              poolId={pool.poolId}
               title={pool.title}
-              id={pool.id}
+              listingId={pool.listingId}
               members={pool.members}
               totalValue={pool.totalValue}
               remaining={pool.remaining}
