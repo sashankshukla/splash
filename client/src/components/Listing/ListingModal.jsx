@@ -53,9 +53,10 @@ const ListingModal = ({ selectedItem, onClose, onDel }) => {
             <span className="font-bold">Seller: </span>
             {seller}
           </p>
-          {/* <button onClick={onClose} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
-            Close
-          </button> */}
+          <p className="mt-2 text-md text-gray-900">
+            <span className="font-bold">Status: </span>
+            {status}
+          </p>
           <button onClick={onClose} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
             Edit Listing
           </button>

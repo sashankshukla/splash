@@ -13,7 +13,7 @@ const initialState = [
             "https://archives.bulbagarden.net/media/upload/5/54/0007Squirtle.png"
         ], //would this mean spread operation, map, filter, etc are mutating state bc no deep copy for nested?
         seller: "Ash", //createdBy in listingModel (would probably use id to reference user instance and grab name)
-        status: true
+        status: "Available"
     },
     {
         listingId: "8675309", //_id in listingModel
@@ -27,7 +27,7 @@ const initialState = [
             "https://archives.bulbagarden.net/media/upload/5/54/0007Squirtle.png"
         ], //would this mean spread operation, map, filter, etc are mutating state bc no deep copy for nested?
         seller: "Ash", //createdBy in listingModel (would probably use id to reference user instance and grab name)
-        status: true
+        status: "Available"
     }
 ];
 
@@ -36,7 +36,7 @@ const listingsSlice = createSlice({
     initialState: initialState,
     reducers: {
         addListing: (state, action) => {
-            return state.push(action.payload);
+            state.push(action.payload);
         },
         deleteListing: (state, action) => {
             return state.filter(listing => parseInt(listing.listingId) !== action.payload);

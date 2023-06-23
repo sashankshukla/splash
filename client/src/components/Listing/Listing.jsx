@@ -24,7 +24,7 @@ const Listing = ({id, title, description, price, location, images, seller, statu
       <p className="listing-info">Price: {price}</p>
       <p className="listing-info">Seller: {seller}</p>
       <p className="listing-info">Open Pools TODO</p>
-      <p className="listing-status">Status TODO</p>
+      <p className="listing-status">{status}</p>
       {/* How to turn status from bool to open/closed? */}
     </div>
   );
