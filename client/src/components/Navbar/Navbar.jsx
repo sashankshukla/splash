@@ -11,7 +11,7 @@ import AccountOptions from './AccountOptions';
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const token = useSelector((store) => store.LoginData.token);
+  const token = useSelector((store) => store.auth.token);
 
   const [state, setState] = useState(false);
   const navigation = [
