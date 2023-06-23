@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { FaUser, FaMoneyBill } from 'react-icons/fa';
 import JoinForm from './JoinForm';
 
 const Pool = ({ title, id, members, totalValue, remaining, contribution }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const progress = ((totalValue - remaining) / totalValue) * 100;
+
+  const dispatch = useDispatch();
 
   return (
     <div className="bg-white rounded-xl shadow-md m-4 p-4">
@@ -29,12 +32,18 @@ const Pool = ({ title, id, members, totalValue, remaining, contribution }) => {
         </div>
       </div>
       <button
-        className="px-4 py-2 text-white bg-primary-green rounded-lg"
+        className="m-1 px-4 py-2 text-white bg-primary-green rounded-lg inline-block"
         onClick={() => setModalVisible(true)}
       >
         <span>Join Pool</span>
+        <JoinForm modalVisible={modalVisible} setModalVisible={setModalVisible} />
       </button>
-      <JoinForm modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      <button 
+        className="m-1 px-4 py-2 bg-red-500 text-white rounded-lg inline-block"
+        onClick={() => dispatch({type: "pools/deletePool", payload: parseInt(id)})}
+      >
+        Delete Listing
+      </button>
     </div>
   );
 };
