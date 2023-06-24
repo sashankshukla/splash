@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-const ListingModal = ({ selectedItem, onClose, onDel }) => {
+const ListingModal = ({ selectedItem, onClose, onEdit, onDel }) => {
   const user = useSelector((store) => store.auth.token);
   //
   const dispatch = useDispatch();
@@ -14,28 +14,11 @@ const ListingModal = ({ selectedItem, onClose, onDel }) => {
     <img key={img_index} src={image} alt="" className="object-cover w-48 h-48 rounded-md mx-auto" />
   ));
 
-  // const renderButtonsCheck = () => {
-  //   return (
-  //     user.email == seller &&
-  //     (
-  //       <div id="modal-buttons-container">
-  //         <button onClick={onClose} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
-  //             Edit Listing
-  //           </button>
-
-  //         <button onClick={onDel} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
-  //             Delete Listing
-  //         </button>
-  //       </div>
-  //     )
-  //   );
-  // }
-
   const renderButtonsCheck = (
     user.email == seller &&
       (
         <div id="modal-buttons-container">
-          <button onClick={onClose} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
+          <button onClick={onEdit} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
               Edit Listing
             </button>
 

@@ -68,19 +68,20 @@ const initialState = [
 ];
 
 const listingsSlice = createSlice({
-  name: 'listings',
-  initialState: initialState,
-  reducers: {
-    addListing: (state, action) => {
-      state.push(action.payload);
-    },
-    deleteListing: (state, action) => {
-      return state.filter((listing) => parseInt(listing.listingId) !== action.payload);
-    },
-    editListing: (state, action) => {
-      return state; //placeholder
-    },
-  },
+    name: 'listings',
+    initialState: initialState,
+    reducers: {
+        addListing: (state, action) => {
+            state.push(action.payload);
+        },
+        deleteListing: (state, action) => {
+            console.log("deleteListing");
+            return state.filter(listing => parseInt(listing.listingId) !== action.payload);
+        },
+        editListing: (state, action) => {
+            return state; //placeholder
+        }
+    }
 });
 
 export const { addListing, deleteListing, editListing } = listingsSlice.actions;

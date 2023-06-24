@@ -72,13 +72,6 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let listingId = '42';
-    let user = 'guest';
-    let status = 'Available';
-    console.log(
-      '' + user + ' created listing with listingId: ' + listingId + ' and the following formData:',
-    );
-    console.log(formData);
 
     let templisting = {
       listingId: '42', //placeholder!
@@ -87,8 +80,8 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
       description: formData.description,
       price: formData.price,
       images: [formData.images],
-      seller: 'anonymous', //placeholder!
-      status: 'Available',
+      seller: user.email, //placeholder!
+      status: 'Available'
     };
 
     dispatch({ type: 'listings/addListing', payload: templisting });

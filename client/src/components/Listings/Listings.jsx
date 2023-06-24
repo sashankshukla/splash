@@ -30,18 +30,18 @@ const Listings = () => {
   //update local state version of listings to match filter preferences on any change to filters
   useEffect(() => {
     //filter by status (All, Available, or Sold)
-    setFiltered(filtered.filter((listing) => (filter.status == "All" || listing.status == filter.status)));
+    setFiltered(listings.filter((listing) => (filter.status == "All" || listing.status == filter.statusVis)));
 
     //filter by price range (lowerfloat, upperfloat)
-    setFiltered(filtered.filter(listing => (filter.priceRange.length > 0 ? (filter.priceRange[0] <= listing.price <= filter.priceRange[1]) : listing)));
+    setFiltered(listings.filter(listing => (filter.priceRange.length > 0 ? (filter.priceRange[0] <= listing.price <= filter.priceRange[1]) : listing)));
 
     //keyword search
     for(let i = 0; i < filter.keywords.length; i++) {
-      setFiltered(filtered.filter(listing => listing.title.includes(filter.keywords[i])));
+      setFiltered(listings.filter(listing => listing.title.includes(filter.keywords[i])));
     }
 
     //sort remaining posts
-  }, [filter]);
+  }, [filter, listings]);
 
   // keywords: [""], //will have any number of strings (for now ui will only allow one)
   // sort: "recent", //this is the default, should make enum later
@@ -91,6 +91,32 @@ const Listings = () => {
         id="listings-container"
         className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"
       >
+        <Filter />
+        <button
+          className="px-4 py-2 mt-8 flex flex-row justify-center align-center text-white font-medium bg-primary-darkgreen rounded-lg duration-150"
+          onClick={() => setModalVisible(true)}
+        >
+          <FaPlusCircle className="mt-1 mr-1" />
+          <span>Add New Listing</span>
+        </button>
+        <ListingForm modalVisible={modalVisible} setModalVisible={setModalVisible} />
+        <ListingModal
+            selectedItem={item}
+            onClose={() => setItem(null)}
+            onEdit={() => {
+              // dispatch({type: "", payload: {index, }});
+              setItem(null);
+            }}
+            onDel={() => {
+              console.log("Delete called");
+              dispatch({type: "listings/deleteListing", payload: parseInt(item.listingId)});
+              setItem(null);
+            }}
+        />
+        <div
+          id="listings-container"
+          className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"
+        >
 
         {renderedListings}
       </div>
