@@ -1,34 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = [
-  {
-    listingId: '0123456789', //_id in listingModel
-    title: 'Pokemon startup', //name in listingModel
-    location: 'Pallet Town', //concat of all parts of address obj in listingModel (can be split into more if needed)
-    description: 'TEST',
-    price: 12345.65, //needs to be a float bc money
-    images: [
-      'https://archives.bulbagarden.net/media/upload/f/fb/0001Bulbasaur.png',
-      'https://archives.bulbagarden.net/media/upload/2/27/0004Charmander.png',
-      'https://archives.bulbagarden.net/media/upload/5/54/0007Squirtle.png',
-    ], //would this mean spread operation, map, filter, etc are mutating state bc no deep copy for nested?
-    seller: 'Ash', //createdBy in listingModel (would probably use id to reference user instance and grab name)
-    status: 'Available',
-  },
-  {
-    listingId: '8675309', //_id in listingModel
-    title: 'Pokemon startup', //name in listingModel
-    location: 'Pallet Town', //concat of all parts of address obj in listingModel (can be split into more if needed)
-    description: 'TEST',
-    price: 12345.65, //needs to be a float bc money
-    images: [
-      'https://archives.bulbagarden.net/media/upload/f/fb/0001Bulbasaur.png',
-      'https://archives.bulbagarden.net/media/upload/2/27/0004Charmander.png',
-      'https://archives.bulbagarden.net/media/upload/5/54/0007Squirtle.png',
-    ], //would this mean spread operation, map, filter, etc are mutating state bc no deep copy for nested?
-    seller: 'Ash', //createdBy in listingModel (would probably use id to reference user instance and grab name)
-    status: 'Available',
-  },
+    {
+        listingId: "0123456789", //_id in listingModel
+        title: "Pokemon startup", //name in listingModel
+        location: "Pallet Town", //concat of all parts of address obj in listingModel (can be split into more if needed)
+        description: "Kachow",
+        price: 2564.99, //needs to be a float bc money
+        images: [
+            "https://archives.bulbagarden.net/media/upload/f/fb/0001Bulbasaur.png",
+            "https://archives.bulbagarden.net/media/upload/2/27/0004Charmander.png",
+            "https://archives.bulbagarden.net/media/upload/5/54/0007Squirtle.png"
+        ], //would this mean spread operation, map, filter, etc are mutating state bc no deep copy for nested?
+        seller: "antwerpsmerlepigeon@gmail.com", //createdBy in listingModel (would probably use id or email to reference user instance and grab name)
+        status: "Available"
+    },
+    {
+        listingId: "8675309", //_id in listingModel
+        title: "Brock's Gym", //name in listingModel
+        location: "Pewter City", //concat of all parts of address obj in listingModel (can be split into more if needed)
+        description: "TEST",
+        price: 12345.65, //needs to be a float bc money
+        images: [
+            "https://archives.bulbagarden.net/media/upload/f/fb/0001Bulbasaur.png",
+            "https://archives.bulbagarden.net/media/upload/2/27/0004Charmander.png",
+            "https://archives.bulbagarden.net/media/upload/5/54/0007Squirtle.png"
+        ], //would this mean spread operation, map, filter, etc are mutating state bc no deep copy for nested?
+        seller: "Ash", //createdBy in listingModel (would probably use id to reference user instance and grab name)
+        status: "Available"
+    }
 ];
 
 const listingsSlice = createSlice({

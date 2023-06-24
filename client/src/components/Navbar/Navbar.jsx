@@ -95,12 +95,12 @@ const Navbar = () => {
             {Object.keys(token).length == 0 ? (
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
-                  console.log(credentialResponse.credential);
+                  // console.log(credentialResponse.credential);
                   const decoded = jwt_decode(credentialResponse.credential);
                   console.log(decoded);
                   dispatch(addUser(decoded));
-                  console.log('who am I?' + token);
-                  console.log(token);
+                  // console.log('who am I?' + token);
+                  // console.log(token);
                   navigate('/profile');
                 }}
                 onError={() => {
