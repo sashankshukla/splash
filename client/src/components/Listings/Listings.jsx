@@ -31,7 +31,7 @@ const Listings = () => {
   useEffect(() => {
     //filter by status (All, Available, or Sold)
     setFiltered(
-      listings.filter((listing) => filter.status == 'All' || listing.status == filter.statusVis),
+      listings.filter((listing) => filter.status === 'All' || listing.status === filter.statusVis),
     );
 
     //filter by price range (lowerfloat, upperfloat)
@@ -48,25 +48,19 @@ const Listings = () => {
     //sort remaining posts
   }, [filter, listings]);
 
-  // keywords: [""], //will have any number of strings (for now ui will only allow one)
-  // sort: "recent", //this is the default, should make enum later
-  // priceRange: [],  //will either be empty (meaning no range), or have two values [lowerfloat, upperfloat]
-  // status: "all" //can be one of "all", "open", or "closed"
-
-  // TODO: THIS WOULD BE WHERE LOGIC FOR CLIENT SIDE VERSION OF FILTERS IS?
   const renderedListings = filtered.map(
     (listing, index) =>
       Object.keys(token).length > 0 && (
         <Listing
-          key={index} //TEMPORARY
-          id={listing.listingId} //str
-          title={listing.title} //str
-          location={listing.location} //str
-          description={listing.description} //str
-          price={listing.price} //float
-          images={listing.images} //[urlstr] (array of strings representing urls)
-          seller={listing.seller} //str
-          status={listing.status} //bool
+          key={index}
+          id={listing.listingId}
+          title={listing.title}
+          location={listing.location}
+          description={listing.description}
+          price={listing.price}
+          images={listing.images}
+          seller={listing.seller}
+          status={listing.status}
           onClick={() => setItem(listing)}
         />
       ),

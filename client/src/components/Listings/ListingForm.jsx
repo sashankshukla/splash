@@ -16,9 +16,7 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
     postalCode: '',
     description: '',
     price: '',
-    images: '', //for now it's just one url, maybe use extrafield thing as template for doing the same with images
-    // seller should be the logged in user
-    // status should always start as Available by default
+    images: '',
     investmentType: '',
     extraFields: [],
   });
@@ -74,7 +72,7 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
     e.preventDefault();
 
     let templisting = {
-      listingId: '42', //placeholder!
+      listingId: '42',
       title: formData.title,
       location:
         formData.street +
@@ -83,11 +81,11 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
         ', ' +
         formData.country +
         ', ' +
-        formData.postalCode, //street, city, country, postalCode -- placeholder!
+        formData.postalCode,
       description: formData.description,
       price: formData.price,
       images: [formData.images],
-      seller: user.email, //placeholder!
+      seller: user.email,
       status: 'Available',
     };
 

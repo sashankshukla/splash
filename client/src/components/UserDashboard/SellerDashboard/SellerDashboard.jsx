@@ -25,7 +25,6 @@ const SellerDashboard = () => {
       poolId: 'sl56qrst78hij',
       listingId: 'L7832SL56',
     },
-    // add more objects here...
   ];
 
   const token = useSelector((store) => store.auth.token);
