@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { FaMinusCircle } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux'
 
 const ListingForm = ({ modalVisible, setModalVisible }) => {
+  const user = useSelector((store) => store.auth.token);
+
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({

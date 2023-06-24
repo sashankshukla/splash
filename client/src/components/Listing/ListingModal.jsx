@@ -1,7 +1,9 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const ListingModal = ({ selectedItem, onClose, onDel }) => {
+  const user = useSelector((store) => store.auth.token);
+  
   const dispatch = useDispatch();
 
   if (!selectedItem) return null;

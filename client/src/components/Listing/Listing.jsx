@@ -1,10 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+
 import './Listing.css';
 
-const Listing = ({ id, title, description, price, location, images, seller, status, onClick }) => {
-  // const renderedImages = images.map((image, img_index) => (
-  //   <img key={img_index} src={image} alt="" className="listing-image" />
-  // ));
+const Listing = ({id, title, description, price, location, images, seller, status, onClick }) => {
 
   const moreImages = (images) => {
     if (images.length > 1) {
