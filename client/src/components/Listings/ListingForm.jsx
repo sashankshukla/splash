@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaMinusCircle } from 'react-icons/fa';
-import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux';
 
 const ListingForm = ({ modalVisible, setModalVisible }) => {
   const dispatch = useDispatch();
@@ -70,24 +70,27 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let listingId = "42";
-    let user = "guest";
-    let status = "Available";
-    console.log("" + user + " created listing with listingId: " + listingId + " and the following formData:");
+    let listingId = '42';
+    let user = 'guest';
+    let status = 'Available';
+    console.log(
+      '' + user + ' created listing with listingId: ' + listingId + ' and the following formData:',
+    );
     console.log(formData);
 
     let templisting = {
-      listingId: "42", //placeholder!
+      listingId: '42', //placeholder!
       title: formData.title,
-      location: formData.street + "," + formData.city + "," + formData.country + "," + formData.postalCode, //street, city, country, postalCode -- placeholder!
+      location:
+        formData.street + ',' + formData.city + ',' + formData.country + ',' + formData.postalCode, //street, city, country, postalCode -- placeholder!
       description: formData.description,
       price: formData.price,
       images: [formData.images],
       seller: 'anonymous', //placeholder!
-      status: 'Available'
+      status: 'Available',
     };
 
-    dispatch({type: "listings/addListing", payload: templisting});
+    dispatch({ type: 'listings/addListing', payload: templisting });
     setModalVisible(false);
   };
 
@@ -113,7 +116,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                 <div className="mt-4 max-w-lg mx-auto">
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                      <label className="font-medium" htmlFor="listing-title-input">Title</label>
+                      <label className="font-medium" htmlFor="listing-title-input">
+                        Title
+                      </label>
                       <input
                         id="listing-title-input"
                         type="text"
@@ -125,7 +130,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                       />
                     </div>
                     <div>
-                      <label className="font-medium" htmlFor="listing-street-input">Address</label>
+                      <label className="font-medium" htmlFor="listing-street-input">
+                        Address
+                      </label>
                       <input
                         id="listing-street-input"
                         type="text"
@@ -138,7 +145,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                       />
                       <div className="flex flex-wrap -mx-3 my-2">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                          <label className="font-medium" htmlFor="listing-city-input">City</label>
+                          <label className="font-medium" htmlFor="listing-city-input">
+                            City
+                          </label>
                           <input
                             id="listing-city-input"
                             type="text"
@@ -151,7 +160,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                           />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
-                          <label className="font-medium" htmlFor="listing-country-input">Country</label>
+                          <label className="font-medium" htmlFor="listing-country-input">
+                            Country
+                          </label>
                           <input
                             id="listing-country-input"
                             type="text"
@@ -165,7 +176,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                         </div>
                       </div>
                       <div className="w-full md:w-1/2 px-3">
-                        <label className="font-medium" htmlFor="listing-postalcode-input">Postal Code</label>
+                        <label className="font-medium" htmlFor="listing-postalcode-input">
+                          Postal Code
+                        </label>
                         <input
                           id="listing-postalcode-input"
                           type="text"
@@ -179,7 +192,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                       </div>
                     </div>
                     <div>
-                      <label className="font-medium" htmlFor="listing-investmenttype-select">Investment Type</label>
+                      <label className="font-medium" htmlFor="listing-investmenttype-select">
+                        Investment Type
+                      </label>
                       <select
                         id="listing-investmenttype-select"
                         name="investmentType"
@@ -197,7 +212,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                       </select>
                     </div>
                     <div>
-                      <label className="font-medium" htmlFor="listing-price-input">Price</label>
+                      <label className="font-medium" htmlFor="listing-price-input">
+                        Price
+                      </label>
                       <input
                         id="listing-price-input"
                         type="number"
@@ -209,7 +226,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                       />
                     </div>
                     <div>
-                      <label className="font-medium" htmlFor="listing-description-textarea">Description</label>
+                      <label className="font-medium" htmlFor="listing-description-textarea">
+                        Description
+                      </label>
                       <textarea
                         id="listing-description-textarea"
                         name="description"
@@ -220,7 +239,9 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                       ></textarea>
                     </div>
                     <div>
-                      <label className="font-medium" htmlFor="listing-images-input">Images</label>
+                      <label className="font-medium" htmlFor="listing-images-input">
+                        Images
+                      </label>
                       <input
                         id="listing-images-input"
                         type="url"
@@ -236,9 +257,14 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                       {formData.extraFields.map((extraField, index) => (
                         <div className="flex" key={index}>
                           <div className="w-1/2 pr-2">
-                            <label className="font-medium" htmlFor={"listing-field-name-input-" + index}>Field Name</label>
+                            <label
+                              className="font-medium"
+                              htmlFor={'listing-field-name-input-' + index}
+                            >
+                              Field Name
+                            </label>
                             <input
-                              id={"listing-field-name-input-" + index}
+                              id={'listing-field-name-input-' + index}
                               type="text"
                               name="field-name"
                               value={extraField.name}
@@ -247,9 +273,11 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
                             />
                           </div>
                           <div className="w-1/2 pl-2">
-                            <label className="font-medium" htmlFor="listing-field-value">Field Value</label>
+                            <label className="font-medium" htmlFor="listing-field-value">
+                              Field Value
+                            </label>
                             <input
-                              id={"listing-field-name-input-" + index}
+                              id={'listing-field-name-input-' + index}
                               type="text"
                               name="field-value"
                               value={extraField.value}

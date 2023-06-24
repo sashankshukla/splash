@@ -2,6 +2,7 @@ import React from 'react';
 import PurchaseCard from './PurchaseCard';
 import Pool from '../../Pool/Pool';
 import StockChart from './StockChart.webp';
+import { useSelector } from 'react-redux';
 
 const BuyerDashboard = () => {
   let assets = [
@@ -42,40 +43,8 @@ const BuyerDashboard = () => {
     },
   ];
 
-  const pools = [
-    {
-      title: 'Tech Stocks Pool',
-      id: 'TSK389',
-      members: 18,
-      totalValue: 12150.37,
-      remaining: 2573.52,
-      contribution: 312.14,
-    },
-    {
-      title: 'Green Energy Bonds',
-      id: 'GEB412',
-      members: 24,
-      totalValue: 9000.0,
-      remaining: 3245.27,
-      contribution: 816.23,
-    },
-    {
-      title: 'Real Estate Investment Pool',
-      id: 'REI723',
-      members: 10,
-      totalValue: 45000.45,
-      remaining: 15000.0,
-      contribution: 2300.14,
-    },
-    {
-      title: 'Crypto Assets Pool',
-      id: 'CAP217',
-      members: 50,
-      totalValue: 25000.77,
-      remaining: 8756.12,
-      contribution: 450.21,
-    },
-  ];
+  const pools = useSelector((state) => state.pools);
+  const token = useSelector((store) => store.auth.token);
 
   const OwnedAssets = () => {
     return (
@@ -115,19 +84,11 @@ const BuyerDashboard = () => {
     return (
       <div className="md:w-1/3 flex flex-col items-start md:h-auto pt-24 md:pt-0 md:px-8">
         <h1 className="text-4xl font-bold text-gray-900">Joined Pools</h1>
-        {pools.map((pool, idx) => {
-          return (
-            <Pool
-              key={idx}
-              title={pool.title}
-              id={pool.id}
-              members={pool.members}
-              totalValue={pool.totalValue}
-              remaining={pool.remaining}
-              contribution={pool.contribution}
-            />
-          );
-        })}
+        {pools
+          .filter((pool) => pool.members.includes(token.email))
+          .map((pool, idx) => {
+            return <Pool key={idx} {...pool} />;
+          })}
       </div>
     );
   };

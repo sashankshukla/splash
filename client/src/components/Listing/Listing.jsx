@@ -1,18 +1,18 @@
 import React from 'react';
 import './Listing.css';
 
-const Listing = ({id, title, description, price, location, images, seller, status, onClick }) => {
+const Listing = ({ id, title, description, price, location, images, seller, status, onClick }) => {
   // const renderedImages = images.map((image, img_index) => (
   //   <img key={img_index} src={image} alt="" className="listing-image" />
   // ));
 
-  const moreImages = ((images) => {
+  const moreImages = (images) => {
     if (images.length > 1) {
-      return (<p>&#40;+ {images.length-1} more images&#41;</p>);
+      return <p>&#40;+ {images.length - 1} more images&#41;</p>;
     } else {
       return null;
     }
-  });
+  };
 
   return (
     <div id={id} className="listing-container" onClick={onClick}>

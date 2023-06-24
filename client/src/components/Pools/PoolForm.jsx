@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addPool } from '../../features/pools/poolsSlice';
 
 const PoolForm = ({ modalVisible, setModalVisible }) => {
+  const dispatch = useDispatch();
+  const token = useSelector((store) => store.auth.token);
+  const listings = useSelector((store) => store.listings);
+
   const [formData, setFormData] = useState({
     title: '',
     listingId: '',
     description: '',
     private: false,
+    initialContribution: 0,
   });
 
   const toggleModalVisibility = () => {
@@ -21,7 +28,16 @@ const PoolForm = ({ modalVisible, setModalVisible }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    const listingValue = listings.find((listing) => listing.listingId === formData.listingId).price;
+    dispatch(
+      addPool({
+        ...formData,
+        createdBy: token.email,
+        totalValue: listingValue,
+        remaining: listingValue - formData.initialContribution,
+        members: [token.email],
+      }),
+    );
     setModalVisible(false);
   };
 
@@ -69,6 +85,17 @@ const PoolForm = ({ modalVisible, setModalVisible }) => {
                       />
                     </div>
                     <div>
+                      <label className="font-medium">Your Contribution</label>
+                      <input
+                        type="number"
+                        name="initialContribution"
+                        value={formData.initialContribution}
+                        onChange={handleChange}
+                        required
+                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                      />
+                    </div>
+                    <div>
                       <label className="font-medium">Description</label>
                       <textarea
                         name="description"
@@ -84,7 +111,6 @@ const PoolForm = ({ modalVisible, setModalVisible }) => {
                         name="private"
                         value={formData.private}
                         onChange={handleChange}
-                        required
                         className="m-2"
                       />
                       <label className="font-medium">Private</label>

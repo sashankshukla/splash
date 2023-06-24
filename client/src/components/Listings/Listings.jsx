@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { FaPlusCircle } from 'react-icons/fa';
 import ListingForm from './ListingForm';
 
@@ -21,16 +21,17 @@ const Listings = () => {
 
   // TODO: THIS WOULD BE WHERE LOGIC FOR CLIENT SIDE VERSION OF FILTERS IS
   const renderedListings = listings.map((listing, index) => (
-    <Listing  key = {index}                       //TEMPORARY
-              id = {listing.listingId}            //str
-              title = {listing.title}             //str
-              location = {listing.location}       //str
-              description = {listing.description} //str
-              price = {listing.price}             //float
-              images = {listing.images}           //[urlstr] (array of strings representing urls)
-              seller = {listing.seller}           //str
-              status = {listing.status}           //bool
-              onClick = {() => setItem(listing)}
+    <Listing
+      key={index} //TEMPORARY
+      id={listing.listingId} //str
+      title={listing.title} //str
+      location={listing.location} //str
+      description={listing.description} //str
+      price={listing.price} //float
+      images={listing.images} //[urlstr] (array of strings representing urls)
+      seller={listing.seller} //str
+      status={listing.status} //bool
+      onClick={() => setItem(listing)}
     />
   ));
 
@@ -49,18 +50,17 @@ const Listings = () => {
       </button>
       <ListingForm modalVisible={modalVisible} setModalVisible={setModalVisible} />
       <ListingModal
-          selectedItem={item}
-          onClose={() => setItem(null)}
-          onDel={() => {
-            dispatch({type: "listings/deleteListing", payload: parseInt(item.listingId)});
-            setItem(null);
-          }}
+        selectedItem={item}
+        onClose={() => setItem(null)}
+        onDel={() => {
+          dispatch({ type: 'listings/deleteListing', payload: parseInt(item.listingId) });
+          setItem(null);
+        }}
       />
       <div
         id="listings-container"
         className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"
       >
-
         {renderedListings}
       </div>
     </div>
