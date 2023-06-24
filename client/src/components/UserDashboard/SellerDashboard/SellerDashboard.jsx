@@ -28,7 +28,7 @@ const SellerDashboard = () => {
     // add more objects here...
   ];
 
-  const token = useSelector((store) => store.LoginData.token);
+  const token = useSelector((store) => store.auth.token);
 
   return (
     <div className="h-screen mt-48 pb-48 w-screen flex flex-col justify-center items-center">
