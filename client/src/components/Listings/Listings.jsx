@@ -19,15 +19,37 @@ const Listings = () => {
     }
   }, [token, navigate]);
 
+  const listings = useSelector((state) => state.listings);
+  const filter = useSelector((state) => state.filter);
+  const dispatch = useDispatch();
+
   const [item, setItem] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [filtered, setFiltered] = useState(listings);
 
-  const listings = useSelector((state) => state.listings);
-  const dispatch = useDispatch();
-  // const filters = useSelector((state) => state.filters);
+  //update local state version of listings to match filter preferences on any change to filters
+  useEffect(() => {
+    //filter by status (All, Available, or Sold)
+    setFiltered(filtered.filter((listing) => (filter.status == "All" || listing.status == filter.status)));
+
+    //filter by price range (lowerfloat, upperfloat)
+    setFiltered(filtered.filter(listing => (filter.priceRange.length > 0 ? (filter.priceRange[0] <= listing.price <= filter.priceRange[1]) : listing)));
+
+    //keyword search
+    for(let i = 0; i < filter.keywords.length; i++) {
+      setFiltered(filtered.filter(listing => listing.title.includes(filter.keywords[i])));
+    }
+
+    //sort remaining posts
+  }, [filter]);
+
+  // keywords: [""], //will have any number of strings (for now ui will only allow one)
+  // sort: "recent", //this is the default, should make enum later
+  // priceRange: [],  //will either be empty (meaning no range), or have two values [lowerfloat, upperfloat]
+  // status: "all" //can be one of "all", "open", or "closed"
 
   // TODO: THIS WOULD BE WHERE LOGIC FOR CLIENT SIDE VERSION OF FILTERS IS?
-  const renderedListings = listings.map((listing, index) => (
+  const renderedListings = filtered.map((listing, index) => (
     Object.keys(token).length > 0 && (
       <Listing  key = {index}                       //TEMPORARY
                 id = {listing.listingId}            //str
