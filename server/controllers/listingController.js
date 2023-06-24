@@ -1,5 +1,5 @@
-const Listing = require('../models/Listing');
-const User = require('../models/User');
+const Listing = require('../models/listingModel');
+const User = require('../models/userModel');
 
 const getListings = async (req, res) => {
   const listings = await Listing.find({});

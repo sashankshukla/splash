@@ -20,3 +20,5 @@ router.post('/:id/leave', leavePool);
 router.get('/listing/:listingId', getPoolsForListing);
 router.get('/totalEquity/:id', getTotalPoolEquity);
 router.get('/user/:userId', getPoolsForUser);
+
+module.exports = router;

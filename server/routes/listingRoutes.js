@@ -18,3 +18,5 @@ router.post('/', addListing);
 router.put('/:id', updateListing);
 router.delete('/:id', deleteListing);
 router.post('/sell/:listingId/:poolId', sellListing);
+
+module.exports = router;

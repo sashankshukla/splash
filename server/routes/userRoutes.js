@@ -8,3 +8,5 @@ const { addUser, getUserAssets, addFunds } = require('../controllers/userControl
 router.post('/', addUser);
 router.get('/assets', getUserAssets);
 router.post('/addFunds', addFunds);
+
+module.exports = router;

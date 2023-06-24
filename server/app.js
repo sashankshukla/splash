@@ -17,12 +17,14 @@ app.use(cors());
 app.use(express.urlencoded());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(errorHandler);
 
 // Routes
 app.use('/users', require('./routes/userRoutes'));
 app.use('/listings', require('./routes/listingRoutes'));
 app.use('/pools', require('./routes/poolRoutes'));
+
+// Error handler
+app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {
