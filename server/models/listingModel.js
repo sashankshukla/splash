@@ -24,11 +24,10 @@ const listingSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
-      required: true,
     },
     description: String,
     details: {
-      type: Mongoose.Schema.Types.Mixed,
+      type: String,
     },
     price: {
       type: Number,
