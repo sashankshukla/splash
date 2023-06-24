@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { FaMinusCircle } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const ListingForm = ({ modalVisible, setModalVisible }) => {
+  const user = useSelector((store) => store.auth.token);
+
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
@@ -70,23 +72,22 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let listingId = '42';
-    let user = 'guest';
-    let status = 'Available';
-    console.log(
-      '' + user + ' created listing with listingId: ' + listingId + ' and the following formData:',
-    );
-    console.log(formData);
 
     let templisting = {
       listingId: '42', //placeholder!
       title: formData.title,
       location:
-        formData.street + ',' + formData.city + ',' + formData.country + ',' + formData.postalCode, //street, city, country, postalCode -- placeholder!
+        formData.street +
+        ', ' +
+        formData.city +
+        ', ' +
+        formData.country +
+        ', ' +
+        formData.postalCode, //street, city, country, postalCode -- placeholder!
       description: formData.description,
       price: formData.price,
       images: [formData.images],
-      seller: 'anonymous', //placeholder!
+      seller: user.email, //placeholder!
       status: 'Available',
     };
 
