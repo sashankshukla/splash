@@ -35,7 +35,7 @@ const updateListing = async (req, res) => {
     throw new Error('listing not found');
   }
 
-  const updatedListing = await Goal.findByIdAndUpdate(req.params.id, req.body, {
+  const updatedListing = await Listing.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
 
@@ -50,7 +50,7 @@ const deleteListing = async (req, res) => {
     throw new Error('Listing not found');
   }
 
-  await goal.remove();
+  await listing.remove();
   res.status(200).json({ id: req.params.id });
 };
 
