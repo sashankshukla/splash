@@ -65,7 +65,7 @@ const ListingModal = ({ selectedItem, onClose, onDel }) => {
             {status}
           </p>
 
-          (token.email == seller) && (
+          {/* (token.email == seller) && ( */}
             <button onClick={onClose} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
               Edit Listing
             </button>
@@ -73,7 +73,7 @@ const ListingModal = ({ selectedItem, onClose, onDel }) => {
             <button onClick={onDel} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
               Delete Listing
             </button>
-          )
+          {/* ) */}
         </div>
       </div>
     </div>
