@@ -1,10 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 const PORT = process.env.PORT || 5001;
 const bodyParser = require('body-parser');
 const connectDB = require('./config/connectDB');
 const cors = require('cors');
+const { errorHandler } = require('./middleware/errorHandler');
 
 // Initialize express
 const app = express();
@@ -16,6 +17,12 @@ app.use(cors());
 app.use(express.urlencoded());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(errorHandler);
+
+// Routes
+app.use('/users', require('./routes/userRoutes'));
+app.use('/listings', require('./routes/listingRoutes'));
+app.use('/pools', require('./routes/poolRoutes'));
 
 // Start server
 app.listen(PORT, () => {

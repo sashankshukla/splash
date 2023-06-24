@@ -3,10 +3,6 @@ const Schema = mongoose.Schema;
 
 const poolSchema = new Schema(
   {
-    poolId: {
-      type: String,
-      required: true,
-    },
     name: {
       type: String,
       required: true,

@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from './logo.png';
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
-import { clearUser, addUser } from '../../Actions';
+import { addUser } from '../../Actions';
 import { useSelector, useDispatch } from 'react-redux';
 import AccountOptions from './AccountOptions';
 
@@ -74,7 +74,7 @@ const Navbar = () => {
             <ul className="justify-center items-center space-y-8 md:flex md:space-x-6 md:space-y-0">
               {navigation.map((item, idx) => {
                 if (item.title === 'Profile' && !token.name) {
-                  return null; // Skip rendering the "Profile" navigation item if no token is present
+                  return null;
                 }
                 if (item.title === 'Pools' && !token.name) {
                   return null;
@@ -92,15 +92,12 @@ const Navbar = () => {
             </ul>
           </div>
           <div className="hidden lg:block">
-            {Object.keys(token).length == 0 ? (
+            {Object.keys(token).length === 0 ? (
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
-                  // console.log(credentialResponse.credential);
                   const decoded = jwt_decode(credentialResponse.credential);
                   console.log(decoded);
                   dispatch(addUser(decoded));
-                  // console.log('who am I?' + token);
-                  // console.log(token);
                   navigate('/profile');
                 }}
                 onError={() => {

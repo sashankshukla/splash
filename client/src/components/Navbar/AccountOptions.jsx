@@ -11,7 +11,6 @@ function AccountOptions() {
     setVisible(!visible);
   };
 
-  // Click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
@@ -21,7 +20,6 @@ function AccountOptions() {
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      // Cleanup
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [ref]);
@@ -29,6 +27,7 @@ function AccountOptions() {
   return (
     <div className="relative" ref={ref}>
       <img
+        alt="Logged in user"
         className="rounded-3xl cursor-pointer border-primary border-2"
         src={token.picture}
         height={40}

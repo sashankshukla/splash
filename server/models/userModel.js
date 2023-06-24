@@ -12,10 +12,21 @@ const userSchema = new Schema(
       required: true,
       unique: true,
     },
-    pools: [
+    funds: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    ownerships: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'Pool',
+        listingId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Listing',
+        },
+        amount: {
+          type: Number,
+          required: true,
+        },
       },
     ],
   },
