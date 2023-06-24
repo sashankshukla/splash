@@ -76,6 +76,9 @@ const Navbar = () => {
                 if (item.title === 'Profile' && !token.name) {
                   return null; // Skip rendering the "Profile" navigation item if no token is present
                 }
+                if (item.title === 'Pools' && !token.name) {
+                  return null;
+                }
                 return (
                   <li
                     key={idx}

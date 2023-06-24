@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const JoinForm = ({ poolId, modalVisible, setModalVisible }) => {
   const [formData, setFormData] = useState({
     contribution: 0,
-    poolId: null
+    poolId: null,
   });
 
   const dispatch = useDispatch();
+
+  const token = useSelector((store) => store.auth.token);
 
   const toggleModalVisibility = () => {
     setModalVisible(!modalVisible);
@@ -23,7 +25,7 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     formData.poolId = poolId;
-    dispatch({type: "pools/joinPool", payload: formData});
+    dispatch({ type: 'pools/joinPool', payload: { ...formData, email: token.email } });
     setModalVisible(false);
   };
 
