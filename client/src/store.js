@@ -8,7 +8,7 @@ const store = configureStore({
   reducer: {
     listings: listingsReducer,
     pools: poolsReducer,
-    filter : filterReducer,
+    filter: filterReducer,
     auth: LoginData,
   },
 });

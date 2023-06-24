@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaMinusCircle } from 'react-icons/fa';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 
 const ListingForm = ({ modalVisible, setModalVisible }) => {
   const user = useSelector((store) => store.auth.token);
@@ -76,12 +76,19 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
     let templisting = {
       listingId: '42', //placeholder!
       title: formData.title,
-      location: formData.street + ", " + formData.city + ", " + formData.country + ", " + formData.postalCode, //street, city, country, postalCode -- placeholder!
+      location:
+        formData.street +
+        ', ' +
+        formData.city +
+        ', ' +
+        formData.country +
+        ', ' +
+        formData.postalCode, //street, city, country, postalCode -- placeholder!
       description: formData.description,
       price: formData.price,
       images: [formData.images],
       seller: user.email, //placeholder!
-      status: 'Available'
+      status: 'Available',
     };
 
     dispatch({ type: 'listings/addListing', payload: templisting });

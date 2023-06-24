@@ -1,10 +1,8 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import './Listing.css';
 
-const Listing = ({id, title, description, price, location, images, seller, status, onClick }) => {
-
+const Listing = ({ id, title, description, price, location, images, seller, status, onClick }) => {
   const moreImages = (images) => {
     if (images.length > 1) {
       return <p>&#40;+ {images.length - 1} more images&#41;</p>;
@@ -15,7 +13,7 @@ const Listing = ({id, title, description, price, location, images, seller, statu
 
   return (
     <div id={id} className="listing-container" onClick={onClick}>
-      <img src={images[0]} alt=""></img>
+      <img src={images[0]} width={500} height={500} alt=""></img>
       {moreImages(images)}
       {/* TODO: have this render more inconspicuously near the bottom right corner of the image */}
       <h2 className="listing-title">{title}</h2>
