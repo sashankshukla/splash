@@ -13,8 +13,8 @@ const poolSchema = new Schema(
     },
     users: [
       {
-        userId: {
-          type: Schema.Types.ObjectId,
+        email: {
+          type: String,
           ref: 'User',
           required: true,
         },
@@ -25,9 +25,15 @@ const poolSchema = new Schema(
       },
     ],
     listingId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Listing',
       required: true,
     },
+    createdBy: {
+      type: String,
+      ref: 'User',
+      required: true,
+    }
   },
   { timestamps: true },
 );

@@ -7,21 +7,22 @@ const getListings = async (req, res) => {
 };
 
 const getListingsForUser = async (req, res) => {
-  const user = await User.find({ email: req.body.email });
+  const user = await User.findOne({ email: req.body.email });
   const listings = await Listing.find({ user: user.id });
   res.status(200).json(listings);
 };
 
+// TODO : Add amazon s3 setup to store images and pass urls to db for listings images
 const addListing = async (req, res) => {
   if (!req.body.name || !req.body.address || !req.body.price || !req.body.email) {
     res.status(400);
     throw new Error('Please specify a name, address, price, and email');
   }
 
-  const user = await User.find({ email: req.body.email });
+  const user = await User.findOne({ email: req.body.email });
   const listing = await Listing.create({
     ...req.body,
-    user: user.id,
+    createdBy: user.id,
   });
 
   res.status(200).json(listing);
@@ -68,9 +69,9 @@ const sellListing = async (req, res) => {
   // give each user their equity
   const members = pool.users;
   members.forEach(async (member) => {
-    const User = await User.findById(member.userId);
+    const user = await User.findById(member.userId);
     User.ownerships.push({ listingId: listing.id, amount: member.equity });
-    await User.save();
+    await user.save();
   });
   // set status to sold
   listing.status = 'Sold';

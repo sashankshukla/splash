@@ -27,7 +27,7 @@ const listingSchema = new mongoose.Schema(
     },
     description: String,
     details: {
-      type: String,
+      type: mongoose.Schema.Types.Mixed,
     },
     price: {
       type: Number,
@@ -44,8 +44,9 @@ const listingSchema = new mongoose.Schema(
       default: 'Available',
     },
     createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'User',
+      required: true,
     },
   },
   { timestamps: true },

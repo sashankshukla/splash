@@ -13,7 +13,7 @@ const {
 
 // routes
 router.get('/', getListings);
-router.get('/user/:id', getListingsForUser);
+router.get('/user', getListingsForUser);
 router.post('/', addListing);
 router.put('/:id', updateListing);
 router.delete('/:id', deleteListing);

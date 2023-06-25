@@ -22,6 +22,7 @@ const deletePool = async (req, res) => {
   res.status(200).json(pool.id);
 };
 
+// TODO
 const updatePool = async (req, res) => {};
 
 const joinPool = async (req, res) => {
@@ -57,7 +58,18 @@ const getPoolsForListing = async (req, res) => {
 };
 
 const getPoolsForUser = async (req, res) => {
-  const pools = await Pool.find({ users: { $elemMatch: { userId: req.params.userId } } });
+  const user = await User.findOne(req.params.email);
+  const pools = await Pool.find({ users: { $elemMatch: { userId: user.id } } });
+  if (!pools) {
+    res.status(400);
+    throw new Error('Pools not found');
+  }
+  res.status(200).json(pools);
+};
+
+const getPoolsCreatedByUser = async (req, res) => {
+  const user = await User.findOne(req.params.email);
+  const pools = await Pool.find({ createdBy: user.id });
   if (!pools) {
     res.status(400);
     throw new Error('Pools not found');
@@ -83,4 +95,5 @@ module.exports = {
   getPoolsForListing,
   getTotalPoolEquity,
   getPoolsForUser,
+  getPoolsCreatedByUser
 };

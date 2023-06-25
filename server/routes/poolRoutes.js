@@ -10,6 +10,7 @@ const {
   getPoolsForListing,
   getTotalPoolEquity,
   getPoolsForUser,
+  getPoolsCreatedByUser,
 } = require('../controllers/poolController');
 
 // routes
@@ -19,6 +20,7 @@ router.post('/:id/join', joinPool);
 router.post('/:id/leave', leavePool);
 router.get('/listing/:listingId', getPoolsForListing);
 router.get('/totalEquity/:id', getTotalPoolEquity);
-router.get('/user/:userId', getPoolsForUser);
+router.get('/user/joined/:userId', getPoolsForUser);
+router.get('/user/created/:userId', getPoolsCreatedByUser);
 
 module.exports = router;

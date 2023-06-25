@@ -7,7 +7,7 @@ const addUser = async (req, res) => {
   }
 
   // check if user already exists
-  const existingUser = await User.find({ email: req.body.email });
+  const existingUser = await User.findOne({ email: req.body.email });
   if (existingUser) {
     res.status(200).json(existingUser);
   }
@@ -16,11 +16,11 @@ const addUser = async (req, res) => {
     ...req.body,
   });
 
-  res.status(200).json(user);
+  res.status(201).json(user);
 };
 
 const addFunds = async (req, res) => {
-  const user = await User.find({ email: req.body.email });
+  const user = await User.findOne({ email: req.body.email });
   if (!user) {
     res.status(400);
     throw new Error('User not found');
@@ -31,7 +31,7 @@ const addFunds = async (req, res) => {
 };
 
 const getUserAssets = async (req, res) => {
-  const user = await User.find({ email: req.body.email });
+  const user = await User.findOne({ email: req.body.email });
   if (!user) {
     res.status(400);
     throw new Error('User not found');

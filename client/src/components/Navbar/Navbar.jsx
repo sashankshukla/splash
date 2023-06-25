@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from './logo.png';
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
-import { addUser } from '../../Actions';
+import { addUser } from '../../features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import AccountOptions from './AccountOptions';
 

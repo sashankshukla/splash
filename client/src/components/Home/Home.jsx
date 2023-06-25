@@ -5,7 +5,7 @@ import HomeImage from './HomeImage.jpg';
 import { GoogleLogin } from '@react-oauth/google';
 import { useSelector, useDispatch } from 'react-redux';
 import jwt_decode from 'jwt-decode';
-import { addUser } from '../../Actions';
+import { addUser } from '../../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
