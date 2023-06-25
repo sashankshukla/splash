@@ -16,6 +16,7 @@ const addUser = async (req, res) => {
 };
 
 const addFunds = async (req, res) => {
+  console.log(req.user);
   const user = req.user;
   if (!user) {
     res.status(400);

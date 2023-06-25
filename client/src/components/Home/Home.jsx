@@ -62,10 +62,10 @@ const Home = () => {
               ) : (
                 <GoogleLogin
                   onSuccess={(credentialResponse) => {
-                    console.log(credentialResponse.credential);
+                    console.log("credential", credentialResponse.credential);
                     const decoded = jwt_decode(credentialResponse.credential);
                     console.log(decoded);
-                    dispatch(addUser(decoded));
+                    dispatch(addUser({token: decoded, auth_token : credentialResponse.credential}));
                     navigate('/profile');
                   }}
                   onError={() => {
