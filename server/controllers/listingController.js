@@ -52,6 +52,11 @@ const sellListing = async (req, res) => {
     res.status(400);
     throw new Error('Listing not found');
   }
+  const userListings = await Listing.find({ createdBy: req.user.email });
+  if (!userListings.includes(listing)) {
+    res.status(400);
+    throw new Error('User does not own this listing');
+  }
   const pool = await Pool.findById(req.params.poolId);
   if (!pool) {
     res.status(400);

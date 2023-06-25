@@ -7,15 +7,21 @@ const addPool = async (req, res) => {
   }
   const pool = await Pool.create({
     ...req.body,
+    createdBy: req.user.email,
   });
   res.status(200).json(pool);
 };
 
 const deletePool = async (req, res) => {
   const pool = await Pool.findById(req.params.id);
+  const userPools = await Pool.find({ createdBy: req.user.email });
   if (!pool) {
     res.status(400);
     throw new Error('Pool not found');
+  }
+  if (!pool || !userPools.includes(pool)) {
+    res.status(400);
+    throw new Error('User does not own this pool');
   }
   await pool.remove();
   res.status(200).json(pool.id);
@@ -30,7 +36,7 @@ const joinPool = async (req, res) => {
     res.status(400);
     throw new Error('Pool not found');
   }
-  pool.users.push({email : req.user.email, equity : req.body.equity});
+  pool.users.push({ email: req.user.email, equity: req.body.equity });
   await pool.save();
   res.status(200).json(pool);
 };
@@ -41,7 +47,7 @@ const leavePool = async (req, res) => {
     res.status(400);
     throw new Error('Pool not found');
   }
-  pool.users.pull(req.body);
+  pool.users.pull({ email: req.user.email });
   await pool.save();
   res.status(200).json(pool);
 };
@@ -93,5 +99,5 @@ module.exports = {
   getPoolsForListing,
   getTotalPoolEquity,
   getPoolsForUser,
-  getPoolsCreatedByUser
+  getPoolsCreatedByUser,
 };

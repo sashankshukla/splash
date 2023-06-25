@@ -33,7 +33,7 @@ const poolSchema = new Schema(
       type: String,
       ref: 'User',
       required: true,
-    }
+    },
   },
   { timestamps: true },
 );

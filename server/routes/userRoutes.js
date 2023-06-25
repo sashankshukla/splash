@@ -7,7 +7,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 // routes
 router.post('/', addUser);
-router.get('/assets', getUserAssets);
+router.get('/assets', authMiddleware, getUserAssets);
 router.post('/addFunds', authMiddleware, addFunds);
 
 module.exports = router;

@@ -13,14 +13,16 @@ const {
   getPoolsCreatedByUser,
 } = require('../controllers/poolController');
 
+const authMiddleware = require('../middleware/authMiddleware');
+
 // routes
-router.post('/', addPool);
-router.delete('/:id', deletePool);
-router.post('/:id/join', joinPool);
-router.post('/:id/leave', leavePool);
+router.post('/', authMiddleware, addPool);
+router.delete('/:id', authMiddleware, deletePool);
+router.post('/:id/join', authMiddleware, joinPool);
+router.post('/:id/leave', authMiddleware, leavePool);
 router.get('/listing/:listingId', getPoolsForListing);
 router.get('/totalEquity/:id', getTotalPoolEquity);
-router.get('/user/joined/:userId', getPoolsForUser);
-router.get('/user/created/:userId', getPoolsCreatedByUser);
+router.get('/user/joined/:userId', authMiddleware, getPoolsForUser);
+router.get('/user/created/:userId', authMiddleware, getPoolsCreatedByUser);
 
 module.exports = router;
