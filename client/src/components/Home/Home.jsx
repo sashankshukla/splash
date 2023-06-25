@@ -5,7 +5,7 @@ import HomeImage from './HomeImage.jpg';
 import { GoogleLogin } from '@react-oauth/google';
 import { useSelector, useDispatch } from 'react-redux';
 import jwt_decode from 'jwt-decode';
-import { addUser } from '../../Actions';
+import { addUser } from '../../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
@@ -62,10 +62,12 @@ const Home = () => {
               ) : (
                 <GoogleLogin
                   onSuccess={(credentialResponse) => {
-                    console.log(credentialResponse.credential);
+                    console.log('credential', credentialResponse.credential);
                     const decoded = jwt_decode(credentialResponse.credential);
                     console.log(decoded);
-                    dispatch(addUser(decoded));
+                    dispatch(
+                      addUser({ token: decoded, auth_token: credentialResponse.credential }),
+                    );
                     navigate('/profile');
                   }}
                   onError={() => {
