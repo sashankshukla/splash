@@ -5,7 +5,6 @@ const addPool = async (req, res) => {
     res.status(400);
     throw new Error('Please specify a name, private, users, and listingId');
   }
-
   const pool = await Pool.create({
     ...req.body,
   });
@@ -31,8 +30,7 @@ const joinPool = async (req, res) => {
     res.status(400);
     throw new Error('Pool not found');
   }
-  // TODO : Needs checking of not going over listing total value
-  pool.users.push(req.body);
+  pool.users.push({email : req.user.email, equity : req.body.equity});
   await pool.save();
   res.status(200).json(pool);
 };
@@ -58,7 +56,7 @@ const getPoolsForListing = async (req, res) => {
 };
 
 const getPoolsForUser = async (req, res) => {
-  const user = await User.findOne(req.params.email);
+  const user = req.user;
   const pools = await Pool.find({ users: { $elemMatch: { userId: user.id } } });
   if (!pools) {
     res.status(400);
@@ -68,8 +66,8 @@ const getPoolsForUser = async (req, res) => {
 };
 
 const getPoolsCreatedByUser = async (req, res) => {
-  const user = await User.findOne(req.params.email);
-  const pools = await Pool.find({ createdBy: user.id });
+  const user = req.user;
+  const pools = await Pool.find({ createdBy: user.email });
   if (!pools) {
     res.status(400);
     throw new Error('Pools not found');

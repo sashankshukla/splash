@@ -5,22 +5,18 @@ const addUser = async (req, res) => {
     res.status(400);
     throw new Error('Please specify a name and email');
   }
-
-  // check if user already exists
   const existingUser = await User.findOne({ email: req.body.email });
   if (existingUser) {
     res.status(200).json(existingUser);
   }
-
   const user = await User.create({
     ...req.body,
   });
-
   res.status(201).json(user);
 };
 
 const addFunds = async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
+  const user = req.user;
   if (!user) {
     res.status(400);
     throw new Error('User not found');
@@ -31,7 +27,7 @@ const addFunds = async (req, res) => {
 };
 
 const getUserAssets = async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
+  const user = req.user;
   if (!user) {
     res.status(400);
     throw new Error('User not found');
