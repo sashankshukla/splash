@@ -1,10 +1,13 @@
 import React, { useRef } from 'react';
-import Listing from '../../Listing/Listing';
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+import { getAllListings } from '../../../features/listings/listingsSlice' //Selector functions
+
+import Listing from '../../Listing/Listing';
+
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 
 const SellerListings = () => {
-  const listings = useSelector((state) => state.listings);
+  const listings = useSelector(getAllListings);
   console.log(listings);
   const scrollContainer = useRef(null);
 

@@ -1,26 +1,43 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { deleteListing, editListing } from '../../features/listings/listingsSlice';
 
-const ListingModal = ({ selectedItem, onClose, onEdit, onDel }) => {
+const ListingModal = ({ selectedListing, setSelectedListing }) => {
   const user = useSelector((store) => store.auth.token);
-  //
+
   const dispatch = useDispatch();
 
-  if (!selectedItem) return null;
+  if (!selectedListing) return null;
 
-  const { listingId, title, location, description, price, images, seller, status } = selectedItem;
+  const { id, name, address, description, price, images, status, createdBy } = selectedListing;
+
+  const toggleModalVisibility = () => {
+    setSelectedListing(null);
+  };
+
+  const editSelectedListing = () => {
+    //auth check?
+    //dispatch
+    setSelectedListing(null);
+  };
+
+  const deleteSelectedListing = () => {
+    //auth check?
+    dispatch(deleteListing(id));
+    setSelectedListing(null);
+  };
 
   const renderedImages = images.map((image, img_index) => (
     <img key={img_index} src={image} alt="" className="object-cover w-48 h-48 rounded-md mx-auto" />
   ));
 
-  const renderButtonsCheck = user.email == seller && (
+  const renderButtonsCheck = user.email == createdBy && (
     <div id="modal-buttons-container flex flex-row">
-      <button onClick={onEdit} className="mt-4 mr-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
+      <button onClick={editSelectedListing} className="mt-4 mr-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
         Edit Listing
       </button>
 
-      <button onClick={onDel} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
+      <button onClick={deleteSelectedListing} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
         Delete Listing
       </button>
     </div>
@@ -36,7 +53,7 @@ const ListingModal = ({ selectedItem, onClose, onEdit, onDel }) => {
         <div className="p-6 text-center">
           <button
             className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-            onClick={onClose}
+            onClick={toggleModalVisibility}
           >
             X
           </button>
@@ -48,9 +65,9 @@ const ListingModal = ({ selectedItem, onClose, onEdit, onDel }) => {
             See: https://www.material-tailwind.com/docs/react/carousel
           */}
 
-          <h1 className="mt-4 text-2xl font-semibold text-gray-700 capitalize">{title}</h1>
+          <h1 className="mt-4 text-2xl font-semibold text-gray-700 capitalize">{name}</h1>
 
-          <h3 className="mt-4 text-xl font-semibold text-gray-700 capitalize">{location}</h3>
+          <h3 className="mt-4 text-xl font-semibold text-gray-700 capitalize">{address.street}, {address.city}<br />{address.country} {address.postalCode}</h3>
 
           <p className="mt-4 text-md text-justify text-gray-900">
             <span className="font-bold">Description: </span>
@@ -69,7 +86,7 @@ const ListingModal = ({ selectedItem, onClose, onEdit, onDel }) => {
 
           <p className="mt-2 text-md text-gray-900">
             <span className="font-bold">Seller: </span>
-            {seller}
+            {createdBy}
           </p>
 
           <p className="mt-2 text-md text-gray-900">
