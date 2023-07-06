@@ -116,7 +116,7 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
                     <label className="font-medium" htmlFor="listing-name-input">
-                      Title
+                      Name
                     </label>
                     <input
                       id="listing-name-input"

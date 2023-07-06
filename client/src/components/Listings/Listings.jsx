@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getAllListings } from '../../features/listings/listingsSlice'; //Selector functions
+import { fetchListings, getAllListings, getListingsStatus, getListingsError } from '../../features/listings/listingsSlice'; //Selector functions
 
 import Listing from '../Listing/Listing';
 import ListingModal from '../Listing/ListingModal';
@@ -25,7 +25,14 @@ const Listings = () => {
   const dispatch = useDispatch();
 
   const listings = useSelector(getAllListings);
-  console.log(listings);
+  const listingsStatus = useSelector(getListingsStatus);
+  const listingsError = useSelector(getListingsError);
+
+  useEffect(() => {
+    if(listingsStatus === 'idle') {
+      dispatch(fetchListings());
+    }
+  }, [listingsStatus, dispatch]);
 
   const [selectedListing, setSelectedListing] = useState(null);
   const [formVisible, setFormVisible] = useState(false);
