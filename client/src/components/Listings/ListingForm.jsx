@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
 import { FaMinusCircle } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
-import { addListing } from '../../features/listings/listingsSlice';
+import { addListing, updateListing } from '../../features/listings/listingsSlice';
 
-const ListingForm = ({ formVisible, setFormVisible }) => {
+const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSelectedListing }) => {
   const user = useSelector((store) => store.auth.token);
 
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
-    // id should be set by MongoDB
     name: '',
     address: {
       street: '',
       city: '',
       country: '',
-      postalCode: ''
+      postalCode: '',
     },
     description: '',
     investmentType: '',
@@ -23,7 +22,6 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
     price: '',
     images: [],
     investmentType: '',
-    extraFields: [],
   });
 
   if (!formVisible) return null;
@@ -51,6 +49,7 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
 
   const handleImageUpload = (e) => {
     let imageFiles = Array.from(e.target.files);
+
     setFormData({
       ...formData,
       images: imageFiles,
@@ -58,22 +57,7 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
   };
 
   const handleExtraFieldChange = (e, index) => {
-    console.log("test");
-    console.log(index);
     const newDetails = formData.details;
-    console.log(newDetails);
-    newDetails[index][e.target.name] = e.target.value;
-    setFormData({
-      ...formData,
-      details: newDetails,
-    });
-  };
-
-  const handleExtraFieldChange = (e, index) => {
-    console.log("test");
-    console.log(index);
-    const newDetails = formData.details;
-    console.log(newDetails);
     newDetails[index][e.target.name] = e.target.value;
     setFormData({
       ...formData,
@@ -102,37 +86,25 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
   };
 
   const handleSubmit = (e) => {
+    console.log(isEditing);
     e.preventDefault();
-
-    // let tempListing = {
-    //   id: '',
-    //   name: formData.name,
-    //   address: {
-    //     street: formData.street,
-    //     city: formData.city,
-    //     country: formData.country,
-    //     postalCode: formData.postalCode
-    //   },
-    //   description: formData.description,
-    //   details: 'test', //placeholder
-    //   price: formData.price,
-    //   images: [formData.images],
-    //   // createdBy: user.email,
-    //   status: 'Available',
-    // };
-
-    dispatch(addListing(formData));
+    if (isEditing) {
+      dispatch(updateListing({ formData, listingId }));
+      setSelectedListing(null);
+    } else {
+      dispatch(addListing(formData));
+    }
     setFormVisible(false);
   };
 
   return (
     <main className="py-14 mx-8">
-      {modalVisible && (
+      {formVisible && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50 p-4">
           <div className="relative bg-white rounded-md text-gray-600 overflow-y-auto max-h-screen">
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-              onClick={toggleModalVisibility}
+              onClick={toggleFormVisibility}
             >
               X
             </button>
@@ -153,8 +125,8 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                       <input
                         id="listing-title-input"
                         type="text"
-                        name="title"
-                        value={formData.title}
+                        name="name"
+                        value={formData.name}
                         onChange={handleChange}
                         required
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -169,7 +141,7 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                         type="text"
                         name="street"
                         value={formData.street}
-                        onChange={handleChange}
+                        onChange={handleAddressChange}
                         required
                         placeholder="Street"
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -184,7 +156,7 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                             type="text"
                             name="city"
                             value={formData.city}
-                            onChange={handleChange}
+                            onChange={handleAddressChange}
                             placeholder="City"
                             required
                             className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -199,7 +171,7 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                             type="text"
                             name="country"
                             value={formData.country}
-                            onChange={handleChange}
+                            onChange={handleAddressChange}
                             placeholder="Country"
                             required
                             className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -215,7 +187,7 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                           type="text"
                           name="postalCode"
                           value={formData.postalCode}
-                          onChange={handleChange}
+                          onChange={handleAddressChange}
                           required
                           placeholder="Postal Code"
                           className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -275,17 +247,18 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                       </label>
                       <input
                         id="listing-images-input"
-                        type="url"
+                        type="file"
                         name="images"
-                        // multiple
-                        // accept="image/*"
+                        multiple
+                        accept="image/*"
                         onChange={handleImageUpload}
                         required
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
                       />
                     </div>
+
                     <div>
-                      {formData.extraFields.map((extraField, index) => (
+                      {formData.details.map((extraField, index) => (
                         <div className="flex" key={index}>
                           <div className="w-1/2 pr-2">
                             <label
@@ -297,7 +270,7 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                             <input
                               id={'listing-field-name-input-' + index}
                               type="text"
-                              name="field-name"
+                              name="name"
                               value={extraField.name}
                               onChange={(e) => handleExtraFieldChange(e, index)}
                               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -310,7 +283,7 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                             <input
                               id={'listing-field-name-input-' + index}
                               type="text"
-                              name="field-value"
+                              name="value"
                               value={extraField.value}
                               onChange={(e) => handleExtraFieldChange(e, index)}
                               className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -337,7 +310,7 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                       type="submit"
                       className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-primary-darkgreen active:bg-primary-green rounded-lg duration-150 mt-4"
                     >
-                      Add Listing
+                      {isEditing ? 'Update Listing' : 'Create Listing'}
                     </button>
                   </form>
                 </div>

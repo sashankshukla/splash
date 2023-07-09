@@ -40,7 +40,6 @@ const listingSchema = new mongoose.Schema(
     },
     images: {
       type: [String],
-      minLength: 1,
       maxLength: 5,
     },
     status: {
