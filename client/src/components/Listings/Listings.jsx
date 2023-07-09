@@ -1,67 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { FaPlusCircle } from 'react-icons/fa';
-import ListingForm from './ListingForm';
+import { reset, fetchListings, getListingsData } from '../../features/listings/listingsSlice'; //Selector functions
+
 import Listing from '../Listing/Listing';
 import ListingModal from '../Listing/ListingModal';
+import ListingForm from './ListingForm';
 import Filter from '../Filter/Filter';
 
 import './Listings.css';
+import { FaPlusCircle } from 'react-icons/fa';
 
 const Listings = () => {
   const navigate = useNavigate();
-  const token = useSelector((store) => store.auth.token);
-
-  useEffect(() => {
-    if (Object.keys(token).length === 0) {
-      navigate('/');
-    }
-  }, [token, navigate]);
-
-  const listings = useSelector((state) => state.listings);
-  const filter = useSelector((state) => state.filter);
   const dispatch = useDispatch();
 
-  const [item, setItem] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [filtered, setFiltered] = useState(listings);
 
-  //update local state version of listings to match filter preferences on any change to filters
+  const token = useSelector((store) => store.auth.token); //auth_token is what we want for header config
+  const { listings, isError, isSuccess, isLoading, message } = useSelector(getListingsData);
+
   useEffect(() => {
-    //filter by status (All, Available, or Sold)
-    setFiltered(
-      listings.filter((listing) => filter.status === 'All' || listing.status === filter.statusVis),
-    );
+    if (isError) {
+      console.log(message);
+    }
 
-    //filter by price range (lowerfloat, upperfloat)
-    setFiltered(
-      listings.filter((listing) =>
-        filter.priceRange.length > 0
-          ? filter.priceRange[0] <= listing.price <= filter.priceRange[1]
-          : listing,
-      ),
-    );
+    dispatch(fetchListings());
 
-    setFiltered(listings.filter((listing) => listing.title.includes(filter.keywords)));
+    return () => {
+      dispatch(reset());
+    }
+  }, [isError, message, dispatch]);
 
-    //sort remaining posts
-  }, [filter, listings]);
+  const [selectedListing, setSelectedListing] = useState(null);
+  const [formVisible, setFormVisible] = useState(false);
 
-  const renderedListings = filtered.map(
+  //if is loading, return spinner instead of page view?
+
+  const renderedListings = listings.map(
     (listing, index) =>
       Object.keys(token).length > 0 && (
         <Listing
           key={index}
-          id={listing.listingId}
-          title={listing.title}
-          location={listing.location}
+          id={listing.id}
+          name={listing.name}
+          street={listing.address.street}
+          city={listing.address.city}
+          country={listing.address.country}
+          postalCode={listing.address.postalCode}
           description={listing.description}
+          //details?
           price={listing.price}
           images={listing.images}
-          seller={listing.seller}
           status={listing.status}
-          onClick={() => setItem(listing)}
+          createdBy={listing.createdBy}
+          onClick={() => setSelectedListing(listing)}
         />
       ),
   );
@@ -72,32 +64,27 @@ const Listings = () => {
       className="flex flex-col justify-center items-center pt-16 mx-4"
     >
       <Filter />
+
       <button
         className="px-4 py-2 mt-8 flex flex-row justify-center align-center text-white font-medium bg-primary-darkgreen rounded-lg duration-150"
-        onClick={() => setModalVisible(true)}
+        onClick={() => setFormVisible(true)}
       >
         <FaPlusCircle className="mt-1 mr-1" />
         <span>Add New Listing</span>
       </button>
-      <ListingForm modalVisible={modalVisible} setModalVisible={setModalVisible} />
+
+      <ListingForm formVisible={formVisible} setFormVisible={setFormVisible} />
+
       <ListingModal
-        selectedItem={item}
-        onClose={() => setItem(null)}
-        onDel={() => {
-          dispatch({ type: 'listings/deleteListing', payload: parseInt(item.listingId) });
-          setItem(null);
-        }}
+        selectedListing={selectedListing}
+        setSelectedListing={setSelectedListing}
       />
+
       <div
         id="listings-container"
         className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"
       >
-        <div
-          id="listings-container"
-          className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"
-        >
-          {renderedListings}
-        </div>
+        {renderedListings}
       </div>
     </div>
   );

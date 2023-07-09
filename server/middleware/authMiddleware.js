@@ -12,13 +12,15 @@ async function validateGoogleToken(idToken) {
   });
   const payload = ticket.getPayload();
   const email = payload['email'];
+  console.log(email);
   return email;
 }
 
 async function authMiddleware(req, res, next) {
   const token = req.headers.authorization;
+  console.log(token);
   if (!token) {
-    return res.status(401).send('Not authorized');
+    return res.status(401).send('No token');
   }
   try {
     const email = await validateGoogleToken(token);

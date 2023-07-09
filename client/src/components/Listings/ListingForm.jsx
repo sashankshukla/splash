@@ -1,28 +1,33 @@
 import React, { useState } from 'react';
 import { FaMinusCircle } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
+import { addListing } from '../../features/listings/listingsSlice';
 
-const ListingForm = ({ modalVisible, setModalVisible }) => {
+const ListingForm = ({ formVisible, setFormVisible }) => {
   const user = useSelector((store) => store.auth.token);
 
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
-    // listingId should be...?
-    title: '',
-    street: '',
-    city: '',
-    country: '',
-    postalCode: '',
+    // id should be set by MongoDB
+    name: '',
+    address: {
+      street: '',
+      city: '',
+      country: '',
+      postalCode: ''
+    },
     description: '',
+    investmentType: '',
+    details: [],
     price: '',
     images: '',
-    investmentType: '',
-    extraFields: [],
   });
 
-  const toggleModalVisibility = () => {
-    setModalVisible(!modalVisible);
+  if (!formVisible) return null;
+
+  const toggleFormVisibility = () => {
+    setFormVisible(!formVisible);
   };
 
   const handleChange = (e) => {
@@ -32,12 +37,13 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
     });
   };
 
-  const handleExtraFieldChange = (e, index) => {
-    const newExtraFields = formData.extraFields;
-    newExtraFields[index][e.target.name] = e.target.value;
+  const handleAddressChange = (e) => {
     setFormData({
       ...formData,
-      extraFields: newExtraFields,
+      address: {
+        ...formData.address,
+        [e.target.name]: e.target.value,
+      },
     });
   };
 
@@ -48,11 +54,23 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
     });
   };
 
+  const handleExtraFieldChange = (e, index) => {
+    console.log("test");
+    console.log(index);
+    const newDetails = formData.details;
+    console.log(newDetails);
+    newDetails[index][e.target.name] = e.target.value;
+    setFormData({
+      ...formData,
+      details: newDetails,
+    });
+  };
+
   const addExtraField = () => {
     setFormData({
       ...formData,
-      extraFields: [
-        ...formData.extraFields,
+      details: [
+        ...formData.details,
         {
           name: '',
           value: '',
@@ -64,256 +82,253 @@ const ListingForm = ({ modalVisible, setModalVisible }) => {
   const removeExtraField = (indexToRemove) => {
     setFormData({
       ...formData,
-      extraFields: formData.extraFields.filter((_, index) => index !== indexToRemove),
+      details: formData.details.filter((_, index) => index !== indexToRemove),
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let templisting = {
-      listingId: '42',
-      title: formData.title,
-      location:
-        formData.street +
-        ', ' +
-        formData.city +
-        ', ' +
-        formData.country +
-        ', ' +
-        formData.postalCode,
-      description: formData.description,
-      price: formData.price,
-      images: [formData.images],
-      seller: user.email,
-      status: 'Available',
-    };
+    // let tempListing = {
+    //   id: '',
+    //   name: formData.name,
+    //   address: {
+    //     street: formData.street,
+    //     city: formData.city,
+    //     country: formData.country,
+    //     postalCode: formData.postalCode
+    //   },
+    //   description: formData.description,
+    //   details: 'test', //placeholder
+    //   price: formData.price,
+    //   images: [formData.images],
+    //   // createdBy: user.email,
+    //   status: 'Available',
+    // };
 
-    dispatch({ type: 'listings/addListing', payload: templisting });
-    setModalVisible(false);
+    dispatch(addListing(formData));
+    setFormVisible(false);
   };
 
   return (
     <main className="py-14 mx-8">
-      {modalVisible && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50 p-4">
-          <div className="relative bg-white rounded-md text-gray-600 overflow-y-auto max-h-screen">
-            <button
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-              onClick={toggleModalVisibility}
-            >
-              X
-            </button>
-            <main className="py-14 px-8">
-              <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
-                <div className="max-w-lg mx-auto pt-8 space-y-3 sm:text-center">
-                  <p className="text-primary-darkgreen rounded-lg text-3xl font-semibold sm:text-4xl">
-                    New Listing
-                  </p>
-                  <p>Empower people from all economic backgrounds to invest</p>
-                </div>
-                <div className="mt-4 max-w-lg mx-auto">
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                      <label className="font-medium" htmlFor="listing-title-input">
-                        Title
-                      </label>
-                      <input
-                        id="listing-title-input"
-                        type="text"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        required
-                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
-                      />
-                    </div>
-                    <div>
-                      <label className="font-medium" htmlFor="listing-street-input">
-                        Address
-                      </label>
-                      <input
-                        id="listing-street-input"
-                        type="text"
-                        name="street"
-                        value={formData.street}
-                        onChange={handleChange}
-                        required
-                        placeholder="Street"
-                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
-                      />
-                      <div className="flex flex-wrap -mx-3 my-2">
-                        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                          <label className="font-medium" htmlFor="listing-city-input">
-                            City
-                          </label>
-                          <input
-                            id="listing-city-input"
-                            type="text"
-                            name="city"
-                            value={formData.city}
-                            onChange={handleChange}
-                            placeholder="City"
-                            required
-                            className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
-                          />
-                        </div>
-                        <div className="w-full md:w-1/2 px-3">
-                          <label className="font-medium" htmlFor="listing-country-input">
-                            Country
-                          </label>
-                          <input
-                            id="listing-country-input"
-                            type="text"
-                            name="country"
-                            value={formData.country}
-                            onChange={handleChange}
-                            placeholder="Country"
-                            required
-                            className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
-                          />
-                        </div>
-                      </div>
-                      <div className="w-full md:w-1/2 px-3">
-                        <label className="font-medium" htmlFor="listing-postalcode-input">
-                          Postal Code
+      <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50 p-4">
+        <div className="relative bg-white rounded-md text-gray-600 overflow-y-auto max-h-screen">
+          <button
+            className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+            onClick={toggleFormVisibility}
+          >
+            X
+          </button>
+          <main className="py-14 px-8">
+            <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
+              <div className="max-w-lg mx-auto pt-8 space-y-3 sm:text-center">
+                <p className="text-primary-darkgreen rounded-lg text-3xl font-semibold sm:text-4xl">
+                  New Listing
+                </p>
+                <p>Empower people from all economic backgrounds to invest</p>
+              </div>
+              <div className="mt-4 max-w-lg mx-auto">
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div>
+                    <label className="font-medium" htmlFor="listing-name-input">
+                      Name
+                    </label>
+                    <input
+                      id="listing-name-input"
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-medium" htmlFor="listing-street-input">
+                      Address
+                    </label>
+                    <input
+                      id="listing-street-input"
+                      type="text"
+                      name="street"
+                      value={formData.address.street}
+                      onChange={handleAddressChange}
+                      required
+                      placeholder="Street"
+                      className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                    />
+                    <div className="flex flex-wrap -mx-3 my-2">
+                      <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <label className="font-medium" htmlFor="listing-city-input">
+                          City
                         </label>
                         <input
-                          id="listing-postalcode-input"
+                          id="listing-city-input"
                           type="text"
-                          name="postalCode"
-                          value={formData.postalCode}
-                          onChange={handleChange}
+                          name="city"
+                          value={formData.address.city}
+                          onChange={handleAddressChange}
+                          placeholder="City"
                           required
-                          placeholder="Postal Code"
+                          className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                        />
+                      </div>
+                      <div className="w-full md:w-1/2 px-3">
+                        <label className="font-medium" htmlFor="listing-country-input">
+                          Country
+                        </label>
+                        <input
+                          id="listing-country-input"
+                          type="text"
+                          name="country"
+                          value={formData.address.country}
+                          onChange={handleAddressChange}
+                          placeholder="Country"
+                          required
                           className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
                         />
                       </div>
                     </div>
-                    <div>
-                      <label className="font-medium" htmlFor="listing-investmenttype-select">
-                        Investment Type
-                      </label>
-                      <select
-                        id="listing-investmenttype-select"
-                        name="investmentType"
-                        value={formData.investmentType}
-                        onChange={handleChange}
-                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
-                      >
-                        <option value="" disabled>
-                          Select a category
-                        </option>
-                        <option value="1">House/Living Accomodation</option>
-                        <option value="2">Franchise</option>
-                        <option value="3">Gas Station</option>
-                        <option value="4">Stock Portfolio</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="font-medium" htmlFor="listing-price-input">
-                        Price
+                    <div className="w-full md:w-1/2 px-3">
+                      <label className="font-medium" htmlFor="listing-postalcode-input">
+                        Postal Code
                       </label>
                       <input
-                        id="listing-price-input"
-                        type="number"
-                        name="price"
-                        value={formData.price}
-                        onChange={handleChange}
+                        id="listing-postalcode-input"
+                        type="text"
+                        name="postalCode"
+                        value={formData.address.postalCode}
+                        onChange={handleAddressChange}
                         required
+                        placeholder="Postal Code"
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
                       />
                     </div>
-                    <div>
-                      <label className="font-medium" htmlFor="listing-description-textarea">
-                        Description
-                      </label>
-                      <textarea
-                        id="listing-description-textarea"
-                        name="description"
-                        value={formData.description}
-                        onChange={handleChange}
-                        required
-                        className="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
-                      ></textarea>
-                    </div>
-                    <div>
-                      <label className="font-medium" htmlFor="listing-images-input">
-                        Images
-                      </label>
-                      <input
-                        id="listing-images-input"
-                        type="url"
-                        name="images"
-                        // multiple
-                        // accept="image/*"
-                        onChange={handleImageUpload}
-                        required
-                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
-                      />
-                    </div>
-                    <div>
-                      {formData.extraFields.map((extraField, index) => (
-                        <div className="flex" key={index}>
-                          <div className="w-1/2 pr-2">
-                            <label
-                              className="font-medium"
-                              htmlFor={'listing-field-name-input-' + index}
-                            >
-                              Field Name
-                            </label>
-                            <input
-                              id={'listing-field-name-input-' + index}
-                              type="text"
-                              name="field-name"
-                              value={extraField.name}
-                              onChange={(e) => handleExtraFieldChange(e, index)}
-                              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
-                            />
-                          </div>
-                          <div className="w-1/2 pl-2">
-                            <label className="font-medium" htmlFor="listing-field-value">
-                              Field Value
-                            </label>
-                            <input
-                              id={'listing-field-name-input-' + index}
-                              type="text"
-                              name="field-value"
-                              value={extraField.value}
-                              onChange={(e) => handleExtraFieldChange(e, index)}
-                              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
-                            />
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => removeExtraField(index)}
-                            className="ml-2 mt-8 text-red-500 hover:text-red-700"
+                  </div>
+                  <div>
+                    <label className="font-medium" htmlFor="listing-investmenttype-select">
+                      Investment Type
+                    </label>
+                    <select
+                      id="listing-investmenttype-select"
+                      name="investmentType"
+                      value={formData.investmentType}
+                      onChange={handleChange}
+                      className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                    >
+                      <option value="" disabled>
+                        Select a category
+                      </option>
+                      <option value="House/Living Accomodation">House/Living Accomodation</option>
+                      <option value="Franchise">Franchise</option>
+                      <option value="Gas Station">Gas Station</option>
+                      <option value="Stock Portfolio">Stock Portfolio</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="font-medium" htmlFor="listing-price-input">
+                      Price
+                    </label>
+                    <input
+                      id="listing-price-input"
+                      type="number"
+                      name="price"
+                      value={formData.price}
+                      onChange={handleChange}
+                      required
+                      className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-medium" htmlFor="listing-description-textarea">
+                      Description
+                    </label>
+                    <textarea
+                      id="listing-description-textarea"
+                      name="description"
+                      value={formData.description}
+                      onChange={handleChange}
+                      required
+                      className="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                    ></textarea>
+                  </div>
+                  <div>
+                    <label className="font-medium" htmlFor="listing-images-input">
+                      Images
+                    </label>
+                    <input
+                      id="listing-images-input"
+                      type="url"
+                      name="images"
+                      // multiple
+                      // accept="image/*"
+                      onChange={handleImageUpload}
+                      required
+                      className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                    />
+                  </div>
+                  <div>
+                    {formData.details.map((extraField, index) => (
+                      <div className="flex" key={index}>
+                        <div className="w-1/2 pr-2">
+                          <label
+                            className="font-medium"
+                            htmlFor={'listing-field-name-input-' + index}
                           >
-                            <FaMinusCircle />
-                          </button>
+                            Field Name
+                          </label>
+                          <input
+                            id={'listing-field-name-input-' + index}
+                            type="text"
+                            name="name"
+                            value={extraField.name}
+                            onChange={(e) => handleExtraFieldChange(e, index)}
+                            className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                          />
                         </div>
-                      ))}
-                      <button
-                        type="button"
-                        onClick={addExtraField}
-                        className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-primary-darkgreen active:bg-primary-green rounded-lg duration-150 mt-4"
-                      >
-                        + Add new field
-                      </button>
-                    </div>
+                        <div className="w-1/2 pl-2">
+                          <label className="font-medium" htmlFor="listing-field-value">
+                            Field Value
+                          </label>
+                          <input
+                            id={'listing-field-name-input-' + index}
+                            type="text"
+                            name="value"
+                            value={extraField.value}
+                            onChange={(e) => handleExtraFieldChange(e, index)}
+                            className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeExtraField(index)}
+                          className="ml-2 mt-8 text-red-500 hover:text-red-700"
+                        >
+                          <FaMinusCircle />
+                        </button>
+                      </div>
+                    ))}
                     <button
-                      type="submit"
+                      type="button"
+                      onClick={addExtraField}
                       className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-primary-darkgreen active:bg-primary-green rounded-lg duration-150 mt-4"
                     >
-                      Add Listing
+                      + Add new field
                     </button>
-                  </form>
-                </div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-primary-darkgreen active:bg-primary-green rounded-lg duration-150 mt-4"
+                  >
+                    Add Listing
+                  </button>
+                </form>
               </div>
-            </main>
-          </div>
+            </div>
+          </main>
         </div>
-      )}
+      </div>
     </main>
   );
 };

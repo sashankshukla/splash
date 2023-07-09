@@ -13,7 +13,8 @@ const getListingsForUser = async (req, res) => {
 
 // TODO : Add amazon s3 setup to store images and pass urls to db for listings images
 const addListing = async (req, res) => {
-  if (!req.body.name || !req.body.address || !req.body.price || !req.body.email) {
+  console.log(req.body);
+  if (!req.body.name || !req.body.address || !req.body.price || !req.user.email) {
     res.status(400);
     throw new Error('Please specify a name, address, price, and email');
   }
@@ -38,11 +39,12 @@ const updateListing = async (req, res) => {
 
 const deleteListing = async (req, res) => {
   const listing = await Listing.findById(req.params.id);
+  console.log(listing);
   if (!listing) {
     res.status(400);
     throw new Error('Listing not found');
   }
-  await listing.remove();
+  await Listing.deleteOne({_id: req.params.id});
   res.status(200).json({ id: req.params.id });
 };
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { FaSearch } from 'react-icons/fa';
 
-import './Filter';
+import './Filter.css';
+import { FaSearch } from 'react-icons/fa';
 
 function Filter() {
   const dispatch = useDispatch();

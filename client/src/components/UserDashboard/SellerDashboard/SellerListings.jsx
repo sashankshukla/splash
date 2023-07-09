@@ -1,11 +1,39 @@
-import React, { useRef } from 'react';
-import Listing from '../../Listing/Listing';
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
+import React, { useRef, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { getListingsData} from '../../../features/listings/listingsSlice' //Selector functions
+import axios from 'axios';
+
+import Listing from '../../Listing/Listing';
+
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 
 const SellerListings = () => {
-  const listings = useSelector((state) => state.listings);
-  console.log(listings);
+  const token = useSelector((state) => state.auth.auth_token);
+  //const { listings, isError, isSuccess, isLoading, message } = useSelector(getListingsData);
+
+  const fetchUserListings = async (token) => {
+      const config = {
+          headers: {
+              Authorization : `${token}`
+          }
+      }
+
+      const response = await axios.get(`http://localhost:5001/listings/user`, config);
+      return response.data;
+  }
+
+  const [userListings, setUserListings] = useState([]);
+
+  useEffect(() => {
+    async function setUListings() {
+      const userTempListings = await fetchUserListings(token);
+      setUserListings(userTempListings);
+    }
+
+    setUListings();
+  }, [token]);
+  
+  //console.log(listings);
   const scrollContainer = useRef(null);
 
   const scroll = (scrollOffset) => {
@@ -32,7 +60,7 @@ const SellerListings = () => {
           ref={scrollContainer}
           className="flex overflow-x-scroll px-4 lg:space-x-4 md:space-x-2 space-x-1"
         >
-          {listings.map((listing, index) => (
+          {userListings.map((listing, index) => (
             <div key={index} className="flex-none md:w-1/2 lg:w-1/3">
               <Listing {...listing} />
               {/* <div
