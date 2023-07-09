@@ -25,9 +25,14 @@ const listingSchema = new mongoose.Schema(
         required: true,
       },
     },
-    description: String,
+    description: {
+      type: String
+    },
     details: {
       type: mongoose.Schema.Types.Mixed,
+    },
+    investmentType: {
+      type: String,
     },
     price: {
       type: Number,

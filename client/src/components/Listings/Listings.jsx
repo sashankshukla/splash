@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { fetchListings, getAllListings, getListingsStatus, getListingsError } from '../../features/listings/listingsSlice'; //Selector functions
+import { reset, fetchListings, getListingsData } from '../../features/listings/listingsSlice'; //Selector functions
 
 import Listing from '../Listing/Listing';
 import ListingModal from '../Listing/ListingModal';
@@ -12,30 +12,29 @@ import './Listings.css';
 import { FaPlusCircle } from 'react-icons/fa';
 
 const Listings = () => {
-  // !! === Auth check === !!
   const navigate = useNavigate();
-  const token = useSelector((store) => store.auth.token);
-  useEffect(() => {
-    if (Object.keys(token).length === 0) {
-      navigate('/');
-    }
-  }, [token, navigate]);
-  // !! ================== !!
-
   const dispatch = useDispatch();
 
-  const listings = useSelector(getAllListings);
-  const listingsStatus = useSelector(getListingsStatus);
-  const listingsError = useSelector(getListingsError);
+
+  const token = useSelector((store) => store.auth.token); //auth_token is what we want for header config
+  const { listings, isError, isSuccess, isLoading, message } = useSelector(getListingsData);
 
   useEffect(() => {
-    if(listingsStatus === 'idle') {
-      dispatch(fetchListings());
+    if (isError) {
+      console.log(message);
     }
-  }, [listingsStatus, dispatch]);
+
+    dispatch(fetchListings());
+
+    return () => {
+      dispatch(reset());
+    }
+  }, [isError, message, dispatch]);
 
   const [selectedListing, setSelectedListing] = useState(null);
   const [formVisible, setFormVisible] = useState(false);
+
+  //if is loading, return spinner instead of page view?
 
   const renderedListings = listings.map(
     (listing, index) =>
@@ -49,6 +48,7 @@ const Listings = () => {
           country={listing.address.country}
           postalCode={listing.address.postalCode}
           description={listing.description}
+          //details?
           price={listing.price}
           images={listing.images}
           status={listing.status}

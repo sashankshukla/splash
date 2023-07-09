@@ -23,7 +23,7 @@ const deletePool = async (req, res) => {
     res.status(400);
     throw new Error('User does not own this pool');
   }
-  await pool.remove();
+  await Pool.deleteOne({_id: req.params.id});
   res.status(200).json(pool.id);
 };
 

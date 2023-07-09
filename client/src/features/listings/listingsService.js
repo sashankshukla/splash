@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5001/listings';
-//Where should the localhost portion be applied dynamically?
+const API_URL = 'http://localhost:5001/listings/';
 
 const fetchListings = async () => {
     const response = await axios.get(API_URL);
@@ -9,25 +8,30 @@ const fetchListings = async () => {
 }
 
 const addListing = async (listingData, token) => {
+    //template literals require backticks like `` instead of regular apostrophes like ''
     const config = {
         headers: {
-            Authorization: 'Bearer ${token}'
+            Authorization : `${token}`
         }
     }
 
-    const response = await axios.get(API_URL, listingData, config);
-
+    const response = await axios.post(API_URL, listingData, config);
+    
+    console.log(response.data);
     return response.data;
 }
 
-const deleteListing = async (listingId, token) => {
+//updateListing
+
+const deleteListing = async (id, token) => {
+    // console.log(token);
     const config = {
         headers: {
-            Authorization: 'Bearer ${token}'
+            Authorization: `${token}`
         }
     }
 
-    const response = await axios.get(API_URL + listingId, config);
+    const response = await axios.delete(API_URL + id, config);
 
     return response.data;
 }

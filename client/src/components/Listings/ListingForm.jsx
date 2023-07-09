@@ -9,17 +9,19 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
-    // listingId should be...?
+    // id should be set by MongoDB
     name: '',
-    street: '',
-    city: '',
-    country: '',
-    postalCode: '',
+    address: {
+      street: '',
+      city: '',
+      country: '',
+      postalCode: ''
+    },
     description: '',
+    investmentType: '',
+    details: [],
     price: '',
     images: '',
-    investmentType: '',
-    extraFields: [],
   });
 
   if (!formVisible) return null;
@@ -35,6 +37,16 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
     });
   };
 
+  const handleAddressChange = (e) => {
+    setFormData({
+      ...formData,
+      address: {
+        ...formData.address,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
   const handleImageUpload = (e) => {
     setFormData({
       ...formData,
@@ -43,19 +55,22 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
   };
 
   const handleExtraFieldChange = (e, index) => {
-    const newExtraFields = formData.extraFields;
-    newExtraFields[index][e.target.name] = e.target.value;
+    console.log("test");
+    console.log(index);
+    const newDetails = formData.details;
+    console.log(newDetails);
+    newDetails[index][e.target.name] = e.target.value;
     setFormData({
       ...formData,
-      extraFields: newExtraFields,
+      details: newDetails,
     });
   };
 
   const addExtraField = () => {
     setFormData({
       ...formData,
-      extraFields: [
-        ...formData.extraFields,
+      details: [
+        ...formData.details,
         {
           name: '',
           value: '',
@@ -67,30 +82,31 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
   const removeExtraField = (indexToRemove) => {
     setFormData({
       ...formData,
-      extraFields: formData.extraFields.filter((_, index) => index !== indexToRemove),
+      details: formData.details.filter((_, index) => index !== indexToRemove),
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let tempListing = {
-      id: '',
-      name: formData.name,
-      address: {
-        street: formData.street,
-        city: formData.city,
-        country: formData.country,
-        postalCode: formData.postalCode
-      },
-      description: formData.description,
-      price: formData.price,
-      images: [formData.images],
-      createdBy: user.email,
-      status: 'Available',
-    };
+    // let tempListing = {
+    //   id: '',
+    //   name: formData.name,
+    //   address: {
+    //     street: formData.street,
+    //     city: formData.city,
+    //     country: formData.country,
+    //     postalCode: formData.postalCode
+    //   },
+    //   description: formData.description,
+    //   details: 'test', //placeholder
+    //   price: formData.price,
+    //   images: [formData.images],
+    //   // createdBy: user.email,
+    //   status: 'Available',
+    // };
 
-    dispatch(addListing(tempListing));
+    dispatch(addListing(formData));
     setFormVisible(false);
   };
 
@@ -136,8 +152,8 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                       id="listing-street-input"
                       type="text"
                       name="street"
-                      value={formData.street}
-                      onChange={handleChange}
+                      value={formData.address.street}
+                      onChange={handleAddressChange}
                       required
                       placeholder="Street"
                       className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -151,8 +167,8 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                           id="listing-city-input"
                           type="text"
                           name="city"
-                          value={formData.city}
-                          onChange={handleChange}
+                          value={formData.address.city}
+                          onChange={handleAddressChange}
                           placeholder="City"
                           required
                           className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -166,8 +182,8 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                           id="listing-country-input"
                           type="text"
                           name="country"
-                          value={formData.country}
-                          onChange={handleChange}
+                          value={formData.address.country}
+                          onChange={handleAddressChange}
                           placeholder="Country"
                           required
                           className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -182,8 +198,8 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                         id="listing-postalcode-input"
                         type="text"
                         name="postalCode"
-                        value={formData.postalCode}
-                        onChange={handleChange}
+                        value={formData.address.postalCode}
+                        onChange={handleAddressChange}
                         required
                         placeholder="Postal Code"
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -204,10 +220,10 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                       <option value="" disabled>
                         Select a category
                       </option>
-                      <option value="1">House/Living Accomodation</option>
-                      <option value="2">Franchise</option>
-                      <option value="3">Gas Station</option>
-                      <option value="4">Stock Portfolio</option>
+                      <option value="House/Living Accomodation">House/Living Accomodation</option>
+                      <option value="Franchise">Franchise</option>
+                      <option value="Gas Station">Gas Station</option>
+                      <option value="Stock Portfolio">Stock Portfolio</option>
                     </select>
                   </div>
                   <div>
@@ -253,7 +269,7 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                     />
                   </div>
                   <div>
-                    {formData.extraFields.map((extraField, index) => (
+                    {formData.details.map((extraField, index) => (
                       <div className="flex" key={index}>
                         <div className="w-1/2 pr-2">
                           <label
@@ -265,7 +281,7 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                           <input
                             id={'listing-field-name-input-' + index}
                             type="text"
-                            name="field-name"
+                            name="name"
                             value={extraField.name}
                             onChange={(e) => handleExtraFieldChange(e, index)}
                             className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
@@ -278,7 +294,7 @@ const ListingForm = ({ formVisible, setFormVisible }) => {
                           <input
                             id={'listing-field-name-input-' + index}
                             type="text"
-                            name="field-value"
+                            name="value"
                             value={extraField.value}
                             onChange={(e) => handleExtraFieldChange(e, index)}
                             className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteListing, editListing } from '../../features/listings/listingsSlice';
+import { reset, getListingData, deleteListing, updateListing } from '../../features/listings/listingsSlice';
 
 const ListingModal = ({ selectedListing, setSelectedListing }) => {
   const user = useSelector((store) => store.auth.token);
@@ -9,7 +9,7 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
 
   if (!selectedListing) return null;
 
-  const { id, name, address, description, price, images, status, createdBy } = selectedListing;
+  const { _id, name, address, description, price, images, status, createdBy } = selectedListing;
 
   const toggleModalVisibility = () => {
     setSelectedListing(null);
@@ -23,7 +23,8 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
 
   const deleteSelectedListing = () => {
     //auth check?
-    dispatch(deleteListing(id));
+    console.log(_id);
+    dispatch(deleteListing(_id));
     setSelectedListing(null);
   };
 
@@ -31,7 +32,7 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
     <img key={img_index} src={image} alt="" className="object-cover w-48 h-48 rounded-md mx-auto" />
   ));
 
-  const renderButtonsCheck = user.email == createdBy && (
+  const renderButtonsCheck = ( //user.email == createdBy &&
     <div id="modal-buttons-container flex flex-row">
       <button onClick={editSelectedListing} className="mt-4 mr-4 px-4 py-2 bg-blue-500 text-white rounded-lg">
         Edit Listing
