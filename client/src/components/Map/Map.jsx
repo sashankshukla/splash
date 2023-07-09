@@ -27,10 +27,10 @@ function Map() {
       height: 'auto', // Update height to auto
       background: '#fff',
       padding: '10px',
-      boxSizing: 'border-box',
+      boxSizing: 'content-box',
     },
     overlay: {
-      background: 'rgba(0, 0, 0, 0.3)',
+      background: 'rgba(0, 0, 0, 0.0)',
       zIndex: 9999,
     },
   };
@@ -139,11 +139,11 @@ function Map() {
         onRequestClose={handleCloseModal}
         style={modalStyles}
         className="fixed right-0 top-0 w-1/4 h-full transform translate-x-full transition-transform duration-300 ease-in-out bg-white p-4"
-        overlayClassName="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-30 z-50"
+        overlayClassName="w-1/3 h-full fixed top-0 left-0 right-0 bottom-0 bg-transparent bg-opacity-30 z-50"
         ariaHideApp={false}
       >
         {selectedMarker && (
-          <div>
+          <span>
             <Listing
               id={selectedMarker.object.listingId}
               title={selectedMarker.object.title}
@@ -155,13 +155,13 @@ function Map() {
               status={selectedMarker.object.status}
               onClick={null}
             />
-          </div>
+          </span>
         )}
         <button
           className="bg-gray-500 text-white px-4 py-2 mt-4 rounded hover:bg-gray-600"
           onClick={handleCloseModal}
         >
-          Close Modal
+          Close
         </button>
       </Modal>
     </div>
