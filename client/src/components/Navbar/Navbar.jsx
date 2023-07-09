@@ -20,6 +20,7 @@ const Navbar = () => {
     { title: 'Pools', path: '/pools' },
     { title: 'Contact Us', path: '/contact' },
     { title: 'Profile', path: '/profile' },
+    {title: 'Map', path: '/map'},
   ];
   return (
     <section className="w-screen fixed z-20 border-b-[1px] border-gray-900">

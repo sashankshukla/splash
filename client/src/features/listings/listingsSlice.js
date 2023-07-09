@@ -4,7 +4,7 @@ const initialState = [
   {
     listingId: '0123456789',
     title: 'Suburban House',
-    location: 'Pallet Town',
+    location: 'Science World, Vancouver, BC',
     description: 'A nice suburban house',
     price: 25648.99,
     images: [
@@ -18,7 +18,7 @@ const initialState = [
   {
     listingId: '8675309',
     title: "McDonald's Franchise",
-    location: 'Pewter City',
+    location: 'UBC, Vancouver',
     description: "A profitable McDonald's franchise",
     price: 12345.65,
     images: [

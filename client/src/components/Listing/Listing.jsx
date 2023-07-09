@@ -3,6 +3,7 @@ import React from 'react';
 import './Listing.css';
 
 const Listing = ({ id, title, description, price, location, images, seller, status, onClick }) => {
+  console.log({ id, title, description, price, location, images, seller, status, onClick });
   const moreImages = (images) => {
     if (images.length > 1) {
       return <p>&#40;+ {images.length - 1} more images&#41;</p>;
