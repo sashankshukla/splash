@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { clearUser } from '../../features/auth/authSlice';
 
 function AccountOptions() {
   const token = useSelector((store) => store.auth.token);
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const ref = useRef(null);
 
@@ -45,6 +47,9 @@ function AccountOptions() {
             </li>
             <li className="py-2 cursor-pointer text-center hover:bg-light hover:text-primary">
               Withdraw Funds
+            </li>
+            <li className="py-2 cursor-pointer text-center hover:bg-light hover:text-primary">
+              <button onClick={() => dispatch(clearUser())}>Logout</button>
             </li>
             {/* Add more options as needed */}
           </ul>

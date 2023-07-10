@@ -15,21 +15,16 @@ const Listings = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
   const token = useSelector((store) => store.auth.token); //auth_token is what we want for header config
   const { listings, isError, isSuccess, isLoading, message } = useSelector(getListingsData);
 
   useEffect(() => {
-    if (isError) {
-      console.log(message);
-    }
-
     dispatch(fetchListings());
 
     return () => {
       dispatch(reset());
-    }
-  }, [isError, message, dispatch]);
+    };
+  }, [dispatch]);
 
   const [selectedListing, setSelectedListing] = useState(null);
   const [formVisible, setFormVisible] = useState(false);
@@ -73,12 +68,9 @@ const Listings = () => {
         <span>Add New Listing</span>
       </button>
 
-      <ListingForm formVisible={formVisible} setFormVisible={setFormVisible} />
+      <ListingForm formVisible={formVisible} setFormVisible={setFormVisible} isEditing={false} />
 
-      <ListingModal
-        selectedListing={selectedListing}
-        setSelectedListing={setSelectedListing}
-      />
+      <ListingModal selectedListing={selectedListing} setSelectedListing={setSelectedListing} />
 
       <div
         id="listings-container"

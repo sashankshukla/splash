@@ -26,7 +26,7 @@ const listingSchema = new mongoose.Schema(
       },
     },
     description: {
-      type: String
+      type: String,
     },
     details: {
       type: mongoose.Schema.Types.Mixed,
@@ -40,7 +40,6 @@ const listingSchema = new mongoose.Schema(
     },
     images: {
       type: [String],
-      minLength: 1,
       maxLength: 5,
     },
     status: {

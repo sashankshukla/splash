@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
 
 const addUser = async (req, res) => {
+  console.log(req.body);
   if (!req.body.name || !req.body.email) {
     res.status(400);
     throw new Error('Please specify a name and email');
@@ -8,9 +9,11 @@ const addUser = async (req, res) => {
   const existingUser = await User.findOne({ email: req.body.email });
   if (existingUser) {
     res.status(200).json(existingUser);
+    return;
   }
   const user = await User.create({
     ...req.body,
+    ownerships: [],
   });
   res.status(201).json(user);
 };
