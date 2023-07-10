@@ -9,11 +9,10 @@ const containerStyle = {
   width: '100vw',
   height: '100vh',
 };
-
 function Map() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyCQmJgx014LgBFrFmkyVMqF_mPmMy52o_M',
+    googleMapsApiKey: 'AIzaSyCvLLfCqg_bT9DCOffOazrarR7dX4H2_P8',
   });
 
   //styling
