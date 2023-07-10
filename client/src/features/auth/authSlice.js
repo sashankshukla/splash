@@ -31,10 +31,10 @@ const authSlice = createSlice({
       localStorage.removeItem('token');
       state.token = {};
       state.auth_token = {};
-    }
+    },
   },
 });
 
-export const { addUser, clearUser} = authSlice.actions;
+export const { addUser, clearUser } = authSlice.actions;
 
 export default authSlice.reducer;

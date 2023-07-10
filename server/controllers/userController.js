@@ -14,7 +14,7 @@ const addUser = async (req, res) => {
   const user = await User.create({
     ...req.body,
     ownerships: [],
-});
+  });
   res.status(201).json(user);
 };
 

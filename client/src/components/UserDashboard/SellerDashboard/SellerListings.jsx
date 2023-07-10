@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getListingsData} from '../../../features/listings/listingsSlice' //Selector functions
+import { getListingsData } from '../../../features/listings/listingsSlice'; //Selector functions
 import axios from 'axios';
 
 import Listing from '../../Listing/Listing';
@@ -12,15 +12,15 @@ const SellerListings = () => {
   //const { listings, isError, isSuccess, isLoading, message } = useSelector(getListingsData);
 
   const fetchUserListings = async (token) => {
-      const config = {
-          headers: {
-              Authorization : `${token}`
-          }
-      }
+    const config = {
+      headers: {
+        Authorization: `${token}`,
+      },
+    };
 
-      const response = await axios.get(`http://localhost:5001/listings/user`, config);
-      return response.data;
-  }
+    const response = await axios.get(`http://localhost:5001/listings/user`, config);
+    return response.data;
+  };
 
   const [userListings, setUserListings] = useState([]);
 
@@ -32,7 +32,7 @@ const SellerListings = () => {
 
     setUListings();
   }, [token]);
-  
+
   //console.log(listings);
   const scrollContainer = useRef(null);
 

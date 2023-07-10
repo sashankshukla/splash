@@ -35,18 +35,21 @@ export const addListing = createAsyncThunk('listings/addListing', async (listing
   }
 });
 
-export const updateListing = createAsyncThunk('listings/updateListing', async ({ formData, listingId }, thunkAPI) => {
-  try {
-    let token = thunkAPI.getState().auth.auth_token;
-    return await listingsService.updateListing(formData, listingId, token);
-  } catch (error) {
-    let message =
-      (error.response & error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
-  }
-});
+export const updateListing = createAsyncThunk(
+  'listings/updateListing',
+  async ({ formData, listingId }, thunkAPI) => {
+    try {
+      let token = thunkAPI.getState().auth.auth_token;
+      return await listingsService.updateListing(formData, listingId, token);
+    } catch (error) {
+      let message =
+        (error.response & error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
 
 export const deleteListing = createAsyncThunk('listings/deleteListing', async (id, thunkAPI) => {
   try {

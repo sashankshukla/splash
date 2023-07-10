@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  reset,
-  getListingData,
-  deleteListing,
-  updateListing,
-} from '../../features/listings/listingsSlice';
+import { deleteListing } from '../../features/listings/listingsSlice';
 import ListingForm from '../Listings/ListingForm';
 
 const ListingModal = ({ selectedListing, setSelectedListing }) => {
@@ -16,7 +11,18 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
 
   if (!selectedListing) return null;
 
-  const { _id, name, address, description, price, images, status, createdBy } = selectedListing;
+  const {
+    _id,
+    name,
+    address,
+    description,
+    price,
+    images,
+    status,
+    createdBy,
+    investmentType,
+    details,
+  } = selectedListing;
 
   const toggleModalVisibility = () => {
     setSelectedListing(null);
@@ -56,6 +62,13 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
       </div>
     ) : null;
 
+  const renderedDetails = details.map((detail, index) => (
+    <p key={index} className="mt-2 text-md text-gray-900">
+      <span className="font-bold">{detail.name}: </span>
+      {detail.value}
+    </p>
+  ));
+
   return (
     <>
       <ListingForm
@@ -79,46 +92,39 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
               X
             </button>
             {/* TODO: add role indicator for screen readers */}
-
             {renderedImages}
             {/*
             TODO: format into an image carousel
             See: https://www.material-tailwind.com/docs/react/carousel
           */}
-
             <h1 className="mt-4 text-2xl font-semibold text-gray-700 capitalize">{name}</h1>
-
             <h3 className="mt-4 text-xl font-semibold text-gray-700 capitalize">
               {address.street}, {address.city}
               <br />
               {address.country} {address.postalCode}
             </h3>
-
-            <p className="mt-4 text-md text-justify text-gray-900">
+            <p className="mt-4 text-md text-gray-900">
               <span className="font-bold">Description: </span>
               {description}
             </p>
-
             <p className="mt-2 text-md text-gray-900">
-              <span className="font-bold">Open Pools: </span>
-              TODO
+              <span className="font-bold">Investment Type: </span>
+              {investmentType}
             </p>
-
             <p className="mt-2 text-md text-gray-900">
               <span className="font-bold">Price: </span>
               {price}
             </p>
-
             <p className="mt-2 text-md text-gray-900">
               <span className="font-bold">Seller: </span>
               {createdBy}
             </p>
-
+            <p className="mt-2 text-md font-bold text-gray-900">Additional Details</p>
+            {renderedDetails}
             <p className="mt-2 text-md text-gray-900">
               <span className="font-bold">Status: </span>
               {status}
             </p>
-
             {renderButtonsCheck}
           </div>
         </div>

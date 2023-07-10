@@ -26,7 +26,7 @@ const listingSchema = new mongoose.Schema(
       },
     },
     description: {
-      type: String
+      type: String,
     },
     details: {
       type: mongoose.Schema.Types.Mixed,
