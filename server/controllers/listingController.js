@@ -1,8 +1,33 @@
 const Listing = require('../models/listingModel');
 const User = require('../models/userModel');
+const data = require('./initalData.js');
+
+function processListings() {
+  data.initToronto.forEach((jsonObject) => {
+    console.log(jsonObject.streetAddress);
+    Listing.create({
+      name: jsonObject.streetAddress,
+      address: {
+        street: jsonObject.streetAddress,
+        city: 'Toronto',
+        country: 'Canada',
+        postalCode: jsonObject.zipcode,
+      },
+      description: `This property at ${jsonObject.streetAddress} has ${jsonObject.bathrooms} bathrooms, ${jsonObject.bedrooms} bedrooms and is ${jsonObject.lotAreaValue} square feet.`,
+      investmentType: 'Housing/Living Accommodation',
+      details: [],
+      price: jsonObject.price,
+      images: [`${jsonObject.imgSrc}`],
+      status: "Available",
+      createdBy: "he.frankey@gmail.com"
+    });
+  });
+};
 
 const getListings = async (req, res) => {
   const listings = await Listing.find({});
+  // processListings();
+
   res.status(200).json(listings);
 };
 

@@ -13,7 +13,7 @@ const containerStyle = {
 function Map() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyCQmJgx014LgBFrFmkyVMqF_mPmMy52o_M',
+    googleMapsApiKey: 'AIzaSyCvLLfCqg_bT9DCOffOazrarR7dX4H2_P8',
   });
 
   //styling
@@ -36,7 +36,7 @@ function Map() {
   };
 
   // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
-  Geocode.setApiKey('AIzaSyCQmJgx014LgBFrFmkyVMqF_mPmMy52o_M');
+  Geocode.setApiKey('AIzaSyCvLLfCqg_bT9DCOffOazrarR7dX4H2_P8');
 
   // set response language. Defaults to english.
   Geocode.setLanguage('en');
