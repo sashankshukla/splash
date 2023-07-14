@@ -56,14 +56,20 @@ const addListing = async (req, res) => {
 };
 
 const updateListing = async (req, res) => {
+  req.body.address = JSON.parse(req.body.address)
+  req.body.details = JSON.parse(req.body.details)
+
   const listing = await Listing.findById(req.params.id);
   if (!listing) {
     res.status(400);
     throw new Error('listing not found');
   }
+
+  const images = req.files.map(file => file.location); // Retrieve the file paths of all the uploaded images
+
   const updatedListing = await Listing.findByIdAndUpdate(
     req.params.id,
-    { ...req.body, images: [] },
+    { ...req.body, images },
     {
       new: true,
     },
