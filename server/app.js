@@ -14,20 +14,20 @@ const s3 = new aws.S3({
   accessKeyId: process.env.S3_ACCESS_KEY,
   secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
   region: process.env.S3_BUCKET_REGION,
-})
+});
 
 const upload = multer({
   storage: multerS3({
     s3,
-    bucket: "splash455",
+    bucket: 'splash455',
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },
     key: function (req, file, cb) {
-      cb(null, `${Date.now()}-${file.originalname}`)
-    }
-  })
-})
+      cb(null, `${Date.now()}-${file.originalname}`);
+    },
+  }),
+});
 
 // Initialize express
 const app = express();
