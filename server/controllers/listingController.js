@@ -18,11 +18,11 @@ function processListings() {
       details: [],
       price: jsonObject.price,
       images: [`${jsonObject.imgSrc}`],
-      status: "Available",
-      createdBy: "he.frankey@gmail.com"
+      status: 'Available',
+      createdBy: 'he.frankey@gmail.com',
     });
   });
-};
+}
 
 const getListings = async (req, res) => {
   const listings = await Listing.find({});
@@ -36,17 +36,16 @@ const getListingsForUser = async (req, res) => {
   res.status(200).json(listings);
 };
 
-// TODO : Add amazon s3 setup to store images and pass urls to db for listings images
 const addListing = async (req, res) => {
-  req.body.address = JSON.parse(req.body.address)
-  req.body.details = JSON.parse(req.body.details)
+  req.body.address = JSON.parse(req.body.address);
+  req.body.details = JSON.parse(req.body.details);
   if (!req.body.name || !req.body.address || !req.body.price || !req.user.email) {
     res.status(400);
     throw new Error('Please specify a name, address, price, and email');
   }
 
-  const images = req.files.map(file => file.location); // Retrieve the file paths of all the uploaded images
-  
+  const images = req.files.map((file) => file.location); // Retrieve the file paths of all the uploaded images
+
   const listing = await Listing.create({
     ...req.body,
     images,
@@ -56,8 +55,8 @@ const addListing = async (req, res) => {
 };
 
 const updateListing = async (req, res) => {
-  req.body.address = JSON.parse(req.body.address)
-  req.body.details = JSON.parse(req.body.details)
+  req.body.address = JSON.parse(req.body.address);
+  req.body.details = JSON.parse(req.body.details);
 
   const listing = await Listing.findById(req.params.id);
   if (!listing) {
@@ -65,7 +64,7 @@ const updateListing = async (req, res) => {
     throw new Error('listing not found');
   }
 
-  const images = req.files.map(file => file.location); // Retrieve the file paths of all the uploaded images
+  const images = req.files.map((file) => file.location); // Retrieve the file paths of all the uploaded images
 
   const updatedListing = await Listing.findByIdAndUpdate(
     req.params.id,
