@@ -13,9 +13,45 @@ const logout = () => {
   localStorage.removeItem('user');
 };
 
+const fetchUser = async (userEmail,token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+  const response = await axios.get(`${API_URL}${userEmail.email}`, config);
+  return response.data;
+};
+
+const increaseUserFunds = async (data, token) => {
+  console.log("in update user services")
+  console.log(data);
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    }};
+
+    try {
+      const response = await axios.put(`${API_URL}${data.user}`,data.form, config);
+      // Check if the response status is 400 and throw an error if true
+      if (response.status === 400) {
+        console.log("error caught"); // TODO not being caught
+        throw new Error('Bad request');
+      }
+      return response.data;
+    } catch (error) {
+      // Handle any errors during the request
+      console.log("error caught");
+      throw error;
+    }
+};
+
+
 const authService = {
   register,
   logout,
+  fetchUser,
+  increaseUserFunds
 };
 
 export default authService;
