@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
 import Modal from 'react-modal';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Listing from '../Listing/Listing';
+import { fetchListings, reset, getListingsData } from '../../features/listings/listingsSlice';
 
 const containerStyle = {
   width: '100vw',
@@ -13,8 +14,10 @@ const containerStyle = {
 function Map() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyCQmJgx014LgBFrFmkyVMqF_mPmMy52o_M',
+    googleMapsApiKey: 'AIzaSyCvLLfCqg_bT9DCOffOazrarR7dX4H2_P8',
   });
+
+  const dispatch = useDispatch();
 
   //styling
   const modalStyles = {
@@ -30,19 +33,19 @@ function Map() {
       boxSizing: 'border-box',
     },
     overlay: {
-      background: 'rgba(0, 0, 0, 0.3)',
+      background: 'rgba(0, 0, 0, 0.0)',
       zIndex: 9999,
     },
   };
 
   // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
-  Geocode.setApiKey('AIzaSyCQmJgx014LgBFrFmkyVMqF_mPmMy52o_M');
+  Geocode.setApiKey('AIzaSyCvLLfCqg_bT9DCOffOazrarR7dX4H2_P8');
 
   // set response language. Defaults to english.
   Geocode.setLanguage('en');
 
   // States
-  const listings = useSelector((state) => state.listings);
+  const { listings, isError, isSuccess, isLoading, message } = useSelector(getListingsData);
   const [map, setMap] = useState(null);
   const [center, setCenter] = useState(null);
   const [markers, setMarkers] = useState([]);
@@ -51,6 +54,15 @@ function Map() {
 
   //grabs users current location
   useEffect(() => {
+    dispatch(fetchListings());
+
+    // return () => {
+    //   dispatch(reset());
+    // };
+  }, [dispatch]);
+
+  useEffect(() => {
+    // dispatch(fetchListings());
     const fetchUserLocation = async () => {
       try {
         const response = await fetch('https://ipapi.co/json/');
@@ -69,14 +81,15 @@ function Map() {
   useEffect(() => {
     const geocodeAddress = async (listing) => {
       try {
-        Geocode.fromAddress(listing.location).then(
+        const formattedAddress = `${listing.address.street},${listing.address.city},${listing.address.country},${listing.address.postalCode}`;
+        Geocode.fromAddress(formattedAddress).then(
           (response) => {
             const { lat, lng } = response.results[0].geometry.location;
             console.log(lat, lng);
-            const marker = { lat: lat, lng: lng, object: listing.object };
+            const marker = { lat: lat, lng: lng, object: listing };
             setMarkers((prevMarkers) => [...prevMarkers, marker]);
-            console.log('marker:');
-            console.log(marker);
+            // console.log('marker:');
+            // console.log(marker);
           },
           (error) => {
             console.error(error);
@@ -86,14 +99,12 @@ function Map() {
         console.error('Error geocoding address:', error);
       }
     };
-
+    // console.log('LOOK HERE');
+    // console.log(listings);
     listings.forEach((listing) => {
-      geocodeAddress({
-        location: listing.location,
-        object: listing,
-      });
+      geocodeAddress(listing);
     });
-  }, []);
+  }, [dispatch]);
 
   const onLoad = React.useCallback(function callback(map) {
     // sets to current IP
@@ -109,6 +120,7 @@ function Map() {
 
   const handleMarkerClick = (marker) => {
     setSelectedMarker(marker);
+    console.log(marker);
     setIsModalOpen(true);
   };
 
@@ -139,19 +151,22 @@ function Map() {
         onRequestClose={handleCloseModal}
         style={modalStyles}
         className="fixed right-0 top-0 w-1/4 h-full transform translate-x-full transition-transform duration-300 ease-in-out bg-white p-4"
-        overlayClassName="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-30 z-50"
+        overlayClassName="fixed top-0 left-0 right-0 bottom-0 bg-opacity-0 z-50 w-1/3"
         ariaHideApp={false}
       >
         {selectedMarker && (
           <div>
             <Listing
               id={selectedMarker.object.listingId}
-              title={selectedMarker.object.title}
-              location={selectedMarker.object.location}
+              name={selectedMarker.object.name}
+              street={selectedMarker.object.address.street}
+              city={selectedMarker.object.address.city}
+              country={selectedMarker.object.address.country}
+              postalCode={selectedMarker.object.address.postalCode}
               description={selectedMarker.object.description}
               price={selectedMarker.object.price}
               images={selectedMarker.object.images}
-              seller={selectedMarker.object.seller}
+              createdBy={selectedMarker.object.createdBy}
               status={selectedMarker.object.status}
               onClick={null}
             />

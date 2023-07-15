@@ -57,35 +57,35 @@ Splash will support several different user types depending on the objective they
 
 ## Additional Functionality
 
-- Each seller who lists a property can be able to mint a crypto token for number of “Shares” ie 1 share per dollar value (Super Stretch Goal).
-- Live market bidding
-- ML/ dataset based prediction of increase in value of asset
-- Private investment pools, shareable and viewable only by token/link holders
+- Each seller who lists a property can be able to mint a crypto token for number of “Shares” ie 1 share per dollar value (Super Stretch Goal). (Frankey)
+- Live market bidding (Melinda)
+- ML/ some sort of prediction of increase in value of asset ⚠️
+- Private investment pools, shareable and viewable only by token/link holders ⚠️
 
 # Project Task Requirements
 
 ## Minimal Requirements
 
-1. Users should be able to login and signup for the webapp
-2. Users should be able to view open listings and filter them
-3. Buyers should be able to see owned assets, and view owned asset value
-4. Sellers should be able to add a new listing of an asset to the webapp
+1. Users should be able to login and signup for the webapp ✅
+2. Users should be able to view open listings and filter them ✅
+3. Buyers should be able to see owned assets, and view owned asset value ✅
+4. Sellers should be able to add a new listing of an asset to the webapp ✅
 
 ## Standard Requirements
 
-1. Mock payment on purchase of asset
-2. Buyers should be able to view over time price graphs of their assets value
-3. Users should be able to create and join investment pools and then purchase assets
-4. Sellers should be able to view active/closed listings, open pools for their listings
-5. Seller should have to approve a purchase of his asset through his dashboard
+1. Mock payment on purchase of asset ⚠️
+2. Buyers should be able to view over time price graphs of their assets value ⚠️
+3. Users should be able to create and join investment pools and then purchase assets ⚠️
+4. Sellers should be able to view active/closed listings, open pools for their listings ✅
+5. Seller should have to approve a purchase of his asset through his dashboard ⚠️
 
 ## Stretch Requirements
 
-1. ML prediction of asset price
+1. ML prediction of asset price ??
 2. Blockchain based fractional ownership - Users transferring fractional shares (blockchain tokens/regular)
-3. Payment/ Mock payment
-4. Approval process for listing -> to be approved by admin so illegal items cannot be sold.
-5. event-locked fundraisers/bidding - One time in-person event "lobby" accessible by passcode in order to facilitate bidding in-person and cultivate local interest in investment opportunities
+3. Payment/ Mock payment ??
+4. Approval process for listing -> to be approved by admin so illegal items cannot be sold. ⚠️
+5. event-locked fundraisers/bidding - One time in-person event "lobby" accessible by passcode in order to facilitate bidding in-person and cultivate local interest in investment opportunities ⚠️
 
 # Breakdown of Minimal Requirements into Smaller Tasks
 

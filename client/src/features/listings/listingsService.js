@@ -8,26 +8,58 @@ const fetchListings = async () => {
 };
 
 const addListing = async (listingData, token) => {
+  const formData = new FormData();
+
   //template literals require backticks like `` instead of regular apostrophes like ''
   const config = {
     headers: {
       Authorization: `${token}`,
+      'Content-Type': 'multipart/form-data',
     },
   };
 
-  const response = await axios.post(API_URL, listingData, config);
+  for (const key in listingData) {
+    if (key === 'images') {
+      listingData[key].forEach((image, index) => {
+        formData.append(`images`, image);
+      });
+    } else if (key === 'address' || key === 'details') {
+      formData.append(key, JSON.stringify(listingData[key]));
+    } else {
+      formData.append(key, listingData[key]);
+    }
+  }
+
+  const response = await axios.post(API_URL, formData, config);
 
   console.log(response.data);
   return response.data;
 };
 
 const updateListing = async (listingData, listingId, token) => {
+  const formData = new FormData();
+
   const config = {
     headers: {
       Authorization: `${token}`,
+      'Content-Type': 'multipart/form-data',
     },
   };
-  const response = await axios.put(`${API_URL}${listingId}`, listingData, config);
+
+  for (const key in listingData) {
+    if (key === 'images') {
+      listingData[key].forEach((image, index) => {
+        formData.append(`images`, image);
+      });
+    } else if (key === 'address' || key === 'details') {
+      formData.append(key, JSON.stringify(listingData[key]));
+    } else {
+      formData.append(key, listingData[key]);
+    }
+  }
+
+  const response = await axios.put(`${API_URL}${listingId}`, formData, config);
+
   console.log(response.data);
   return response.data;
 };

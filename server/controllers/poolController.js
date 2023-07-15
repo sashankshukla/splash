@@ -1,5 +1,11 @@
 const Pool = require('../models/poolModel');
 
+const getPools = async (req, res) => {
+  // TODO: add filter as well
+  const pools = await Pool.find({});
+  res.status(200).json(pools);
+};
+
 const addPool = async (req, res) => {
   if (!req.body.name || !req.body.private || !req.body.users || !req.body.listingId) {
     res.status(400);
@@ -27,8 +33,8 @@ const deletePool = async (req, res) => {
   res.status(200).json(pool.id);
 };
 
-// TODO
-const updatePool = async (req, res) => {};
+// // TODO
+// const updatePool = async (req, res) => {};
 
 const joinPool = async (req, res) => {
   const pool = await Pool.findById(req.params.id);
@@ -36,6 +42,8 @@ const joinPool = async (req, res) => {
     res.status(400);
     throw new Error('Pool not found');
   }
+  // if user in pool, update equity
+  // else below
   pool.users.push({ email: req.user.email, equity: req.body.equity });
   await pool.save();
   res.status(200).json(pool);
@@ -92,6 +100,7 @@ const getTotalPoolEquity = async (req, res) => {
 };
 
 module.exports = {
+  getPools,
   addPool,
   deletePool,
   joinPool,
