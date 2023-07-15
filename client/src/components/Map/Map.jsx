@@ -76,7 +76,7 @@ function Map() {
     };
 
     fetchUserLocation();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const geocodeAddress = async (listing) => {
