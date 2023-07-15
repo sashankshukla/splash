@@ -22,8 +22,11 @@ const Pool = ({
     return accumulator + member.equity;
   }, 0);
 
+  var memberEquity = 0;
   const memberFound = members.find((member) => member.email === token.email);
-  const memberEquity = memberFound.equity;
+  if (memberFound) {
+    memberEquity = memberFound.equity;
+  }
   const progress = (1 - (totalValue - totalEquity) / totalValue) * 100;
 
   return (

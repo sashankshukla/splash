@@ -3,6 +3,7 @@ const Pool = require('../models/poolModel');
 const getPools = async (req, res) => {
   // TODO: add filter as well
   const pools = await Pool.find({});
+  console.log(pools);
   res.status(200).json(pools);
 };
 

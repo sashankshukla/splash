@@ -63,6 +63,19 @@ export const fetchPoolsForUser = createAsyncThunk('auth/fetchPoolsForUser', asyn
   }
 });
 
+export const fetchPools = createAsyncThunk('auth/fetchPools', async (user, thunkAPI) => {
+  try {
+    let token = thunkAPI.getState().auth.auth_token;
+    return await poolServices.fetchPools(user, token);
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
 const poolsSlice = createSlice({
   name: 'pools',
   initialState: initialState,
@@ -98,8 +111,9 @@ const poolsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchPoolsForUser.fulfilled, (state, action) => {
-        console.log("extra-reducer");
-        console.log(action.payload);
+        return action.payload;
+      })
+      .addCase(fetchPools.fulfilled, (state, action) => {
         return action.payload;
       })
       // .addCase(increaseUserFunds.rejected, (state, action) => {

@@ -109,8 +109,6 @@ const BuyerDashboard = () => {
                 listingId={pool.listingId}
                 members={pool.users}
                 totalValue={pool.totalValue}
-                remaining={pool.remaining}
-                contribution={pool.contribution}
               />
             );
           })}

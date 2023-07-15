@@ -15,10 +15,21 @@ const fetchPoolsForUser = async (user,token) => {
   return response.data;
 };
 
+const fetchPools = async (user,token) => {
+    const config = {
+        headers: {
+          Authorization: `${token}`,
+        },
+      };
+    const response = await axios.get(`${API_URL}`);
+    console.log(response);
 
+  return response.data;
+};
 
 const poolServices = {
-  fetchPoolsForUser
+  fetchPoolsForUser,
+  fetchPools
 };
 
 export default poolServices;
