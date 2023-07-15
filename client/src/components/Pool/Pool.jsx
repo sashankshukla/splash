@@ -18,9 +18,14 @@ const Pool = ({
 
   const dispatch = useDispatch();
 
-  const totalEquity = members.reduce((accumulator, member) => {
-    return accumulator + member.equity;
-  }, 0);
+  var totalEquity = 0;
+  console.log('members?');
+  console.log(members);
+  if (members.length !== 0) {
+    totalEquity = members.reduce((accumulator, member) => {
+      return accumulator + member.equity;
+    }, 0);
+  }
 
   var memberEquity = 0;
   const memberFound = members.find((member) => member.email === token.email);

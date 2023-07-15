@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addPool } from '../../features/pools/poolsSlice';
+import { addPool, addPoolsAsync } from '../../features/pools/poolsSlice';
+import { fetchListings } from '../../features/listings/listingsSlice';
 
 const PoolForm = ({ modalVisible, setModalVisible }) => {
   const dispatch = useDispatch();
   const token = useSelector((store) => store.auth.token);
   const listings = useSelector((store) => store.listings);
+
+  useEffect(() => {
+    dispatch(fetchListings());
+  }, [dispatch]);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -28,14 +33,21 @@ const PoolForm = ({ modalVisible, setModalVisible }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const listingValue = listings.find((listing) => listing.listingId === formData.listingId).price;
+    console.log('poolsforms');
+    console.log(listings);
+    const listingValue = listings.listings.find(
+      (listing) => listing._id === formData.listingId,
+    ).price;
+    console.log(listingValue);
     dispatch(
-      addPool({
-        ...formData,
+      addPoolsAsync({
+        name: formData.title,
+        listingId: formData.listingId,
+        private: formData.private,
         createdBy: token.email,
         totalValue: listingValue,
         remaining: listingValue - formData.initialContribution,
-        members: [token.email],
+        users: [{ email: token.email, equity: formData.initialContribution }],
       }),
     );
     setModalVisible(false);

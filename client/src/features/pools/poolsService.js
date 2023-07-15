@@ -27,9 +27,23 @@ const fetchPools = async (user,token) => {
   return response.data;
 };
 
+const addPoolsAsync = async (pool,token) => {
+    const config = {
+        headers: {
+          Authorization: `${token}`,
+        },
+      };
+      console.log("pools token");
+      console.log(token);
+    const response = await axios.post(`${API_URL}`,pool,config);
+    console.log(response);
+  return response.data;
+};
+
 const poolServices = {
   fetchPoolsForUser,
-  fetchPools
+  fetchPools,
+  addPoolsAsync
 };
 
 export default poolServices;

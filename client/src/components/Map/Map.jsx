@@ -55,10 +55,6 @@ function Map() {
   //grabs users current location
   useEffect(() => {
     dispatch(fetchListings());
-
-    // return () => {
-    //   dispatch(reset());
-    // };
   }, [dispatch]);
 
   useEffect(() => {

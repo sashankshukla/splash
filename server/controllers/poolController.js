@@ -2,20 +2,24 @@ const Pool = require('../models/poolModel');
 
 const getPools = async (req, res) => {
   // TODO: add filter as well
-  const pools = await Pool.find({});
+  const pools = await Pool.find({private: false});
   console.log(pools);
   res.status(200).json(pools);
 };
 
 const addPool = async (req, res) => {
-  if (!req.body.name || !req.body.private || !req.body.users || !req.body.listingId) {
+  console.log(req.body.name.length);
+  console.log(req.body.users.length);
+  console.log(req.body.listingId.length);
+
+
+  if ((req.body.name.length === 0) || (req.body.users.length === 0) || (req.body.listingId.length === 0)) {
     res.status(400);
     throw new Error('Please specify a name, private, users, and listingId');
   }
-  const pool = await Pool.create({
-    ...req.body,
-    createdBy: req.user.email,
-  });
+  const pool = await Pool.create(req.body);
+  console.log("poolcontroller");
+  console.log(pool);
   res.status(200).json(pool);
 };
 

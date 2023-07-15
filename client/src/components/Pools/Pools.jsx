@@ -8,6 +8,7 @@ import Pool from '../Pool/Pool';
 
 import Filter from '../Filter/Filter';
 import PoolForm from './PoolForm';
+import { fetchListings } from '../../features/listings/listingsSlice';
 
 const Pools = () => {
   const dispatch = useDispatch();
