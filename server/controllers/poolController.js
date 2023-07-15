@@ -70,11 +70,11 @@ const getPoolsForListing = async (req, res) => {
 };
 
 const getPoolsForUser = async (req, res) => {
-  const user = req.user;
-  const pools = await Pool.find({ users: { $elemMatch: { userId: user.id } } });
+  const user = req.params.userId;
+  const pools = await Pool.find({ 'users.email': user });
   if (!pools) {
     res.status(400);
-    throw new Error('Pools not found');
+    // throw new Error('Pools not found');
   }
   res.status(200).json(pools);
 };
@@ -82,6 +82,7 @@ const getPoolsForUser = async (req, res) => {
 const getPoolsCreatedByUser = async (req, res) => {
   const user = req.user;
   const pools = await Pool.find({ createdBy: user.email });
+  console.log(pools);
   if (!pools) {
     res.status(400);
     throw new Error('Pools not found');

@@ -34,6 +34,14 @@ const poolSchema = new Schema(
       ref: 'User',
       required: true,
     },
+    totalValue: {
+      type: Number,
+      required: true,
+    },
+    remaining: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true },
 );

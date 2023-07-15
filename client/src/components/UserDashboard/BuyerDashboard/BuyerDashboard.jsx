@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PurchaseCard from './PurchaseCard';
 import Pool from '../../Pool/Pool';
 import StockChart from './StockChart.webp';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchPoolsForUser } from '../../../features/pools/poolsSlice';
 
 const BuyerDashboard = () => {
   let assets = [
@@ -45,6 +46,18 @@ const BuyerDashboard = () => {
 
   const pools = useSelector((state) => state.pools);
   const token = useSelector((store) => store.auth.token);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchPoolsForUser({ email: token.email }));
+    }
+  }, [dispatch]);
+
+  console.log('type');
+  console.log(typeof pools);
+  console.log(pools);
+  console.log('type');
 
   const OwnedAssets = () => {
     return (
@@ -85,9 +98,21 @@ const BuyerDashboard = () => {
       <div className="md:w-1/3 flex flex-col items-start md:h-auto pt-24 md:pt-0 md:px-8">
         <h1 className="text-4xl font-bold text-gray-900">Joined Pools</h1>
         {pools
-          .filter((pool) => pool.members.includes(token.email))
+          // .filter((pool) => pool.members.includes(token.email))
           .map((pool, idx) => {
-            return <Pool key={idx} {...pool} />;
+            return (
+              <Pool
+                key={idx}
+                poolId={pool.id}
+                title={pool.name}
+                createdBy={pool.createdBy}
+                listingId={pool.listingId}
+                members={pool.users}
+                totalValue={pool.totalValue}
+                remaining={pool.remaining}
+                contribution={pool.contribution}
+              />
+            );
           })}
       </div>
     );
