@@ -14,7 +14,7 @@ const App = () => {
   const token = useSelector((store) => store.auth.token);
 
   return (
-    <div className="App">
+    <div className="App bg-gray-100">
       <Router>
         <Navbar />
         <Routes>

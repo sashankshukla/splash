@@ -56,12 +56,12 @@ const Listings = () => {
   return (
     <div
       id="listings-page-container"
-      className="flex flex-col justify-center items-center pt-16 mx-4"
+      className="flex flex-col justify-center items-center pt-16 mx-4 bg-gray-100"
     >
       <Filter />
 
       <button
-        className="px-4 py-2 mt-8 flex flex-row justify-center align-center text-white font-medium bg-primary-darkgreen rounded-lg duration-150"
+        className="px-4 py-2 mt-8 flex flex-row justify-center align-center text-white font-medium bg-primary-darkgreen rounded-lg transition duration-300 ease-in-out"
         onClick={() => setFormVisible(true)}
       >
         <FaPlusCircle className="mt-1 mr-1" />
