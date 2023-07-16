@@ -3,6 +3,7 @@ import SellerListings from './SellerListings';
 import ApprovalCard from './ApprovalCard';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
 
 const SellerDashboard = () => {
   const auth_token = useSelector((store) => store.auth.auth_token);
@@ -29,7 +30,8 @@ const SellerDashboard = () => {
       <h1 className="text-3xl my-6 font-bold">{`Buyers awaiting your approval ${
         token.name.split(' ')[0]
       }...`}</h1>
-      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
+      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 mx-12">
+        {approvalPools.length === 0 && <LoadingSpinner />}
         {approvalPools.map((pool, index) => (
           <ApprovalCard
             key={index}

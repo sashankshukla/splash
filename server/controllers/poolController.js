@@ -46,7 +46,7 @@ const joinPool = async (req, res) => {
   }
   // if user in pool, update equity
   // else below
-  pool.users.push({ email: req.user.email, equity: req.body.equity });
+  pool.users = [...pool.users, { email: req.user.email, equity: req.body.equity }];
   await pool.save();
   res.status(200).json(pool);
 };
@@ -103,11 +103,11 @@ const getTotalPoolEquity = async (req, res) => {
 
 const getPoolsCompletedForUser = async (req, res) => { 
   const userListings = (await Listing.find({ createdBy: req.user.email, status: 'Available' })).map(
-    (listing) => listing.id,
+    (listing) => listing._id,
   );
   const pools = [];
   for (const listingId of userListings) {
-    const poolsForListing = await Pool.find({ listingId: new mongoose.Types.ObjectId(listingId) });
+    const poolsForListing = await Pool.find({ listingId : listingId});
     pools.push(...poolsForListing);
   }
   if (!pools) { 
