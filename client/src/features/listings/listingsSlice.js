@@ -64,6 +64,19 @@ export const deleteListing = createAsyncThunk('listings/deleteListing', async (i
   }
 });
 
+export const sellListing = createAsyncThunk('listings/sellListing', async ({ listingId, poolId }, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.auth_token;
+    return await listingsService.sellListing(listingId, poolId, token);
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
 const listingsSlice = createSlice({
   name: 'listings',
   initialState: initialState,

@@ -1,7 +1,10 @@
 import React from 'react';
 import { FaUser } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { sellListing } from '../../../features/listings/listingsSlice';
 
 const ApprovalCard = ({ poolTitle, poolId, listingId }) => {
+  const dispatch = useDispatch();
   return (
     <div className="flex flex-col items-center mx-4 shadow-lg rounded-lg bg-white">
       <div className="w-full bg-green-50 rounded-t-lg text-center p-2">
@@ -22,7 +25,7 @@ const ApprovalCard = ({ poolTitle, poolId, listingId }) => {
         <button className="w-full mx-2 px-4 py-2 text-red-600 hover:bg-gray-100 border-2 border-red-600 rounded-lg">
           Deny
         </button>
-        <button className="w-full mx-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg">
+        <button onClick={dispatch(sellListing(listingId, poolId))} className="w-full mx-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg">
           Approve
         </button>
       </div>

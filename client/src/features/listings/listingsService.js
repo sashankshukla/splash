@@ -79,11 +79,22 @@ const deleteListing = async (id, token) => {
   return response.data;
 };
 
+const sellListing = async (listingId, poolId, token) => { 
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+  const response = await axios.put(`${API_URL}sell/${listingId}/${poolId}`, config);
+  return response.data;
+}
+
 const listingsService = {
   fetchListings,
   addListing,
   deleteListing,
   updateListing,
+  sellListing,
 };
 
 export default listingsService;

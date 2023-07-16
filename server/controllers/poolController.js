@@ -1,4 +1,6 @@
 const Pool = require('../models/poolModel');
+const Listing = require('../models/listingModel');
+const mongoose = require('mongoose');
 
 const getPools = async (req, res) => {
   // TODO: add filter as well
@@ -99,6 +101,28 @@ const getTotalPoolEquity = async (req, res) => {
   res.status(200).json(totalEquity);
 };
 
+const getPoolsCompletedForUser = async (req, res) => { 
+  const userListings = (await Listing.find({ createdBy: req.user.email })).map(
+    (listing) => listing.id,
+  );
+  const pools = [];
+  for (const listingId of userListings) {
+    const poolsForListing = await Pool.find({ listingId: new mongoose.Types.ObjectId(listingId) });
+    pools.push(...poolsForListing);
+  }
+  if (!pools) { 
+    res.status(400);
+    throw new Error('Pools not found');
+  }
+  const completedPools = [];
+  for (const pool of pools) {
+    if (pool.remaining == 0) {
+      completedPools.push(pool);
+    }
+  }
+  res.status(200).json(completedPools);
+};
+
 module.exports = {
   getPools,
   addPool,
@@ -109,4 +133,5 @@ module.exports = {
   getTotalPoolEquity,
   getPoolsForUser,
   getPoolsCreatedByUser,
+  getPoolsCompletedForUser,
 };

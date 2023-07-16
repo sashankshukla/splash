@@ -1,33 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import SellerListings from './SellerListings';
 import ApprovalCard from './ApprovalCard';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const SellerDashboard = () => {
-  const approvalData = [
-    {
-      poolTitle: 'American Eagles',
-      poolId: 'ae34ljfff9abb',
-      listingId: 'L8666AE34',
-    },
-    {
-      poolTitle: 'Blue Dolphins',
-      poolId: 'bd78gjklm12cde',
-      listingId: 'L5542BD78',
-    },
-    {
-      poolTitle: 'Golden Tigers',
-      poolId: 'gt90mnop34efg',
-      listingId: 'L2290GT90',
-    },
-    {
-      poolTitle: 'Silver Lions',
-      poolId: 'sl56qrst78hij',
-      listingId: 'L7832SL56',
-    },
-  ];
-
+  const auth_token = useSelector((store) => store.auth.auth_token);
   const token = useSelector((store) => store.auth.token);
+  const [approvalPools, setApprovalPools] = useState([]);
+
+  useEffect(() => {
+    const fetchApprovalPools = async () => {
+      const response = await axios.get('http://localhost:5001/pools/completed', {
+        headers: {
+          Authorization: `${auth_token}`,
+        },
+      });
+      console.log(response.data);
+      setApprovalPools(response.data);
+    };
+    fetchApprovalPools();
+  }, []);
 
   return (
     <div className="h-screen mt-48 pb-48 w-screen flex flex-col justify-center items-center">
@@ -37,12 +30,12 @@ const SellerDashboard = () => {
         token.name.split(' ')[0]
       }...`}</h1>
       <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
-        {approvalData.map((data, index) => (
+        {approvalPools.map((pool, index) => (
           <ApprovalCard
             key={index}
-            poolTitle={data.poolTitle}
-            poolId={data.poolId}
-            listingId={data.listingId}
+            poolTitle={pool.name}
+            poolId={pool._id}
+            listingId={pool.listingId}
           />
         ))}
       </div>

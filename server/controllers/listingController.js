@@ -105,7 +105,10 @@ const sellListing = async (req, res) => {
   const members = pool.users;
   members.forEach(async (member) => {
     const user = await User.findOne({ email: member.email });
+    if (user.funds < member.equity)
+      throw new Error('User does not have enough funds to purchase this listing');
     user.ownerships.push({ listingId: listing.id, amount: member.equity });
+    user.funds -= member.equity;
     await user.save();
   });
   listing.status = 'Sold';
