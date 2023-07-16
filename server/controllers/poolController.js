@@ -102,7 +102,7 @@ const getTotalPoolEquity = async (req, res) => {
 };
 
 const getPoolsCompletedForUser = async (req, res) => { 
-  const userListings = (await Listing.find({ createdBy: req.user.email })).map(
+  const userListings = (await Listing.find({ createdBy: req.user.email, status: 'Available' })).map(
     (listing) => listing.id,
   );
   const pools = [];

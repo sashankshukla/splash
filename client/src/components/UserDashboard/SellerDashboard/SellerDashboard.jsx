@@ -36,6 +36,7 @@ const SellerDashboard = () => {
             poolTitle={pool.name}
             poolId={pool._id}
             listingId={pool.listingId}
+            members = {pool.users}
           />
         ))}
       </div>

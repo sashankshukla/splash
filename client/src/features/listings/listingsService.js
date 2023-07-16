@@ -31,8 +31,6 @@ const addListing = async (listingData, token) => {
   }
 
   const response = await axios.post(API_URL, formData, config);
-
-  console.log(response.data);
   return response.data;
 };
 
@@ -59,8 +57,6 @@ const updateListing = async (listingData, listingId, token) => {
   }
 
   const response = await axios.put(`${API_URL}${listingId}`, formData, config);
-
-  console.log(response.data);
   return response.data;
 };
 
@@ -80,12 +76,14 @@ const deleteListing = async (id, token) => {
 };
 
 const sellListing = async (listingId, poolId, token) => { 
+  console.log('token', token);
   const config = {
     headers: {
       Authorization: `${token}`,
     },
   };
-  const response = await axios.put(`${API_URL}sell/${listingId}/${poolId}`, config);
+  console.log(config);
+  const response = await axios.post(`${API_URL}sell/${listingId}/${poolId}`, {}, config);
   return response.data;
 }
 

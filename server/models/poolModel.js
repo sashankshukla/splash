@@ -24,6 +24,10 @@ const poolSchema = new Schema(
         },
       },
     ],
+    remaining: {
+      type: Number,
+      required: true,
+    },
     listingId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Listing',
