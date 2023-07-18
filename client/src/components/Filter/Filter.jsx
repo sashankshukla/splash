@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import './Filter.css';
@@ -8,8 +8,6 @@ function Filter() {
   const dispatch = useDispatch();
 
   const [optionsVisible, setVisibility] = useState(false);
-  const [distanceExpand, setDistanceExpand] = useState(false);
-  const [rangeExpanded, setRangeExpanded] = useState(false);
 
   const initialState = {
     keywordSearch: "", //make this an array separated by space or smth in future?
@@ -149,9 +147,53 @@ function Filter() {
     let cbs = document.querySelectorAll('input[type="checkbox"]');
     for(let i = 0; i < cbs.length; i++) {
       // console.log(cbs[i]);
-      cbs[i].checked = false;
+      cbs[i].checked = true;
     }
+
+    let dl = document.getElementById("distance-limit-cb");
+    dl.checked = false;
   };
+
+  const toggleVis = (e) => {
+    setVisibility(!optionsVisible);
+    // if(optionsVisible) {
+      // let curr_cb = document.querySelectorAll('input[type="checkbox"]');
+      // if(curr_cb.length > 0) {
+      //   cbs = curr_cb;
+      //   console.log(cbs.length);
+      // }
+      // console.log(cbs.length);
+    // }
+
+    //TODO: currently, filters are reset whenever tab is closed.
+    //Need to make sure this isn't being dispatched/state is being saved somehow
+    //Also need to find a way to access elements when they aren't rendered...
+  }
+
+  useEffect(() => {
+    if(optionsVisible) {
+      const statusAvail = document.getElementById("stat-avail-cb");
+      statusAvail.checked = listingFilterData.status.available;
+      const statusSold = document.getElementById("stat-sold-cb");
+      statusSold.checked = listingFilterData.status.sold;
+
+      const poolOpen = document.getElementById("open-pool-cb");
+      poolOpen.checked = listingFilterData.pools.open;
+      const poolClosed = document.getElementById("closed-pool-cb");
+      poolClosed.checked = listingFilterData.pools.closed;
+      const poolNone = document.getElementById("no-pool-cb");
+      poolNone.checked = listingFilterData.pools.none;
+
+      const typeResidence = document.getElementById("invest-res-cb");
+      typeResidence.checked = listingFilterData.investmentType.residence;
+      const typeFranchise = document.getElementById("invest-franchise-cb");
+      typeFranchise.checked = listingFilterData.investmentType.franchise;
+      const typeGas = document.getElementById("invest-gas-cb");
+      typeGas.checked = listingFilterData.investmentType.gasStation;
+      const typeStock = document.getElementById("invest-stock-portfolio-cb");
+      typeStock.checked = listingFilterData.investmentType.stockPortfolio;
+    }
+  }, [optionsVisible]);
 
   return (
     <div className="min-w-[85%]">
@@ -185,18 +227,25 @@ function Filter() {
         <div className="relative">
           <button
             className="px-2 flex flex-row items-center justify-center text-primary-darkgreen font-medium rounded-lg duration-150 mb-1 w-full h-full"
-            onClick={() => setVisibility(!optionsVisible)}
+            onClick={toggleVis}
           >
             <span><FaFilter /></span>
           </button>
           
-          {/* Filter Options Container */}
+          {/* Options Container */}
           {optionsVisible && (
             <div className="absolute right-0 w-64 mt-2 p-2 bg-white border border-gray-200 rounded shadow-lg divide-y divide-gray-200">
-             
+              {/* SORT */}
+              <span className="block text-md text-gray-700">Sort</span>
+              <div>timestamp and price ascending and descending</div>
+
+              {/* FILTER */}
+              <span className="block text-md text-gray-700">Filter</span>
               {/* Price Range */}
               <div className="py-1">
                 <span className="block text-sm text-gray-700">Price Range</span>
+
+                <label className="text-xs text-gray-700" htmlFor="">Lower</label>
                 <input
                   id="price-range-lower-input"
                   className="mt-1 w-full px-2 py-1 text-sm rounded border border-gray-200"
@@ -207,6 +256,8 @@ function Filter() {
                   onChange={handlePriceChange}
                   placeholder="Lower range"
                 />
+
+                <label className="text-xs text-gray-700" htmlFor="">Upper</label>
                 <input
                   id="price-range-upper-input"
                   className="mt-1 w-full px-2 py-1 text-sm rounded border border-gray-200"
@@ -225,7 +276,7 @@ function Filter() {
                   Distance Limit
                   <div className="py-1 flex justify-center items-center">
                     <input
-                      id="Distance-limit-cb"
+                      id="distance-limit-cb"
                       className=""
                       name="check"
                       type="checkbox"
@@ -267,7 +318,7 @@ function Filter() {
                         type="checkbox"
                         value={listingFilterData.status.available}
                         onClick={handleStatusChange}
-                        //checked
+                        defaultChecked
                       />
                       <label className="text-xs text-gray-700" htmlFor="">Available</label>
                     </div>
@@ -280,7 +331,7 @@ function Filter() {
                         type="checkbox"
                         value={listingFilterData.status.sold}
                         onChange={handleStatusChange}
-                        //checked
+                        defaultChecked
                       />
                       <label className="text-xs text-gray-700" htmlFor="">Sold</label>
                     </div>
@@ -298,7 +349,7 @@ function Filter() {
                         type="checkbox"
                         value={listingFilterData.pools.open}
                         onChange={handlePoolsChange}
-                        //checked
+                        defaultChecked
                       />
                       <label className="text-xs text-gray-700" htmlFor="">Open Pools</label>
                     </div>
@@ -311,7 +362,7 @@ function Filter() {
                         type="checkbox"
                         value={listingFilterData.pools.closed}
                         onChange={handlePoolsChange}
-                        //checked
+                        defaultChecked
                       />
                       <label className="text-xs text-gray-700" htmlFor="">Closed Pools</label>
                     </div>
@@ -324,7 +375,7 @@ function Filter() {
                         type="checkbox"
                         value={listingFilterData.pools.none}
                         onChange={handlePoolsChange}
-                        //checked
+                        defaultChecked
                       />
                       <label className="text-xs text-gray-700" htmlFor="">No Pools</label>
                     </div>
@@ -345,7 +396,7 @@ function Filter() {
                           type="checkbox"
                           value={listingFilterData.investmentType.residence}
                           onChange={handleInvestmentChange}
-                          //checked
+                          defaultChecked
                         />
                         <label className="text-xs text-gray-700" htmlFor="">Residence</label>
                       </div>
@@ -358,7 +409,7 @@ function Filter() {
                           type="checkbox"
                           value={listingFilterData.investmentType.franchise}
                           onChange={handleInvestmentChange}
-                          //checked
+                          defaultChecked
                         />
                         <label className="text-xs text-gray-700" htmlFor="">Franchise</label>
                       </div>
@@ -373,7 +424,7 @@ function Filter() {
                           type="checkbox"
                           value={listingFilterData.investmentType.gasStation}
                           onChange={handleInvestmentChange}
-                          //checked
+                          defaultChecked
                         />
                         <label className="text-xs text-gray-700" htmlFor="">Gas Station</label>
                       </div>
@@ -386,7 +437,7 @@ function Filter() {
                           type="checkbox"
                           value={listingFilterData.investmentType.stockPortfolio}
                           onChange={handleInvestmentChange}
-                          //checked
+                          defaultChecked
                         />
                         <label className="text-xs text-gray-700" htmlFor="">Stock Portfolio</label>
                       </div>
@@ -399,7 +450,7 @@ function Filter() {
                   className="text-sm"
                   onClick={clearFilters}
                 >
-                  clear filters
+                  <u>clear filters</u>
                 </button>
               </div>
 
