@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteListing } from '../../features/listings/listingsSlice';
 import ListingForm from '../Listings/ListingForm';
+import { Carousel } from '@material-tailwind/react';
 
 const ListingModal = ({ selectedListing, setSelectedListing }) => {
   const user = useSelector((store) => store.auth.token);
@@ -39,12 +40,23 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
     setSelectedListing(null);
   };
 
-  const renderedImages = images.map((image, img_index) => (
-    <img key={img_index} src={image} alt="" className="object-cover w-48 h-48 rounded-md mx-auto" />
-  ));
+  const ImageCarousel = ({ images }) => {
+    return (
+      <Carousel className="rounded-xl">
+        {images.map((image, index) => (
+          <img
+            key={index}
+            src={image}
+            alt={`image ${index + 1}`}
+            className="h-full w-full object-cover"
+          />
+        ))}
+      </Carousel>
+    );
+  };
 
   const renderButtonsCheck =
-    user.email == createdBy ? (
+    user.email === createdBy ? (
       <div id="modal-buttons-container flex flex-row">
         <button
           onClick={editSelectedListing}
@@ -92,7 +104,8 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
               X
             </button>
             {/* TODO: add role indicator for screen readers */}
-            {renderedImages}
+            {/* {renderedImages} */}
+            <ImageCarousel images={images}></ImageCarousel>
             {/*
             TODO: format into an image carousel
             See: https://www.material-tailwind.com/docs/react/carousel
