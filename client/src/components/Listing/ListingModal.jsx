@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteListing } from '../../features/listings/listingsSlice';
 import ListingForm from '../Listings/ListingForm';
-import { Carousel } from '@material-tailwind/react';
+import AliceCarousel from 'react-alice-carousel';
+import 'react-alice-carousel/lib/alice-carousel.css';
 
 const ListingModal = ({ selectedListing, setSelectedListing }) => {
   const user = useSelector((store) => store.auth.token);
@@ -42,16 +43,21 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
 
   const ImageCarousel = ({ images }) => {
     return (
-      <Carousel className="rounded-xl">
-        {images.map((image, index) => (
+      <AliceCarousel
+        items={images.map((image, index) => (
           <img
             key={index}
             src={image}
             alt={`image ${index + 1}`}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover rounded-md"
           />
         ))}
-      </Carousel>
+        disableButtonsControls
+        autoPlayInterval={3000}
+        animationDuration={1000}
+        infinite
+        autoPlay
+      />
     );
   };
 
