@@ -8,9 +8,12 @@ function Filter() {
   const dispatch = useDispatch();
 
   const [optionsVisible, setVisibility] = useState(false);
+  const [distExpand, setDistExpand] = useState(false);
 
   const initialState = {
     keywordSearch: "", //make this an array separated by space or smth in future?
+    sortTime: "None",
+    sortPrice: "None",
     price: {
       lower: 0,
       upper: 0
@@ -47,6 +50,13 @@ function Filter() {
     console.log(e.target.value);
   };
 
+  const handleSortChange = (e) => {
+    setListingFilterData({
+      ...listingFilterData,
+      [e.target.name]: e.target.value,
+    });
+  }
+
   const handlePriceChange = (e) => {
     setListingFilterData({
       ...listingFilterData,
@@ -57,6 +67,28 @@ function Filter() {
     });
     
     console.log(e.target.value);
+  }
+
+  const handleDistanceCheckboxChange = (e) => {
+    if(e.target.checked == true) {
+      setListingFilterData({
+        ...listingFilterData,
+        distance: {
+          ...listingFilterData.distance,
+          [e.target.name]: true,
+        }
+      });
+    } else {
+      setListingFilterData({
+        ...listingFilterData,
+        distance: {
+          ...listingFilterData.distance,
+          [e.target.name]: false,
+        }
+      });
+    }
+
+    setDistExpand(!distExpand);
   }
 
   const handleDistanceChange = (e) => {
@@ -152,22 +184,12 @@ function Filter() {
 
     let dl = document.getElementById("distance-limit-cb");
     dl.checked = false;
+
+    setDistExpand(false);
   };
 
   const toggleVis = (e) => {
     setVisibility(!optionsVisible);
-    // if(optionsVisible) {
-      // let curr_cb = document.querySelectorAll('input[type="checkbox"]');
-      // if(curr_cb.length > 0) {
-      //   cbs = curr_cb;
-      //   console.log(cbs.length);
-      // }
-      // console.log(cbs.length);
-    // }
-
-    //TODO: currently, filters are reset whenever tab is closed.
-    //Need to make sure this isn't being dispatched/state is being saved somehow
-    //Also need to find a way to access elements when they aren't rendered...
   }
 
   useEffect(() => {
@@ -237,7 +259,33 @@ function Filter() {
             <div className="absolute right-0 w-64 mt-2 p-2 bg-white border border-gray-200 rounded shadow-lg divide-y divide-gray-200">
               {/* SORT */}
               <span className="block text-md text-gray-700">Sort</span>
-              <div>timestamp and price ascending and descending</div>
+              <div className="py-1">
+                <span className="block text-sm text-gray-700">Timestamp</span>
+                <select
+                  id="sort-time-select"
+                  className="mt-1 w-full px-2 py-1 text-sm rounded border border-gray-200"
+                  name="sortTime"
+                  value={listingFilterData.sortTime}
+                  onChange={handleSortChange}
+                >
+                  <option value="None">None</option>
+                  <option value="Newest First">Newest First</option>
+                  <option value="Oldest First">Oldest First</option>
+                </select>
+
+                <span className="block text-sm text-gray-700">Price</span>
+                <select
+                  id="sort-price-select"
+                  className="mt-1 w-full px-2 py-1 text-sm rounded border border-gray-200"
+                  name="sortPrice"
+                  value={listingFilterData.sortPrice}
+                  onChange={handleSortChange}
+                >
+                  <option value="None">None</option>
+                  <option value="Low to High">Low to High</option>
+                  <option value="High to Low">High to Low</option>
+                </select>
+              </div>
 
               {/* FILTER */}
               <span className="block text-md text-gray-700">Filter</span>
@@ -281,8 +329,7 @@ function Filter() {
                       name="check"
                       type="checkbox"
                       value={listingFilterData.distance.check}
-                      //onChange={setRangeExpanded(!rangeExpanded)}
-                      //also need to change listingFilterData!! -- maybe wrap sRE in useEffect that checks on data?
+                      onClick={handleDistanceCheckboxChange}
                     />
                     {/* <label className="text-xs text-gray-700" htmlFor="">Available</label> */}
                   </div>
@@ -290,16 +337,18 @@ function Filter() {
                 
 
                 {/* <div className="text-sm">Value for range goes here</div> */}
-                <input
-                  id="Distance-limit-input"
-                  className="min-w-full"
-                  name="range"
-                  type="range"
-                  min="0"
-                  max="10"
-                  value={listingFilterData.distance.range}
-                  onChange={handleDistanceChange}
-                />
+                {distExpand && (
+                  <input
+                    id="Distance-limit-input"
+                    className="min-w-full"
+                    name="range"
+                    type="range"
+                    min="0"
+                    max="10"
+                    value={listingFilterData.distance.range}
+                    onChange={handleDistanceChange}
+                  />
+                )}
               </div>
 
               <div className="py-1">
