@@ -28,7 +28,7 @@ const AddFunds = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(increaseUserFunds({ user: user.email, form: form }))
+    dispatch(increaseUserFunds(form))
       .then((response) => {
         navigate('/profile');
       })

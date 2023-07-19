@@ -1,4 +1,5 @@
 const User = require('../models/userModel');
+const Bank = require('../models/bankModel');
 
 const addUser = async (req, res) => {
   console.log(req.body);
@@ -20,39 +21,13 @@ const addUser = async (req, res) => {
 
 const addFunds = async (req, res) => {
   const user = req.user;
-  if (!user) {
-    res.status(400);
-    throw new Error('User not found');
-  }
-  user.funds += req.body.funds;
-  await user.save();
-  res.status(200).json(user);
-};
-
-const getUserAssets = async (req, res) => {
-  const user = req.user;
-  if (!user) {
-    res.status(400);
-    throw new Error('User not found');
-  }
-  res.status(200).json(user.ownerships);
-};
-
-const getUser = async (req,res) => {
-  const userEmail = req.params.email;
-  const user = await User.findOne({ email: userEmail });
-  console.log("FOUND USER ");
-  console.log(user);
-  res.status(200).json(user);
-}
-
-const increaseUserFunds = async (req,res) => {
-  console.log("server side update user")
-  const userEmail = req.params.email;
   const form = req.body;
   console.log("form in server");
-  console.log(userEmail);
   console.log(form);
+  if (!user) {
+    res.status(400);
+    throw new Error('User not found');
+  }
   function validatePayment(form) {
     if (!form.accountName || !form.accountNumber || !form.bankName || !form.amount) {
       return false;
@@ -70,22 +45,50 @@ const increaseUserFunds = async (req,res) => {
       return false;
     }
     // All checks passed, transfer is valid
-    return true;
+    const result = Bank.find({accountName: form.accountName, accountNumber: form.accountNumber, bankName: form.bankName, userEmail: req.user.email, approved: true})
+    if(result.length > 0){
+      console.log("Found a user with approved banking information");
+      console.log(result);
+      return true;
+    } else {
+      // approved payment not found we make a payment with user request default for approved set to 0, admin has to flag payment as approved first
+       Bank.create({
+      accountName: form.accountName,
+      accountNumber: form.accountNumber,
+      bankName: form.bankName,
+      userEmail: req.user.email
+    });
+      return false;
+    };
   };
   const paymentStatus = validatePayment(form);
   if(paymentStatus) {
     const updatedUser = await User.findOneAndUpdate(
-      { email: userEmail },
+      { email: user.email },
       { $inc: { funds: parseFloat(form.amount) } },
       { new: true, // Return the updated document
       useFindAndModify: false,
     });
-    console.log("successfully updated user");
-    console.log(updatedUser);
+  
     res.status(200).json(updatedUser);
   } else {
     res.status(400).json();
   }
 };
 
-module.exports = { addUser, getUserAssets, addFunds, getUser ,increaseUserFunds};
+const getUserAssets = async (req, res) => {
+  const user = req.user;
+  if (!user) {
+    res.status(400);
+    throw new Error('User not found');
+  }
+  res.status(200).json(user.ownerships);
+};
+
+const getUser = async (req,res) => {
+  const userEmail = req.params.email;
+  const user = await User.findOne({ email: userEmail });
+  res.status(200).json(user);
+}
+
+module.exports = { addUser, getUserAssets, addFunds, getUser};

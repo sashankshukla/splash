@@ -10,8 +10,6 @@ router.post('/', addUser);
 router.get('/assets', authMiddleware, getUserAssets);
 router.post('/addFunds', authMiddleware, addFunds);
 router.get('/:email',authMiddleware, getUser);
-//TODO Figure out why authMiddleware blocking my calls - Frankey
-router.put('/:email', increaseUserFunds);
 
 
 module.exports = router;

@@ -13,11 +13,26 @@ const ProfileOverview = () => {
   }, [dispatch, userToken]);
 
   const user = useSelector((store) => store.auth.user);
+  const pools = useSelector((state) => state.pools);
   if (!user) {
     // Render loading state or return null if you prefer
     return <p>Loading...</p>;
   }
+  function sumOwnership(user) {
+    if (!user || !Array.isArray(user.ownerships)) {
+      return 0; // Return 0 if user or user.ownership is not defined or not an array
+    }
 
+    let totalAmount = 0;
+
+    for (const ownership of user.ownerships) {
+      if (ownership.amount && typeof ownership.amount === 'number') {
+        totalAmount += ownership.amount;
+      }
+    }
+
+    return totalAmount;
+  }
 
   let current_hour = new Date().getHours();
   let greeting;
@@ -55,8 +70,10 @@ const ProfileOverview = () => {
               })}{' '}
             </p>
             <p className="mt-2 text-gray-500">Assets Owned: {user.ownerships.length}</p>
-            <p className="mt-2 text-gray-500">Assets Value: $1867.31</p>
-            <p className="mt-2 text-gray-500">Part of Pools: 4</p>
+            <p className="mt-2 text-gray-500">
+              Assets Value: ${sumOwnership(user).toLocaleString()}
+            </p>
+            <p className="mt-2 text-gray-500">Part of Pools: {pools.length}</p>
           </div>
           <div className="px-4 py-6 mt-8 md:-mt-12 mb-4 text-green-800 border border-green-300 rounded-lg bg-green-50 w-full md:w-2/3">
             <div className="flex items-center">

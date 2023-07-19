@@ -6,46 +6,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchPoolsForUser } from '../../../features/pools/poolsSlice';
 
 const BuyerDashboard = () => {
-  let assets = [
-    {
-      name: 'Apple Inc.',
-      id: 'AAPL',
-      equity: 10.0,
-      purchasePrice: 120.0,
-      currentPrice: 130.5,
-    },
-    {
-      name: 'Tesla, Inc.',
-      id: 'TSLA',
-      equity: 43.86,
-      purchasePrice: 600.0,
-      currentPrice: 550.0,
-    },
-    {
-      name: 'Microsoft Corporation',
-      id: 'MSFT',
-      equity: 9.11,
-      purchasePrice: 200.0,
-      currentPrice: 205.0,
-    },
-    {
-      name: 'Amazon.com, Inc.',
-      id: 'AMZN',
-      equity: 100.0,
-      purchasePrice: 3000.0,
-      currentPrice: 1100.0,
-    },
-    {
-      name: 'Alphabet Inc.',
-      id: 'GOOGL',
-      equity: 12.75,
-      purchasePrice: 1500.0,
-      currentPrice: 1520.0,
-    },
-  ];
-
+  const user = useSelector((store) => store.auth.user);
   const pools = useSelector((state) => state.pools);
-  const token = useSelector((store) => store.auth.token);
+  const token = useSelector((state) => state.auth.token);
+  // const assets2 = useSelector((state) => state.auth.user.ownerships);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -54,10 +18,13 @@ const BuyerDashboard = () => {
     }
   }, [dispatch]);
 
-  console.log('type');
-  console.log(typeof pools);
-  console.log(pools);
-  console.log('type');
+  if (!user) {
+    // Render loading state or return null if you prefer
+    return <p>Loading...</p>;
+  }
+
+  console.log('user assets');
+  console.log(user.ownerships);
 
   const OwnedAssets = () => {
     return (
@@ -77,15 +44,15 @@ const BuyerDashboard = () => {
             <h1 className="text-sm sm:text-md text-gray-600 font-bold"> Current Price </h1>
           </div>
         </div>
-        {assets.map((asset, idx) => {
+        {user.ownerships.map((asset, idx) => {
           return (
             <PurchaseCard
               key={idx}
               name={asset.name}
-              id={asset.id}
+              id={asset._id}
               purchasePrice={asset.purchasePrice}
-              equity={asset.equity}
-              currentPrice={asset.currentPrice}
+              equity={asset.amount}
+              currentPrice={asset.amount}
             />
           );
         })}

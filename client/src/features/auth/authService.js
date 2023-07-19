@@ -23,16 +23,14 @@ const fetchUser = async (userEmail,token) => {
   return response.data;
 };
 
-const increaseUserFunds = async (data, token) => {
-  console.log("in update user services")
-  console.log(data);
+const increaseUserFunds = async (form, token) => {
   const config = {
     headers: {
       Authorization: `${token}`,
     }};
 
     try {
-      const response = await axios.put(`${API_URL}${data.user}`,data.form, config);
+      const response = await axios.post(`${API_URL}addFunds`,form, config);
       // Check if the response status is 400 and throw an error if true
       if (response.status === 400) {
         console.log("error caught"); // TODO not being caught
