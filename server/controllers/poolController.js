@@ -1,25 +1,26 @@
 const Pool = require('../models/poolModel');
+const Listing = require('../models/listingModel');
 
 const getPools = async (req, res) => {
   // TODO: add filter as well
-  const pools = await Pool.find({private: false});
+  const pools = await Pool.find({ private: false });
   console.log(pools);
   res.status(200).json(pools);
 };
 
 const addPool = async (req, res) => {
-  console.log(req.body.name.length);
-  console.log(req.body.users.length);
-  console.log(req.body.listingId.length);
-
-
-  if ((req.body.name.length === 0) || (req.body.users.length === 0) || (req.body.listingId.length === 0)) {
+  if (!req.body.name || !req.body.listingId || !req.body.contribution) {
     res.status(400);
-    throw new Error('Please specify a name, private, users, and listingId');
+    throw new Error('Please specify a name, private, and listingId');
   }
-  const pool = await Pool.create(req.body);
-  console.log("poolcontroller");
-  console.log(pool);
+  const listing = await Listing.findById(req.body.listingId);
+  const pool = await Pool.create({
+    ...req.body,
+    createdBy: req.user.email,
+    users: [{ email: req.user.email, equity: req.body.contribution }],
+    totalValue: listing.price,
+    remaining : listing.price - req.body.contribution,
+  });
   res.status(200).json(pool);
 };
 
@@ -75,11 +76,10 @@ const getPoolsForListing = async (req, res) => {
 };
 
 const getPoolsForUser = async (req, res) => {
-  const user = req.params.userId;
-  const pools = await Pool.find({ 'users.email': user });
+  const user = req.user;
+  const pools = await Pool.find({ 'users.email': user.email });
   if (!pools) {
     res.status(400);
-    // throw new Error('Pools not found');
   }
   res.status(200).json(pools);
 };

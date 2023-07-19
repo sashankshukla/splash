@@ -33,21 +33,12 @@ const PoolForm = ({ modalVisible, setModalVisible }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('poolsforms');
-    console.log(listings);
-    const listingValue = listings.listings.find(
-      (listing) => listing._id === formData.listingId,
-    ).price;
-    console.log(listingValue);
     dispatch(
       addPoolsAsync({
         name: formData.title,
         listingId: formData.listingId,
         private: formData.private,
-        createdBy: token.email,
-        totalValue: listingValue,
-        remaining: listingValue - formData.initialContribution,
-        users: [{ email: token.email, equity: formData.initialContribution }],
+        contribution : formData.initialContribution,
       }),
     );
     setModalVisible(false);

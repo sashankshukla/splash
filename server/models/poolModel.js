@@ -10,6 +10,7 @@ const poolSchema = new Schema(
     private: {
       type: Boolean,
       required: true,
+      default: false,
     },
     users: [
       {

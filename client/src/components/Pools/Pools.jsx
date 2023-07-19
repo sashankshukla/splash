@@ -8,7 +8,6 @@ import Pool from '../Pool/Pool';
 
 import Filter from '../Filter/Filter';
 import PoolForm from './PoolForm';
-import { fetchListings } from '../../features/listings/listingsSlice';
 
 const Pools = () => {
   const dispatch = useDispatch();
@@ -25,7 +24,7 @@ const Pools = () => {
 
   useEffect(() => {
     if (token) {
-      dispatch(fetchPools({ email: token.email }));
+      dispatch(fetchPools());
     }
   }, [dispatch]);
 
@@ -39,7 +38,10 @@ const Pools = () => {
         <span>Add New Pool</span>
       </button>
       <PoolForm modalVisible={formVisible} setModalVisible={setFormVisible} />
-      <div id="pools-container" className="flex">
+      <div
+        id="pools-container"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+      >
         {pools.map((pool, idx) => {
           return (
             <Pool

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PurchaseCard from './PurchaseCard';
 import Pool from '../../Pool/Pool';
 import StockChart from './StockChart.webp';
@@ -9,12 +9,11 @@ const BuyerDashboard = () => {
   const user = useSelector((store) => store.auth.user);
   const pools = useSelector((state) => state.pools);
   const token = useSelector((state) => state.auth.token);
-  // const assets2 = useSelector((state) => state.auth.user.ownerships);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (token) {
-      dispatch(fetchPoolsForUser({ email: token.email }));
+      dispatch(fetchPoolsForUser());
     }
   }, [dispatch]);
 
@@ -64,21 +63,19 @@ const BuyerDashboard = () => {
     return (
       <div className="md:w-1/3 flex flex-col items-start md:h-auto pt-24 md:pt-0 md:px-8">
         <h1 className="text-4xl font-bold text-gray-900">Joined Pools</h1>
-        {pools
-          // .filter((pool) => pool.members.includes(token.email))
-          .map((pool, idx) => {
-            return (
-              <Pool
-                key={idx}
-                poolId={pool.id}
-                title={pool.name}
-                createdBy={pool.createdBy}
-                listingId={pool.listingId}
-                members={pool.users}
-                totalValue={pool.totalValue}
-              />
-            );
-          })}
+        {pools.map((pool, idx) => {
+          return (
+            <Pool
+              key={idx}
+              poolId={pool.id}
+              title={pool.name}
+              createdBy={pool.createdBy}
+              listingId={pool.listingId}
+              members={pool.users}
+              totalValue={pool.totalValue}
+            />
+          );
+        })}
       </div>
     );
   };
