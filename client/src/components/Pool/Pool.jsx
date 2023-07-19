@@ -56,12 +56,20 @@ const Pool = ({
           ></div>
         </div>
       </div>
-      {!members.includes(token.email) && (
+      {!memberFound && (
         <button
           className="m-1 px-4 py-2 text-white bg-primary-green rounded-lg inline-block"
           onClick={() => setModalVisible(true)}
         >
           <span>Join Pool</span>
+        </button>
+      )}
+      {memberFound && (
+        <button
+          className="m-1 px-4 py-2 text-white bg-primary-green rounded-lg inline-block"
+          onClick={() => setModalVisible(true)}
+        >
+          <span>Modify Contribution</span>
         </button>
       )}
       {createdBy === token.email && (
@@ -72,7 +80,7 @@ const Pool = ({
           Delete Pool
         </button>
       )}
-      <JoinForm poolId={poolId} modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      <JoinForm poolId={poolId} modalVisible={modalVisible} setModalVisible={setModalVisible} modify={memberFound} currentContribution={memberEquity} />
     </div>
   );
 };

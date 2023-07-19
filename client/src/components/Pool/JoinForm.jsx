@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-const JoinForm = ({ poolId, modalVisible, setModalVisible }) => {
+const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContribution }) => {
   const [formData, setFormData] = useState({
-    contribution: 0,
+    contribution: currentContribution || 0,
     poolId: null,
   });
 
@@ -25,7 +25,13 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     formData.poolId = poolId;
-    dispatch({ type: 'pools/joinPool', payload: { ...formData, email: token.email } });
+    if(modify) {
+      //DAMAN TO ADD EDITPOOL LOGIC
+      dispatch({ type: 'pools/editPool', payload: { ...formData, email: token.email } });
+    } else {
+      dispatch({ type: 'pools/joinPool', payload: { ...formData, email: token.email } });
+
+    }
     setModalVisible(false);
   };
 
@@ -44,14 +50,20 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible }) => {
               <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
                 <div className="max-w-lg mx-auto pt-8 space-y-3 sm:text-center">
                   <p className="text-primary-darkgreen rounded-lg text-3xl font-semibold sm:text-4xl">
-                    Join Pool
+                    {modify && 'Modify Pool'}
+                    {!modify && 'Join Pool'}
                   </p>
                   <p>Empower people from all economic backgrounds to invest</p>
                 </div>
                 <div className="mt-4 max-w-lg mx-auto">
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                      <label className="font-medium">Contribution</label>
+                      <label className="font-medium">
+                        {modify &&
+                          'Modify Contribution. Currently Invested:$' +
+                            currentContribution.toLocaleString()}{' '}
+                        {!modify && 'Join Pool'}
+                      </label>
                       <input
                         type="number"
                         name="contribution"
@@ -65,7 +77,8 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible }) => {
                       type="submit"
                       className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-primary-darkgreen active:bg-primary-green rounded-lg duration-150 mt-4"
                     >
-                      Join Pool
+                      {modify && 'Modify Contribution'}
+                      {!modify && 'Join Pool'}
                     </button>
                   </form>
                 </div>
