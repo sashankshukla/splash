@@ -50,6 +50,10 @@ const addFunds = async (req, res) => {
     res.status(400).json({ message: 'Invalid payment details' });
     return;
   }
+  if (!bank.approved) { 
+    res.status(400).json({ message: 'Bank account not approved. Please wait till our Finance Team verifies your account.' });
+    return;
+  }
   const updatedUser = await User.findOneAndUpdate(
     { email: req.user.email },
     { $inc: { funds: parseFloat(form.amount) } },
