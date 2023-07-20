@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getListingsData } from '../../../features/listings/listingsSlice'; //Selector functions
 import axios from 'axios';
 
 import Listing from '../../Listing/Listing';
@@ -63,12 +62,6 @@ const SellerListings = () => {
           {userListings.map((listing, index) => (
             <div key={index} className="flex-none md:w-1/2 lg:w-1/3">
               <Listing {...listing} />
-              {/* <div
-                key={index}
-                className={`p-4 m-2 ${listing.status ? 'text-green-800' : 'text-red-500'}`}
-              >
-                {listing.status ? 'Active' : 'Closed'}
-              </div> */}
             </div>
           ))}
         </div>

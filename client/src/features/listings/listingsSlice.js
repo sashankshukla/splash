@@ -64,6 +64,22 @@ export const deleteListing = createAsyncThunk('listings/deleteListing', async (i
   }
 });
 
+export const sellListing = createAsyncThunk(
+  'listings/sellListing',
+  async ({ listingId, poolId }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.auth_token;
+      return await listingsService.sellListing(listingId, poolId, token);
+    } catch (error) {
+      let message =
+        (error.response & error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 const listingsSlice = createSlice({
   name: 'listings',
   initialState: initialState,
@@ -94,7 +110,6 @@ const listingsSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         //Add new listing directly to the listing array
-        console.log(action.payload);
         state.listings.push(action.payload); //is this correct behavior? how to grab _id?
       })
       .addCase(addListing.rejected, (state, action) => {

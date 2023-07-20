@@ -1,7 +1,8 @@
 const User = require('../models/userModel');
+const Bank = require('../models/bankModel');
+const Listing = require('../models/listingModel');
 
 const addUser = async (req, res) => {
-  console.log(req.body);
   if (!req.body.name || !req.body.email) {
     res.status(400);
     throw new Error('Please specify a name and email');
@@ -19,14 +20,45 @@ const addUser = async (req, res) => {
 };
 
 const addFunds = async (req, res) => {
-  const user = req.user;
-  if (!user) {
-    res.status(400);
-    throw new Error('User not found');
+  const form = req.body;
+  function validatePayment(form) {
+    if (!form.accountName || !form.accountNumber || !form.bankName || !form.amount) {
+      return false;
+    }
+    // Check if account number is a valid number
+    if (isNaN(form.accountNumber) || form.accountNumber <= 0) {
+      return false;
+    }
+    // Check if amount is a valid number
+    if (isNaN(form.amount) || form.amount <= 0) {
+      return false;
+    }
+    // Check if bank name is not empty
+    if (form.bankName.trim() === '') {
+      return false;
+    }
+    return true;
   }
-  user.funds += req.body.funds;
-  await user.save();
-  res.status(200).json(user);
+  const paymentStatus = validatePayment(form);
+  const bank = Bank.find({
+    accountName: form.accountName,
+    accountNumber: form.accountNumber,
+    bankName: form.bankName,
+    userEmail: req.user.email,
+  });
+  if (!paymentStatus || !bank) {
+    res.status(400).json({ message: 'Invalid payment details' });
+    return;
+  }
+  const updatedUser = await User.findOneAndUpdate(
+    { email: req.user.email },
+    { $inc: { funds: parseFloat(form.amount) } },
+    {
+      new: true, // Return the updated document
+      useFindAndModify: false,
+    },
+  );
+  res.status(200).json(updatedUser);
 };
 
 const getUserAssets = async (req, res) => {
@@ -38,4 +70,22 @@ const getUserAssets = async (req, res) => {
   res.status(200).json(user.ownerships);
 };
 
-module.exports = { addUser, getUserAssets, addFunds };
+const getUser = async (req, res) => {
+  const originalUser = await User.findOne({ email: req.params.email });
+  const user = originalUser.toObject();
+
+  user.ownerships = await Promise.all(
+    user.ownerships.map(async (ownership) => {
+      const listing = await Listing.findById(ownership.listingId);
+      return {
+        ...ownership,
+        name: listing.name,
+        purchasePrice: listing.price,
+        currentPrice: listing.price,
+      };
+    }),
+  );
+  res.status(200).json(user);
+};
+
+module.exports = { addUser, getUserAssets, addFunds, getUser };

@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
 import Modal from 'react-modal';
 import { useSelector, useDispatch } from 'react-redux';
 import Listing from '../Listing/Listing';
-import { fetchListings, reset, getListingsData } from '../../features/listings/listingsSlice';
+import { fetchListings, getListingsData } from '../../features/listings/listingsSlice';
 
 const containerStyle = {
   width: '100vw',
@@ -55,10 +55,6 @@ function Map() {
   //grabs users current location
   useEffect(() => {
     dispatch(fetchListings());
-
-    // return () => {
-    //   dispatch(reset());
-    // };
   }, [dispatch]);
 
   useEffect(() => {
@@ -76,7 +72,7 @@ function Map() {
     };
 
     fetchUserLocation();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const geocodeAddress = async (listing) => {
@@ -88,8 +84,6 @@ function Map() {
             console.log(lat, lng);
             const marker = { lat: lat, lng: lng, object: listing };
             setMarkers((prevMarkers) => [...prevMarkers, marker]);
-            // console.log('marker:');
-            // console.log(marker);
           },
           (error) => {
             console.error(error);
@@ -99,20 +93,21 @@ function Map() {
         console.error('Error geocoding address:', error);
       }
     };
-    // console.log('LOOK HERE');
-    // console.log(listings);
     listings.forEach((listing) => {
       geocodeAddress(listing);
     });
-  }, [dispatch]);
+  }, [dispatch, listings]);
 
-  const onLoad = React.useCallback(function callback(map) {
-    // sets to current IP
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
+  const onLoad = React.useCallback(
+    function callback(map) {
+      // sets to current IP
+      const bounds = new window.google.maps.LatLngBounds(center);
+      map.fitBounds(bounds);
 
-    setMap(map);
-  }, []);
+      setMap(map);
+    },
+    [center],
+  );
 
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null);

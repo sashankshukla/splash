@@ -1,9 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { fetchUser } from '../../features/auth/authSlice.js';
 
 const ProfileOverview = () => {
-  const user = useSelector((store) => store.auth.token);
+  const dispatch = useDispatch();
+  const userToken = useSelector((store) => store.auth.token);
+  useEffect(() => {
+    if (userToken) {
+      dispatch(fetchUser({ email: userToken.email }));
+    }
+  }, [dispatch, userToken]);
+
+  const user = useSelector((store) => store.auth.user);
+  const pools = useSelector((state) => state.pools);
+  if (!user) {
+    // Render loading state or return null if you prefer
+    return <p>Loading...</p>;
+  }
+  function sumOwnership(user) {
+    if (!user || !Array.isArray(user.ownerships)) {
+      return 0; // Return 0 if user or user.ownership is not defined or not an array
+    }
+
+    let totalAmount = 0;
+
+    for (const ownership of user.ownerships) {
+      if (ownership.amount && typeof ownership.amount === 'number') {
+        totalAmount += ownership.amount;
+      }
+    }
+
+    return totalAmount;
+  }
+
   let current_hour = new Date().getHours();
   let greeting;
   if (current_hour < 12) {
@@ -21,7 +51,8 @@ const ProfileOverview = () => {
           {greeting}, {user.name}. Your portfolio is worth
         </div>
         <div className="text-5xl font-bold">
-          $2,345.61 <span className="text-2xl text-gray-500">CAD</span>
+          ${user.funds.toLocaleString()}
+          <span className="text-2xl text-gray-500">CAD</span>
         </div>
         <hr className="my-4" />
         <div className="uppercase tracking-wide text-sm text-green-800 font-semibold">
@@ -30,10 +61,19 @@ const ProfileOverview = () => {
         <p className="block mt-1 text-lg leading-tight font-medium text-black">{user.email}</p>
         <div className="flex flex-col md:flex-row justify-between">
           <div className="flex flex-col justify-start items-start w-full md:w-1/3">
-            <p className="mt-2 text-gray-500">Member since: Jan 2023</p>
-            <p className="mt-2 text-gray-500">Assets Owned: 10</p>
-            <p className="mt-2 text-gray-500">Assets Value: $1867.31</p>
-            <p className="mt-2 text-gray-500">Part of Pools: 4</p>
+            <p className="mt-2 text-gray-500">
+              Member since:{' '}
+              {new Date(user.createdAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: '2-digit',
+              })}{' '}
+            </p>
+            <p className="mt-2 text-gray-500">Assets Owned: {user.ownerships.length}</p>
+            <p className="mt-2 text-gray-500">
+              Assets Value: ${sumOwnership(user).toLocaleString()}
+            </p>
+            <p className="mt-2 text-gray-500">Part of Pools: {pools.length}</p>
           </div>
           <div className="px-4 py-6 mt-8 md:-mt-12 mb-4 text-green-800 border border-green-300 rounded-lg bg-green-50 w-full md:w-2/3">
             <div className="flex items-center">

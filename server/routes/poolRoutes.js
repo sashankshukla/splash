@@ -12,6 +12,7 @@ const {
   getTotalPoolEquity,
   getPoolsForUser,
   getPoolsCreatedByUser,
+  getPoolsCompletedForUser,
 } = require('../controllers/poolController');
 
 const authMiddleware = require('../middleware/authMiddleware');
@@ -22,9 +23,10 @@ router.delete('/:id', authMiddleware, deletePool);
 router.post('/:id/join', authMiddleware, joinPool);
 router.post('/:id/leave', authMiddleware, leavePool);
 router.get('/', getPools);
+router.get('/completed', authMiddleware, getPoolsCompletedForUser);
 router.get('/listing/:listingId', getPoolsForListing);
 router.get('/totalEquity/:id', getTotalPoolEquity);
-router.get('/user/joined/:userId', authMiddleware, getPoolsForUser);
-router.get('/user/created/:userId', authMiddleware, getPoolsCreatedByUser);
+router.get('/user/joined/', authMiddleware, getPoolsForUser);
+router.get('/user/created/', authMiddleware, getPoolsCreatedByUser);
 
 module.exports = router;
