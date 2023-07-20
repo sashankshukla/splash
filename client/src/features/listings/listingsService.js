@@ -64,8 +64,6 @@ const updateListing = async (listingData, listingId, token) => {
   return response.data;
 };
 
-//updateListing
-
 const deleteListing = async (id, token) => {
   // console.log(token);
   const config = {

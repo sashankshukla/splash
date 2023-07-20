@@ -3,7 +3,34 @@ import listingsService from './listingsService';
 
 const initialState = {
   listings: [],
-  filters: [],
+  listingFilter: {
+    keywordSearch: "", //make this an array separated by space or smth in future?
+    sortTime: "None",
+    sortPrice: "None",
+    price: {
+      lower: 0,
+      upper: 0
+    },
+    distance: {
+      check: false,
+      range: 0 //what should default be? what should min and max and increments be?
+    },
+    status: {
+      available: true,
+      sold: true
+    },
+    pools: {
+      open: true,
+      closed: true,
+      none: true
+    },
+    investmentType: {
+      residence: true,
+      franchise: true,
+      gasStation: true,
+      stockPortfolio: true
+    },
+  },
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -70,6 +97,12 @@ const listingsSlice = createSlice({
   initialState: initialState,
   reducers: {
     reset: (state) => initialState,
+    updateFilter: (state, action) => {
+      state.listingFilter = action.payload;
+    },
+    clearFilter: (state, action) => {
+      state.listingFilter = initialState.listingFilter;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -141,6 +174,6 @@ const listingsSlice = createSlice({
 export const getListingsData = (state) => state.listings;
 //export const getUserListings = (state) => state.
 
-export const { reset } = listingsSlice.actions;
+export const { reset, updateFilter, clearFilter } = listingsSlice.actions;
 
 export default listingsSlice.reducer;

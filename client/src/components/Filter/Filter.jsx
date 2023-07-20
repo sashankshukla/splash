@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { updateFilter, clearFilter } from '../../features/listings/listingsSlice';
 
 import './Filter.css';
 import { FaSearch, FaFilter } from 'react-icons/fa';
@@ -172,6 +173,8 @@ function Filter() {
   const handleSubmit = (e) => {
     console.log("submitted the following listingsFilterData: ");
     console.log(listingFilterData);
+
+    dispatch(updateFilter(listingFilterData));
   };
 
   const clearFilters = (e) => {
@@ -186,6 +189,8 @@ function Filter() {
     dl.checked = false;
 
     setDistExpand(false);
+
+    dispatch(clearFilter());
   };
 
   const toggleVis = (e) => {

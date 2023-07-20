@@ -20,5 +20,4 @@ router.post('/', authMiddleware, addListing);
 router.put('/:id', authMiddleware, updateListing);
 router.delete('/:id', authMiddleware, deleteListing);
 router.post('/sell/:listingId/:poolId', authMiddleware, sellListing);
-
 module.exports = router;
