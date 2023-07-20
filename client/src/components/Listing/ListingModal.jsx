@@ -117,6 +117,7 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
             See: https://www.material-tailwind.com/docs/react/carousel
           */}
             <h1 className="mt-4 text-2xl font-semibold text-gray-700 capitalize">{name}</h1>
+            <h1 className='mt-4 text-md font-light text-gray-500'>id : {_id}</h1>
             <h3 className="mt-4 text-xl font-semibold text-gray-700 capitalize">
               {address.street}, {address.city}
               <br />

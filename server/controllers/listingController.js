@@ -112,6 +112,10 @@ const sellListing = async (req, res) => {
   });
   listing.status = 'Sold';
   await listing.save();
+  const user = req.user;
+  user.funds += listing.price;
+  await user.save();
+  await Pool.deleteOne({ _id: req.params.poolId });
   res.status(200).json(listing);
 };
 
