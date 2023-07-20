@@ -99,8 +99,6 @@ const Navbar = () => {
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
                   const decoded = jwt_decode(credentialResponse.credential);
-                  console.log(decoded);
-                  console.log(credentialResponse.credential);
                   dispatch(addUser({ token: decoded, auth_token: credentialResponse.credential }));
                   navigate('/profile');
                 }}

@@ -1,6 +1,8 @@
 const Listing = require('../models/listingModel');
 const User = require('../models/userModel');
+const Pool = require('../models/poolModel');
 const data = require('./initalData.js');
+const mongoose = require('mongoose');
 
 // function processListings() {
 //   data.initToronto.forEach((jsonObject) => {
@@ -90,20 +92,22 @@ const sellListing = async (req, res) => {
     res.status(400);
     throw new Error('Listing not found');
   }
-  const userListings = await Listing.find({ createdBy: req.user.email });
-  if (!userListings.includes(listing)) {
-    res.status(400);
-    throw new Error('User does not own this listing');
-  }
   const pool = await Pool.findById(req.params.poolId);
   if (!pool) {
     res.status(400);
     throw new Error('Pool not found');
   }
+  if (pool.listingId.toString() !== listing.id) { 
+    res.status(400);
+    throw new Error('Pool does not own this listing');
+  }
   const members = pool.users;
   members.forEach(async (member) => {
     const user = await User.findOne({ email: member.email });
-    user.ownerships.push({ listingId: listing.id, amount: member.equity });
+    if (user.funds < member.equity)
+      throw new Error('User does not have enough funds to purchase this listing');
+    user.ownerships = [...user.ownerships, { listingId: new mongoose.Types.ObjectId(listing.id), amount: member.equity }];
+    user.funds -= member.equity;
     await user.save();
   });
   listing.status = 'Sold';

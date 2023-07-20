@@ -99,7 +99,7 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
       <div
         id="popup-modal"
         tabIndex="-1"
-        className={`fixed inset-0 z-49 flex items-center justify-center bg-gray-900 bg-opacity-50`}
+        className={`pt-24 fixed inset-0 z-49 flex items-center justify-center bg-gray-900 bg-opacity-50`}
       >
         <div className="relative bg-white rounded-lg shadow w-screen h-auto max-w-md max-h-full overflow-y-auto">
           <div className="p-6 text-center">
