@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import authService from './authService';
 
 const initialState = {
-  token: JSON.parse(localStorage.getItem('token')) || {},
-  auth_token: JSON.parse(localStorage.getItem('authToken')) || {},
+  token: JSON.parse(sessionStorage.getItem('token')) || {},
+  auth_token: JSON.parse(sessionStorage.getItem('authToken')) || {},
   user: null,
 };
 
@@ -55,14 +55,14 @@ const authSlice = createSlice({
         console.log('User not found');
         return;
       }
-      localStorage.setItem('token', JSON.stringify(action.payload.token));
-      localStorage.setItem('authToken', JSON.stringify(action.payload.auth_token));
+      sessionStorage.setItem('token', JSON.stringify(action.payload.token));
+      sessionStorage.setItem('authToken', JSON.stringify(action.payload.auth_token));
       state.token = action.payload.token;
       state.auth_token = action.payload.auth_token;
     },
     clearUser: (state) => {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('authToken');
+      sessionStorage.removeItem('token');
       state.token = {};
       state.auth_token = {};
     },

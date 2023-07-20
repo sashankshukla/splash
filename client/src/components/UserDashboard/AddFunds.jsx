@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { increaseUserFunds } from '../../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 
 const AddFunds = () => {

@@ -10,7 +10,7 @@ const register = async (userData) => {
 
 // Logout user
 const logout = () => {
-  localStorage.removeItem('user');
+  sessionStorage.removeItem('user');
 };
 
 const fetchUser = async (userEmail, token) => {
