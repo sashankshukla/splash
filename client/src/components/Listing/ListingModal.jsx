@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteListing } from '../../features/listings/listingsSlice';
 import ListingForm from '../Listings/ListingForm';
+import AliceCarousel from 'react-alice-carousel';
+import 'react-alice-carousel/lib/alice-carousel.css';
 
 const ListingModal = ({ selectedListing, setSelectedListing }) => {
   const user = useSelector((store) => store.auth.token);
@@ -39,12 +41,28 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
     setSelectedListing(null);
   };
 
-  const renderedImages = images.map((image, img_index) => (
-    <img key={img_index} src={image} alt="" className="object-cover w-48 h-48 rounded-md mx-auto" />
-  ));
+  const ImageCarousel = ({ images }) => {
+    return (
+      <AliceCarousel
+        items={images.map((image, index) => (
+          <img
+            key={index}
+            src={image}
+            alt={`${index + 1}`}
+            className="h-full w-full object-cover rounded-md"
+          />
+        ))}
+        disableButtonsControls
+        autoPlayInterval={3000}
+        animationDuration={1000}
+        infinite
+        autoPlay
+      />
+    );
+  };
 
   const renderButtonsCheck =
-    user.email == createdBy ? (
+    user.email === createdBy ? (
       <div id="modal-buttons-container flex flex-row">
         <button
           onClick={editSelectedListing}
@@ -81,7 +99,7 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
       <div
         id="popup-modal"
         tabIndex="-1"
-        className={`fixed inset-0 z-49 flex items-center justify-center bg-gray-900 bg-opacity-50`}
+        className={`pt-24 fixed inset-0 z-49 flex items-center justify-center bg-gray-900 bg-opacity-50`}
       >
         <div className="relative bg-white rounded-lg shadow w-screen h-auto max-w-md max-h-full overflow-y-auto">
           <div className="p-6 text-center">
@@ -92,12 +110,14 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
               X
             </button>
             {/* TODO: add role indicator for screen readers */}
-            {renderedImages}
+            {/* {renderedImages} */}
+            <ImageCarousel images={images}></ImageCarousel>
             {/*
             TODO: format into an image carousel
             See: https://www.material-tailwind.com/docs/react/carousel
           */}
             <h1 className="mt-4 text-2xl font-semibold text-gray-700 capitalize">{name}</h1>
+            <h1 className="mt-4 text-md font-light text-gray-500">id : {_id}</h1>
             <h3 className="mt-4 text-xl font-semibold text-gray-700 capitalize">
               {address.street}, {address.city}
               <br />

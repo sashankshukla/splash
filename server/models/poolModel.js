@@ -10,6 +10,7 @@ const poolSchema = new Schema(
     private: {
       type: Boolean,
       required: true,
+      default: false,
     },
     users: [
       {
@@ -24,6 +25,10 @@ const poolSchema = new Schema(
         },
       },
     ],
+    remaining: {
+      type: Number,
+      required: true,
+    },
     listingId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Listing',
@@ -32,6 +37,10 @@ const poolSchema = new Schema(
     createdBy: {
       type: String,
       ref: 'User',
+      required: true,
+    },
+    totalValue: {
+      type: Number,
       required: true,
     },
   },

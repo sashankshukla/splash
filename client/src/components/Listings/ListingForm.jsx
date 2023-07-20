@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { FaMinusCircle } from 'react-icons/fa';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addListing, updateListing } from '../../features/listings/listingsSlice';
 
 const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSelectedListing }) => {
-  const user = useSelector((store) => store.auth.token);
-
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
@@ -17,7 +15,6 @@ const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSel
       postalCode: '',
     },
     description: '',
-    investmentType: '',
     details: [],
     price: '',
     images: [],

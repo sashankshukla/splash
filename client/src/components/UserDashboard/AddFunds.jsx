@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { increaseUserFunds } from '../../features/auth/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from '../../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const AddFunds = () => {
   const [form, setForm] = useState({
@@ -7,6 +11,13 @@ const AddFunds = () => {
     bankName: '',
     amount: '',
   });
+
+  const user = useSelector((store) => store.auth.user);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
   const handleInputChange = (event) => {
     setForm({
@@ -17,7 +28,17 @@ const AddFunds = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(form);
+    dispatch(increaseUserFunds(form))
+      .then((response) => {
+        navigate('/profile');
+      })
+      .catch((error) => {
+        if (error) {
+          console.log('caught in add funds'); // todo not being caught.
+          setIsErrorModalOpen(true);
+        }
+      });
+    navigate('/profile');
   };
 
   return (
@@ -98,6 +119,17 @@ const AddFunds = () => {
               Confirm Transfer
             </button>
           </div>
+          {isErrorModalOpen && (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+              <div className="bg-white p-6 rounded shadow-lg">
+                <h2 className="text-xl font-bold mb-2">Error</h2>
+                <p>Oops! Something went wrong. Please try again later.</p>
+                <button className="mt-4 py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600">
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
         </form>
       </div>
     </div>
