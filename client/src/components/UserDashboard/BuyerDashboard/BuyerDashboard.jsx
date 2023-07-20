@@ -48,10 +48,10 @@ const BuyerDashboard = () => {
             <PurchaseCard
               key={idx}
               name={asset.name}
-              id={asset._id}
+              id={asset.listingId}
               purchasePrice={asset.purchasePrice}
               equity={asset.amount}
-              currentPrice={asset.amount}
+              currentPrice={asset.currentPrice}
             />
           );
         })}

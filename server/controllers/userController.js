@@ -1,5 +1,6 @@
 const User = require('../models/userModel');
 const Bank = require('../models/bankModel');
+const Listing = require('../models/listingModel');
 
 const addUser = async (req, res) => {
   if (!req.body.name || !req.body.email) {
@@ -89,8 +90,20 @@ const getUserAssets = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  const userEmail = req.params.email;
-  const user = await User.findOne({ email: userEmail });
+  const originalUser = await User.findOne({ email: req.params.email });
+  const user = originalUser.toObject();
+
+  user.ownerships = await Promise.all(
+    user.ownerships.map(async (ownership) => {
+      const listing = await Listing.findById(ownership.listingId);
+      return {
+        ...ownership,
+        name: listing.name,
+        purchasePrice: listing.price,
+        currentPrice: listing.price,
+      };
+    }),
+  );
   res.status(200).json(user);
 };
 
