@@ -3,8 +3,9 @@ import { useDispatch } from 'react-redux';
 import { addPoolsAsync } from '../../features/pools/poolsSlice';
 import { fetchListings } from '../../features/listings/listingsSlice';
 
-const PoolForm = ({ modalVisible, setModalVisible }) => {
+const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
   const dispatch = useDispatch();
+  const wasListingIdPassed = listingId != null && listingId !== '' && listingId !== undefined;
 
   useEffect(() => {
     dispatch(fetchListings());
@@ -12,7 +13,7 @@ const PoolForm = ({ modalVisible, setModalVisible }) => {
 
   const [formData, setFormData] = useState({
     title: '',
-    listingId: '',
+    listingId: listingId || '',
     description: '',
     private: false,
     initialContribution: 0,
@@ -79,6 +80,7 @@ const PoolForm = ({ modalVisible, setModalVisible }) => {
                       <input
                         type="text"
                         name="listingId"
+                        readOnly={wasListingIdPassed}
                         value={formData.listingId}
                         onChange={handleChange}
                         required
