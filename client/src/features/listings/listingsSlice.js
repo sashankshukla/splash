@@ -3,6 +3,7 @@ import listingsService from './listingsService';
 
 const initialState = {
   listings: [],
+  filters: [],
   isError: false,
   isSuccess: false,
   isLoading: false,

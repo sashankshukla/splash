@@ -214,6 +214,8 @@ function Filter() {
       typeGas.checked = listingFilterData.investmentType.gasStation;
       const typeStock = document.getElementById("invest-stock-portfolio-cb");
       typeStock.checked = listingFilterData.investmentType.stockPortfolio;
+
+      console.log(listingFilterData);
     }
   }, [optionsVisible]);
 
