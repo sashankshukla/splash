@@ -20,12 +20,7 @@ const addUser = async (req, res) => {
 };
 
 const addFunds = async (req, res) => {
-  const user = req.user;
   const form = req.body;
-  if (!user) {
-    res.status(400);
-    throw new Error('User not found');
-  }
   function validatePayment(form) {
     if (!form.accountName || !form.accountNumber || !form.bankName || !form.amount) {
       return false;
@@ -42,42 +37,28 @@ const addFunds = async (req, res) => {
     if (form.bankName.trim() === '') {
       return false;
     }
-    // All checks passed, transfer is valid
-    const result = Bank.find({
-      accountName: form.accountName,
-      accountNumber: form.accountNumber,
-      bankName: form.bankName,
-      userEmail: req.user.email,
-      approved: true,
-    });
-    if (result.length > 0) {
-      return true;
-    } else {
-      // approved payment not found we make a payment with user request default for approved set to 0, admin has to flag payment as approved first
-      Bank.create({
-        accountName: form.accountName,
-        accountNumber: form.accountNumber,
-        bankName: form.bankName,
-        userEmail: req.user.email,
-      });
-      return false;
-    }
+    return true;
   }
   const paymentStatus = validatePayment(form);
-  if (paymentStatus) {
-    const updatedUser = await User.findOneAndUpdate(
-      { email: user.email },
-      { $inc: { funds: parseFloat(form.amount) } },
-      {
-        new: true, // Return the updated document
-        useFindAndModify: false,
-      },
-    );
-
-    res.status(200).json(updatedUser);
-  } else {
-    res.status(400).json();
+  const bank = Bank.find({
+    accountName: form.accountName,
+    accountNumber: form.accountNumber,
+    bankName: form.bankName,
+    userEmail: req.user.email,
+  });
+  if (!paymentStatus || !bank) {
+    res.status(400).json({ message: 'Invalid payment details' });
+    return;
   }
+  const updatedUser = await User.findOneAndUpdate(
+    { email: req.user.email },
+    { $inc: { funds: parseFloat(form.amount) } },
+    {
+      new: true, // Return the updated document
+      useFindAndModify: false,
+    },
+  );
+  res.status(200).json(updatedUser);
 };
 
 const getUserAssets = async (req, res) => {

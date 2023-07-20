@@ -77,7 +77,9 @@ const authSlice = createSlice({
       .addCase(increaseUserFunds.fulfilled, (state, action) => {
         console.log('increase user funds extra reducer');
         console.log(action.payload);
+        const ownerships = state.user.ownerships;
         state.user = action.payload;
+        state.user.ownerships = ownerships;
       })
       .addCase(increaseUserFunds.rejected, (state, action) => {
         //TODO error catching not working does not display modal.
