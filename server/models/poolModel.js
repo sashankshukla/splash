@@ -43,10 +43,6 @@ const poolSchema = new Schema(
       type: Number,
       required: true,
     },
-    remaining: {
-      type: Number,
-      required: true,
-    },
   },
   { timestamps: true },
 );
