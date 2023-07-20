@@ -12,7 +12,7 @@ const {
   getTotalPoolEquity,
   getPoolsForUser,
   getPoolsCreatedByUser,
-  getPoolsCompletedForUser
+  getPoolsCompletedForUser,
 } = require('../controllers/poolController');
 
 const authMiddleware = require('../middleware/authMiddleware');

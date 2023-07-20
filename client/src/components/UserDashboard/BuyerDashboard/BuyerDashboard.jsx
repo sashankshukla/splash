@@ -15,7 +15,7 @@ const BuyerDashboard = () => {
     if (token) {
       dispatch(fetchPoolsForUser());
     }
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   if (!user) {
     // Render loading state or return null if you prefer

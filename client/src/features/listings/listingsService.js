@@ -75,7 +75,7 @@ const deleteListing = async (id, token) => {
   return response.data;
 };
 
-const sellListing = async (listingId, poolId, token) => { 
+const sellListing = async (listingId, poolId, token) => {
   console.log('token', token);
   const config = {
     headers: {
@@ -85,7 +85,7 @@ const sellListing = async (listingId, poolId, token) => {
   console.log(config);
   const response = await axios.post(`${API_URL}sell/${listingId}/${poolId}`, {}, config);
   return response.data;
-}
+};
 
 const listingsService = {
   fetchListings,

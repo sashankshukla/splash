@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addPoolsAsync } from '../../features/pools/poolsSlice';
 import { fetchListings } from '../../features/listings/listingsSlice';
 
 const PoolForm = ({ modalVisible, setModalVisible }) => {
   const dispatch = useDispatch();
-  const token = useSelector((store) => store.auth.token);
-  const listings = useSelector((store) => store.listings);
 
   useEffect(() => {
     dispatch(fetchListings());

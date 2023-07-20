@@ -104,16 +104,16 @@ const getTotalPoolEquity = async (req, res) => {
   res.status(200).json(totalEquity);
 };
 
-const getPoolsCompletedForUser = async (req, res) => { 
+const getPoolsCompletedForUser = async (req, res) => {
   const userListings = (await Listing.find({ createdBy: req.user.email, status: 'Available' })).map(
     (listing) => listing._id,
   );
   const pools = [];
   for (const listingId of userListings) {
-    const poolsForListing = await Pool.find({ listingId : listingId});
+    const poolsForListing = await Pool.find({ listingId: listingId });
     pools.push(...poolsForListing);
   }
-  if (!pools) { 
+  if (!pools) {
     res.status(400);
     throw new Error('Pools not found');
   }

@@ -21,7 +21,7 @@ const SellerDashboard = () => {
       setApprovalPools(response.data);
     };
     fetchApprovalPools();
-  }, []);
+  }, [auth_token]);
 
   return (
     <div className="h-screen mt-48 pb-48 w-screen flex flex-col justify-center items-center">
@@ -38,7 +38,7 @@ const SellerDashboard = () => {
             poolTitle={pool.name}
             poolId={pool._id}
             listingId={pool.listingId}
-            members = {pool.users}
+            members={pool.users}
           />
         ))}
       </div>

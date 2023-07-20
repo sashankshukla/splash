@@ -97,7 +97,7 @@ const sellListing = async (req, res) => {
     res.status(400);
     throw new Error('Pool not found');
   }
-  if (pool.listingId.toString() !== listing.id) { 
+  if (pool.listingId.toString() !== listing.id) {
     res.status(400);
     throw new Error('Pool does not own this listing');
   }
@@ -106,7 +106,10 @@ const sellListing = async (req, res) => {
     const user = await User.findOne({ email: member.email });
     if (user.funds < member.equity)
       throw new Error('User does not have enough funds to purchase this listing');
-    user.ownerships = [...user.ownerships, { listingId: new mongoose.Types.ObjectId(listing.id), amount: member.equity }];
+    user.ownerships = [
+      ...user.ownerships,
+      { listingId: new mongoose.Types.ObjectId(listing.id), amount: member.equity },
+    ];
     user.funds -= member.equity;
     await user.save();
   });

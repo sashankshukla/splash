@@ -26,7 +26,7 @@ const Pools = () => {
     if (token) {
       dispatch(fetchPools());
     }
-  }, [dispatch]);
+  }, [dispatch, token]);
 
   return (
     <div id="pools-page-container" className="flex flex-col justify-center items-center pt-16 mx-4">
