@@ -7,7 +7,7 @@ const {
   getUserAssets,
   addFunds,
   getUser,
-  increaseUserFunds,
+  addAccount,
 } = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware');
 
@@ -16,5 +16,6 @@ router.post('/', addUser);
 router.get('/assets', authMiddleware, getUserAssets);
 router.post('/addFunds', authMiddleware, addFunds);
 router.get('/:email', authMiddleware, getUser);
+router.post('/addAccount', authMiddleware, addAccount);
 
 module.exports = router;

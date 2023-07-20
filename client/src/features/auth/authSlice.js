@@ -41,6 +41,19 @@ export const increaseUserFunds = createAsyncThunk(
   },
 );
 
+export const addAccount = createAsyncThunk('auth/addAccount', async (data, thunkAPI) => {
+  try {
+    let token = thunkAPI.getState().auth.auth_token;
+    return await authService.addAccount(data, token);
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,

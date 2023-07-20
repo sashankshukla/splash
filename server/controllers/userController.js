@@ -61,6 +61,34 @@ const addFunds = async (req, res) => {
   res.status(200).json(updatedUser);
 };
 
+const addAccount = async (req, res) => {
+  const form = req.body;
+  function validateAccount(form) {
+    if (!form.accountName || !form.accountNumber || !form.bankName) {
+      return false;
+    }
+    // Check if account number is a valid number
+    if (isNaN(form.accountNumber) || form.accountNumber <= 0) {
+      return false;
+    }
+    // Check if bank name is not empty
+    if (form.bankName.trim() === '') {
+      return false;
+    }
+    return true;
+  }
+  const status = validateAccount(form);
+  if (!status) {
+    res.status(400).json({ message: 'Invalid bank' });
+    return;
+  }
+  const bank = await Bank.create({
+    ...form,
+    userEmail: req.user.email,
+  });
+  res.status(200).json(bank);
+};
+
 const getUserAssets = async (req, res) => {
   const user = req.user;
   if (!user) {
@@ -88,4 +116,4 @@ const getUser = async (req, res) => {
   res.status(200).json(user);
 };
 
-module.exports = { addUser, getUserAssets, addFunds, getUser };
+module.exports = { addUser, getUserAssets, addFunds, getUser, addAccount };
