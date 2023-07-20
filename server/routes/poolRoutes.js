@@ -24,7 +24,7 @@ router.post('/:id/leave', authMiddleware, leavePool);
 router.get('/', getPools);
 router.get('/listing/:listingId', getPoolsForListing);
 router.get('/totalEquity/:id', getTotalPoolEquity);
-router.get('/user/joined/',authMiddleware,getPoolsForUser);
+router.get('/user/joined/', authMiddleware, getPoolsForUser);
 router.get('/user/created/', authMiddleware, getPoolsCreatedByUser);
 
 module.exports = router;

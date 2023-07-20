@@ -25,7 +25,7 @@ const data = require('./initalData.js');
 // }
 
 const getListings = async (req, res) => {
-  const listings = await Listing.find({status: 'Available'});
+  const listings = await Listing.find({ status: 'Available' });
   res.status(200).json(listings);
 };
 

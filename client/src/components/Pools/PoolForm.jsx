@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addPool, addPoolsAsync } from '../../features/pools/poolsSlice';
+import { addPoolsAsync } from '../../features/pools/poolsSlice';
 import { fetchListings } from '../../features/listings/listingsSlice';
 
 const PoolForm = ({ modalVisible, setModalVisible }) => {
@@ -38,7 +38,7 @@ const PoolForm = ({ modalVisible, setModalVisible }) => {
         name: formData.title,
         listingId: formData.listingId,
         private: formData.private,
-        contribution : formData.initialContribution,
+        contribution: formData.initialContribution,
       }),
     );
     setModalVisible(false);

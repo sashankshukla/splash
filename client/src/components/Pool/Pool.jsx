@@ -80,7 +80,13 @@ const Pool = ({
           Delete Pool
         </button>
       )}
-      <JoinForm poolId={poolId} modalVisible={modalVisible} setModalVisible={setModalVisible} modify={memberFound} currentContribution={memberEquity} />
+      <JoinForm
+        poolId={poolId}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        modify={memberFound}
+        currentContribution={memberEquity}
+      />
     </div>
   );
 };

@@ -1,22 +1,24 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import poolServices from './poolsService';
 
-var initialState = [
-];
+var initialState = [];
 
-export const fetchPoolsForUser = createAsyncThunk('pools/fetchPoolsForUser', async (user, thunkAPI) => {
-  try {
-    let token = thunkAPI.getState().auth.auth_token;
-    console.log(token);
-    return await poolServices.fetchPoolsForUser(token);
-  } catch (error) {
-    let message =
-      (error.response & error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
-  }
-});
+export const fetchPoolsForUser = createAsyncThunk(
+  'pools/fetchPoolsForUser',
+  async (user, thunkAPI) => {
+    try {
+      let token = thunkAPI.getState().auth.auth_token;
+      console.log(token);
+      return await poolServices.fetchPoolsForUser(token);
+    } catch (error) {
+      let message =
+        (error.response & error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
 
 export const fetchPools = createAsyncThunk('pools/fetchPools', async (thunkAPI) => {
   try {

@@ -13,7 +13,7 @@ const logout = () => {
   localStorage.removeItem('user');
 };
 
-const fetchUser = async (userEmail,token) => {
+const fetchUser = async (userEmail, token) => {
   const config = {
     headers: {
       Authorization: `${token}`,
@@ -27,29 +27,29 @@ const increaseUserFunds = async (form, token) => {
   const config = {
     headers: {
       Authorization: `${token}`,
-    }};
+    },
+  };
 
-    try {
-      const response = await axios.post(`${API_URL}addFunds`,form, config);
-      // Check if the response status is 400 and throw an error if true
-      if (response.status === 400) {
-        console.log("error caught"); // TODO not being caught
-        throw new Error('Bad request');
-      }
-      return response.data;
-    } catch (error) {
-      // Handle any errors during the request
-      console.log("error caught");
-      throw error;
+  try {
+    const response = await axios.post(`${API_URL}addFunds`, form, config);
+    // Check if the response status is 400 and throw an error if true
+    if (response.status === 400) {
+      console.log('error caught'); // TODO not being caught
+      throw new Error('Bad request');
     }
+    return response.data;
+  } catch (error) {
+    // Handle any errors during the request
+    console.log('error caught');
+    throw error;
+  }
 };
-
 
 const authService = {
   register,
   logout,
   fetchUser,
-  increaseUserFunds
+  increaseUserFunds,
 };
 
 export default authService;

@@ -17,14 +17,14 @@ const bankSchema = new Schema(
       required: true,
     },
     userEmail: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     approved: {
-        type: Boolean,
-        required: true,
-        default: false
-    }
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   { timestamps: true },
 );

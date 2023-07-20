@@ -4,7 +4,6 @@ const Listing = require('../models/listingModel');
 const getPools = async (req, res) => {
   // TODO: add filter as well
   const pools = await Pool.find({ private: false });
-  console.log(pools);
   res.status(200).json(pools);
 };
 
@@ -19,7 +18,7 @@ const addPool = async (req, res) => {
     createdBy: req.user.email,
     users: [{ email: req.user.email, equity: req.body.contribution }],
     totalValue: listing.price,
-    remaining : listing.price - req.body.contribution,
+    remaining: listing.price - req.body.contribution,
   });
   res.status(200).json(pool);
 };
@@ -87,7 +86,6 @@ const getPoolsForUser = async (req, res) => {
 const getPoolsCreatedByUser = async (req, res) => {
   const user = req.user;
   const pools = await Pool.find({ createdBy: user.email });
-  console.log(pools);
   if (!pools) {
     res.status(400);
     throw new Error('Pools not found');

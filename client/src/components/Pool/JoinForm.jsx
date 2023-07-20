@@ -25,12 +25,12 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
   const handleSubmit = (e) => {
     e.preventDefault();
     formData.poolId = poolId;
-    if(modify) {
-      //DAMAN TO ADD EDITPOOL LOGIC
+    if (modify) {
+      //DAMAN TO add edit contribution / join pool logic
+      // make sure to update the backend as well. Need to update join pool, and complete the controller for edit
       dispatch({ type: 'pools/editPool', payload: { ...formData, email: token.email } });
     } else {
       dispatch({ type: 'pools/joinPool', payload: { ...formData, email: token.email } });
-
     }
     setModalVisible(false);
   };
