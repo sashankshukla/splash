@@ -8,6 +8,35 @@ const getPools = async (req, res) => {
   res.status(200).json(pools);
 };
 
+const getPrivatePool = async (req, res) => {
+  const id = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    console.log('Invalid ID');
+    res.status(400).send('Invalid ID');
+    return;
+  }
+
+  try {
+    const pool = await Pool.findById(id);
+
+    if (!pool) {
+      console.log('Pool not found');
+      res.status(400).send('Pool not found');
+      return;
+    }
+
+    if (pool.private) {
+      res.status(200).json(pool);
+    } else {
+      console.log('No such private pool found');
+      res.status(400).send('No such private pool found');
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Server error');
+  }
+};
+
 const addPool = async (req, res) => {
   if (!req.body.name || !req.body.listingId || !req.body.contribution) {
     res.status(400);
@@ -137,4 +166,5 @@ module.exports = {
   getPoolsForUser,
   getPoolsCreatedByUser,
   getPoolsCompletedForUser,
+  getPrivatePool,
 };
