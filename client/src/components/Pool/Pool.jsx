@@ -19,8 +19,6 @@ const Pool = ({
   const dispatch = useDispatch();
 
   var totalEquity = 0;
-  console.log('members?');
-  console.log(members);
   if (members.length !== 0) {
     totalEquity = members.reduce((accumulator, member) => {
       return accumulator + member.equity;
