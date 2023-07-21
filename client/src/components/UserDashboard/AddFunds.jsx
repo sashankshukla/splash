@@ -46,7 +46,6 @@ const AddFunds = () => {
         <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900">
           Transfer Funds to Splash
         </h2>
-
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div className="my-3">

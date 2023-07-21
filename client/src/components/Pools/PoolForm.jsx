@@ -75,18 +75,20 @@ const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
                       />
                     </div>
-                    <div>
-                      <label className="font-medium">Listing ID</label>
-                      <input
-                        type="text"
-                        name="listingId"
-                        readOnly={wasListingIdPassed}
-                        value={formData.listingId}
-                        onChange={handleChange}
-                        required
-                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
-                      />
-                    </div>
+                    {!wasListingIdPassed && (
+                      <div>
+                        <label className="font-medium">Listing ID</label>
+                        <input
+                          type="text"
+                          name="listingId"
+                          readOnly={wasListingIdPassed}
+                          value={formData.listingId}
+                          onChange={handleChange}
+                          required
+                          className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
+                        />
+                      </div>
+                    )}
                     <div>
                       <label className="font-medium">Your Contribution</label>
                       <input
