@@ -1,6 +1,49 @@
+const { Configuration, OpenAIApi } = require('openai');
+
 const User = require('../models/userModel');
 const Bank = require('../models/bankModel');
 const Listing = require('../models/listingModel');
+
+const configuration = new Configuration({
+  apiKey: `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`,
+});
+const openai = new OpenAIApi(configuration);
+
+const formatDate = (date) => {
+  const year = date.getFullYear();
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  const day = ('0' + date.getDate()).slice(-2);
+  return `${year}-${month}-${day}`;
+};
+
+const runPrompt = async (prompt) => {
+  const gptResponse = await openai.createCompletion({
+    model: 'text-davinci-003',
+    prompt: prompt,
+    max_tokens: 2048,
+    temperature: 0.7,
+  });
+  return gptResponse.data.choices[0].text;
+};
+
+const generatePrompt = (listing, purchasePrice, purchaseDate, currentDate) => {
+  let prompt =
+    'Provide a prediction of the price for a given investment for each day starting from the purchase date to the current date.';
+  prompt +=
+    '\n Your prediction should be an array of floats where each element represents the price on a day starting from the purchase date to the current date.';
+  prompt +=
+    '\n The prediction should be somewhat realistic but try not to have like a constant increase or decrease in price.';
+  prompt += '\n Provide just the array in your response and nothing else.';
+  prompt +=
+    '\n make sure to use the information provided about the listing, its buying price etc in your prediction';
+  prompt += `\n investment name : ${listing.name}`;
+  prompt += `\n investment address : ${JSON.stringify(listing.address)}`;
+  prompt += `\n investment type : ${listing.investmentType}`;
+  prompt += `\n purchasePrice : ${purchasePrice}`;
+  prompt += `\n purchaseDate : ${purchaseDate}`;
+  prompt += `\n currentDate : ${currentDate}`;
+  return prompt;
+};
 
 const addUser = async (req, res) => {
   if (!req.body.name || !req.body.email) {
@@ -123,19 +166,44 @@ const getUserAssets = async (req, res) => {
 const getUser = async (req, res) => {
   const originalUser = await User.findOne({ email: req.params.email });
   const user = originalUser.toObject();
-
   user.ownerships = await Promise.all(
     user.ownerships.map(async (ownership) => {
       const listing = await Listing.findById(ownership.listingId);
+      const prices = user.priceDictionary[ownership.listingId];
       return {
         ...ownership,
         name: listing.name,
         purchasePrice: listing.price,
-        currentPrice: listing.price,
+        currentPrice: prices ? prices[prices.length - 1] : listing.price,
       };
     }),
   );
   res.status(200).json(user);
 };
 
-module.exports = { addUser, getUserAssets, addFunds, getUser, addAccount };
+const getUserAssetPerformance = async (req, res) => {
+  const user = req.user;
+  if (!user) {
+    res.status(400);
+    throw new Error('User not found');
+  }
+
+  const assets = user.ownerships;
+  const currentDate = new Date(formatDate(new Date()));
+  const priceDictionary = {};
+
+  for (const asset of assets) {
+    const listing = await Listing.findById(asset.listingId);
+    const purchaseDate = new Date(formatDate(listing.updatedAt));
+    const gptResponse = await runPrompt(
+      generatePrompt(listing, asset.amount , purchaseDate, currentDate),
+    );
+    const predictions = JSON.parse(gptResponse);
+    priceDictionary[asset.listingId] = predictions;
+  }
+  user.priceDictionary = priceDictionary;
+  await user.save();
+  res.status(200).json(priceDictionary);
+};
+
+module.exports = { addUser, getUserAssets, addFunds, getUser, addAccount, getUserAssetPerformance };
