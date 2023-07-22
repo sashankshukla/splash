@@ -11,13 +11,15 @@ function Filter() {
   const [optionsVisible, setVisibility] = useState(false);
   const [distExpand, setDistExpand] = useState(false);
 
+  const maxP = 1000000000;
+
   const initialState = {
     keywordSearch: "", //make this an array separated by space or smth in future?
     sortTime: "None",
     sortPrice: "None",
     price: {
-      lower: 0,
-      upper: 0
+      lower: 0, //min range
+      upper: maxP  //max range
     },
     distance: {
       check: false,
@@ -244,7 +246,7 @@ function Filter() {
           <input
             id="search-bar-input"
             className="px-1 w-full h-full border-none focus:outline-none focus:ring-0 text-start"
-            name="search"
+            name="keywordSearch"
             type="search"
             value={listingFilterData.keywordSearch}
             onChange={handleKeywordChange}
@@ -351,7 +353,8 @@ function Filter() {
                     name="range"
                     type="range"
                     min="0"
-                    max="10"
+                    max={maxP}
+                    // max should be set to our max price at some point maybe?
                     value={listingFilterData.distance.range}
                     onChange={handleDistanceChange}
                   />

@@ -14,7 +14,7 @@ const {
 const authMiddleware = require('../middleware/authMiddleware');
 
 // routes
-router.get('/', getListings);
+router.get('/:query?', getListings);
 router.get('/user', authMiddleware, getListingsForUser);
 router.post('/', authMiddleware, addListing);
 router.put('/:id', authMiddleware, updateListing);

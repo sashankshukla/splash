@@ -16,15 +16,15 @@ const Listings = () => {
   const dispatch = useDispatch();
 
   const token = useSelector((store) => store.auth.token); //auth_token is what we want for header config
-  const { listings, isError, isSuccess, isLoading, message } = useSelector(getListingsData);
+  const { listings, listingFilter, isError, isSuccess, isLoading, message } = useSelector(getListingsData);
 
   useEffect(() => {
     dispatch(fetchListings());
 
-    return () => {
-      dispatch(reset());
-    };
-  }, [dispatch]);
+    // return () => {
+    //   dispatch(reset());
+    // };
+  }, [dispatch, listingFilter]);
 
   const [selectedListing, setSelectedListing] = useState(null);
   const [formVisible, setFormVisible] = useState(false);

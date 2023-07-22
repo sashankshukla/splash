@@ -17,7 +17,7 @@ const initialState = {
     },
     status: {
       available: true,
-      sold: true
+      sold: false
     },
     pools: {
       open: true,
@@ -39,8 +39,9 @@ const initialState = {
 
 export const fetchListings = createAsyncThunk('listings/fetchListings', async (_, thunkAPI) => {
   try {
-    //const token  = thunkAPI.getState().auth.auth_token;
-    return await listingsService.fetchListings();
+    const listingFilter  = thunkAPI.getState().listings.listingFilter;
+    console.log(listingFilter);
+    return await listingsService.fetchListings(listingFilter);
   } catch (error) {
     let message =
       (error.response & error.response.data && error.response.data.message) ||
