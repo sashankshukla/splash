@@ -66,7 +66,7 @@ const Pool = ({
       )}
       {memberFound && (
         <button
-          className="m-1 px-4 py-2 text-white bg-primary-green rounded-lg inline-block"
+          className="m-1 px-4 py-2 text-gray-900 bg-yellow-400 rounded-lg inline-block"
           onClick={() => setModalVisible(true)}
         >
           <span>Modify Contribution</span>

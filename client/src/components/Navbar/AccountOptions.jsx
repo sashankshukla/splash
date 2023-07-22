@@ -46,7 +46,7 @@ function AccountOptions() {
               <Link to="/payment">Add Funds</Link>
             </li>
             <li className="py-2 cursor-pointer text-center hover:bg-light hover:text-primary">
-              Withdraw Funds
+              <Link to="/account">Add Account</Link>
             </li>
             <li className="py-2 cursor-pointer text-center hover:bg-light hover:text-primary">
               <button onClick={() => dispatch(clearUser())}>Logout</button>
