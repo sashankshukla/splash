@@ -39,9 +39,34 @@ const initialState = {
 
 export const fetchListings = createAsyncThunk('listings/fetchListings', async (_, thunkAPI) => {
   try {
+    return await listingsService.fetchListings();
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+export const fetchFilteredListings = createAsyncThunk('listings/fetchFilteredListings', async (_, thunkAPI) => {
+  try {
     const listingFilter  = thunkAPI.getState().listings.listingFilter;
     console.log(listingFilter);
-    return await listingsService.fetchListings(listingFilter);
+    return await listingsService.fetchFilteredListings(listingFilter);
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+export const fetchListingsForUser = createAsyncThunk('listings/fetchListingsForUser', async (_, thunkAPI) => {
+  try {
+    let token = thunkAPI.getState().auth.auth_token;
+    return await listingsService.fetchListingsForUser(token);
   } catch (error) {
     let message =
       (error.response & error.response.data && error.response.data.message) ||
@@ -133,6 +158,36 @@ const listingsSlice = createSlice({
         state.listings = action.payload;
       })
       .addCase(fetchListings.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+
+        state.message = action.payload;
+      })
+      .addCase(fetchFilteredListings.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchFilteredListings.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        //Add any fetched listings to the array
+        state.listings = action.payload;
+      })
+      .addCase(fetchFilteredListings.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+
+        state.message = action.payload;
+      })
+      .addCase(fetchListingsForUser.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchListingsForUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        //Add any fetched listings to the array
+        state.listings = action.payload;
+      })
+      .addCase(fetchListingsForUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
 

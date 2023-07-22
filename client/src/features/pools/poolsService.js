@@ -8,7 +8,7 @@ const fetchPoolsForUser = async (token) => {
       Authorization: `${token}`,
     },
   };
-  const response = await axios.get(`${API_URL}/user/joined/`, config);
+  const response = await axios.get(`${API_URL}user/joined/`, config);
   console.log('in fetch pools for user');
   console.log(response);
 
