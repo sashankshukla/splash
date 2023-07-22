@@ -2,74 +2,74 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5001/listings/';
 
-console.log(listingFilter);
-  //check for and collect info for each filter param
-  //encode the URI Components for each aspect
+// console.log(listingFilter);
+//   //check for and collect info for each filter param
+//   //encode the URI Components for each aspect
 
-  let max = 1000000000;
-  let query = [];
+//   let max = 1000000000;
+//   let query = [];
 
-  if(listingFilter.keywordSearch !== "") {
-    query.push("\"$text\":{\"$search\":\"" + listingFilter.keywordSearch + "\"}");
-  }
+//   if(listingFilter.keywordSearch !== "") {
+//     query.push("\"$text\":{\"$search\":\"" + listingFilter.keywordSearch + "\"}");
+//   }
 
-  if(listingFilter.price.lower > 0 && listingFilter.price.upper < max) {
-    query.push("\"price\":{\"$and\":[{\"$gte\":" + listingFilter.price.lower + "},{\"$lte:\"" + listingFilter.price.upper + "}]}");
-  } else if(listingFilter.price.lower > 0) {
-    query.push("\"price\":{\"$gte\":" + listingFilter.price.lower + "}");
-  } else if(listingFilter.price.upper < max) {
-    query.push("\"price\":{\"$lte\":" + listingFilter.price.upper + "}");
-  }
+//   if(listingFilter.price.lower > 0 && listingFilter.price.upper < max) {
+//     query.push("\"price\":{\"$and\":[{\"$gte\":" + listingFilter.price.lower + "},{\"$lte:\"" + listingFilter.price.upper + "}]}");
+//   } else if(listingFilter.price.lower > 0) {
+//     query.push("\"price\":{\"$gte\":" + listingFilter.price.lower + "}");
+//   } else if(listingFilter.price.upper < max) {
+//     query.push("\"price\":{\"$lte\":" + listingFilter.price.upper + "}");
+//   }
 
-  //distance
-  // if(listingFilter.distance.check) {
-  //   query.push("\"distance\":{\"$lte\":" + listingFilter.distance.range + "}");
-  // }
-  //NO DISTANCE OBJBECT, NEED TO DO MATH WITH LOCATION -- SAVE FOR LATER
+//   //distance
+//   // if(listingFilter.distance.check) {
+//   //   query.push("\"distance\":{\"$lte\":" + listingFilter.distance.range + "}");
+//   // }
+//   //NO DISTANCE OBJBECT, NEED TO DO MATH WITH LOCATION -- SAVE FOR LATER
 
-  //status
-  if(listingFilter.status.available && listingFilter.status.sold) {
-    query.push("\"status\":{\"$in\":[\"Available\",\"Sold\"]}");
-  } else if(listingFilter.status.available) {
-    query.push("\"status\": \"Available\"");
-  } else if(listingFilter.status.sold) {
-    query.push("\"status\": \"Sold\"");
-  }
+//   //status
+//   if(listingFilter.status.available && listingFilter.status.sold) {
+//     query.push("\"status\":{\"$in\":[\"Available\",\"Sold\"]}");
+//   } else if(listingFilter.status.available) {
+//     query.push("\"status\": \"Available\"");
+//   } else if(listingFilter.status.sold) {
+//     query.push("\"status\": \"Sold\"");
+//   }
 
-  //investmentType
-  let invT = ""
-  let invTEnd = "";
-  if(listingFilter.investmentType.residence ||
-    listingFilter.investmentType.franchise ||
-    listingFilter.investmentType.gasStation ||
-    listingFilter.investmentType.stockPortfolio) {
+//   //investmentType
+//   let invT = ""
+//   let invTEnd = "";
+//   if(listingFilter.investmentType.residence ||
+//     listingFilter.investmentType.franchise ||
+//     listingFilter.investmentType.gasStation ||
+//     listingFilter.investmentType.stockPortfolio) {
       
-      invT="\"investmentType\":{\"\`$in\`\":[";
-      invTEnd = "]}"
-  }
-  if(listingFilter.investmentType.residence) {
-    invT = invT.concat("\"House/Living Accommodation\"");
-    if(listingFilter.investmentType.franchise || listingFilter.investmentType.gasStation || listingFilter.investmentType.stockPortfolio) {
-      invT = invT.concat(",");
-    }
-  }
-  if(listingFilter.investmentType.franchise) {
-    invT = invT.concat("\"Franchise\"");
-    if(listingFilter.investmentType.gasStation || listingFilter.investmentType.stockPortfolio) {
-      invT = invT.concat(",");
-    }
-  }
-  if(listingFilter.investmentType.gasStation) {
-    invT = invT.concat("\"Gas Station\"");
-    if(listingFilter.investmentType.stockPortfolio) {
-      invT = invT.concat(",");
-    }
-  }
-  if(listingFilter.investmentType.stockPortfolio) {
-    invT = invT.concat("\"Stock Portfolio\"");
-  }
-  invT = invT.concat(invTEnd);
-  query.push(invT);
+//       invT="\"investmentType\":{\"\`$in\`\":[";
+//       invTEnd = "]}"
+//   }
+//   if(listingFilter.investmentType.residence) {
+//     invT = invT.concat("\"House/Living Accommodation\"");
+//     if(listingFilter.investmentType.franchise || listingFilter.investmentType.gasStation || listingFilter.investmentType.stockPortfolio) {
+//       invT = invT.concat(",");
+//     }
+//   }
+//   if(listingFilter.investmentType.franchise) {
+//     invT = invT.concat("\"Franchise\"");
+//     if(listingFilter.investmentType.gasStation || listingFilter.investmentType.stockPortfolio) {
+//       invT = invT.concat(",");
+//     }
+//   }
+//   if(listingFilter.investmentType.gasStation) {
+//     invT = invT.concat("\"Gas Station\"");
+//     if(listingFilter.investmentType.stockPortfolio) {
+//       invT = invT.concat(",");
+//     }
+//   }
+//   if(listingFilter.investmentType.stockPortfolio) {
+//     invT = invT.concat("\"Stock Portfolio\"");
+//   }
+//   invT = invT.concat(invTEnd);
+//   query.push(invT);
 
   // if(listingFilter.sortTime == "Newest First") {
   //   //
