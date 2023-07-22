@@ -9,7 +9,7 @@ const PurchaseCard = ({ name, id, purchasePrice, currentPrice, equity }) => {
         <h1 className="text-sm  text-gray-400">id: {id}</h1>
       </div>
       <div className="flex flex-col text-gray-900 justify-center items-start w-1/5">
-        <h1 className="text-md font-bold">$ {(equity).toLocaleString()}</h1>
+        <h1 className="text-md font-bold">$ {equity.toLocaleString()}</h1>
         <h1 className="text-sm  text-gray-400">CAD</h1>
       </div>
       <div className="flex flex-col text-gray-900 justify-center items-start w-1/5">

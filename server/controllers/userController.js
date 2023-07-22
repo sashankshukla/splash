@@ -5,7 +5,7 @@ const Bank = require('../models/bankModel');
 const Listing = require('../models/listingModel');
 
 const configuration = new Configuration({
-  apiKey: `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`,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -164,25 +164,27 @@ const getUserAssets = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  const originalUser = await User.findOne({ email: req.params.email });
+  const originalUser = req.user;
+  await getUserAssetPerformance(originalUser);
   const user = originalUser.toObject();
   user.ownerships = await Promise.all(
     user.ownerships.map(async (ownership) => {
       const listing = await Listing.findById(ownership.listingId);
-      const prices = user.priceDictionary[ownership.listingId];
+      const prices = user.priceDictionary
+        ? user.priceDictionary[ownership.listingId]
+        : [listing.price];
       return {
         ...ownership,
         name: listing.name,
         purchasePrice: listing.price,
-        currentPrice: prices ? prices[prices.length - 1] : listing.price,
+        currentPrice: prices[prices.length - 1],
       };
     }),
   );
   res.status(200).json(user);
 };
 
-const getUserAssetPerformance = async (req, res) => {
-  const user = req.user;
+const getUserAssetPerformance = async (user) => {
   if (!user) {
     res.status(400);
     throw new Error('User not found');
@@ -196,14 +198,13 @@ const getUserAssetPerformance = async (req, res) => {
     const listing = await Listing.findById(asset.listingId);
     const purchaseDate = new Date(formatDate(listing.updatedAt));
     const gptResponse = await runPrompt(
-      generatePrompt(listing, asset.amount , purchaseDate, currentDate),
+      generatePrompt(listing, asset.amount, purchaseDate, currentDate),
     );
     const predictions = JSON.parse(gptResponse);
     priceDictionary[asset.listingId] = predictions;
   }
   user.priceDictionary = priceDictionary;
   await user.save();
-  res.status(200).json(priceDictionary);
 };
 
-module.exports = { addUser, getUserAssets, addFunds, getUser, addAccount, getUserAssetPerformance };
+module.exports = { addUser, getUserAssets, addFunds, getUser, addAccount };
