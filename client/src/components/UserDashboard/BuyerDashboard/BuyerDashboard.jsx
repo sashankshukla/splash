@@ -4,11 +4,11 @@ import Pool from '../../Pool/Pool';
 import StockChart from './StockChart.webp';
 import PriceChart from './PriceChart';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchPoolsForUser } from '../../../features/pools/poolsSlice';
+import { fetchPoolsForUser, getPoolsData } from '../../../features/pools/poolsSlice';
 
 const BuyerDashboard = () => {
   const user = useSelector((store) => store.auth.user);
-  const pools = useSelector((state) => state.pools);
+  const { pools, isError, isSuccess, isLoading, message } = useSelector(getPoolsData);
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
 
@@ -74,6 +74,7 @@ const BuyerDashboard = () => {
               listingId={pool.listingId}
               members={pool.users}
               totalValue={pool.totalValue}
+              remaining={pool.remaining}
             />
           );
         })}
