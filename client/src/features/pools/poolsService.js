@@ -123,7 +123,7 @@ const fetchPoolsCreatedByUser = async (token) => {
     return response.data;
 }
 
-const poolServices = {
+const poolsService = {
     fetchPools,
     addPool,
     deletePool,
@@ -137,4 +137,4 @@ const poolServices = {
     fetchPrivatePool,
 };
 
-export default poolServices;
+export default poolsService;
