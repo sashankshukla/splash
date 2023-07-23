@@ -15,7 +15,9 @@ const addUser = async (req, res) => {
   const user = await User.create({
     ...req.body,
     ownerships: [],
+    admin: false,
   });
+  console.log(user);
   res.status(201).json(user);
 };
 
@@ -121,21 +123,72 @@ const getUserAssets = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  const originalUser = await User.findOne({ email: req.params.email });
-  const user = originalUser.toObject();
+  try {
+    const originalUser = await User.findOne({ email: req.params.email });
+    if (!originalUser) {
+      // Handle the case when the user is not found
+      return res.status(404).json({ error: 'User not found' });
+    }
 
-  user.ownerships = await Promise.all(
-    user.ownerships.map(async (ownership) => {
-      const listing = await Listing.findById(ownership.listingId);
-      return {
-        ...ownership,
-        name: listing.name,
-        purchasePrice: listing.price,
-        currentPrice: listing.price,
-      };
-    }),
-  );
-  res.status(200).json(user);
+    const user = originalUser.toObject();
+
+    user.ownerships = await Promise.all(
+      user.ownerships.map(async (ownership) => {
+        const listing = await Listing.findById(ownership.listingId);
+        if (!listing) {
+          // Handle the case when the listing is not found
+          return {
+            ...ownership,
+            name: 'Listing not found',
+            purchasePrice: 0,
+            currentPrice: 0,
+          };
+        }
+
+        return {
+          ...ownership,
+          name: listing.name,
+          purchasePrice: listing.price,
+          currentPrice: listing.price,
+        };
+      })
+    );
+
+    res.status(200).json(user);
+  } catch (error) {
+    // Handle any errors that occurred during the execution
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
-module.exports = { addUser, getUserAssets, addFunds, getUser, addAccount };
+const getAllUser = async (req, res) => {
+  try {
+    const usersList = await User.find({});
+    if(!usersList) {
+      throw new Error("Unable to get all users for admin");
+    };
+    console.log("Found this list of user");
+    console.log(usersList);
+    res.status(200).json(usersList);
+  } catch (error) {
+    // Handle any errors that occurred during the execution
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const getPendingFunds = async (req, res) => {
+  try {
+    const pendingFunds = await Bank.find({approved: false});
+    if(!pendingFunds) {
+      throw new Error("Unable to get all users for admin");
+    };
+    console.log("Found Funds needing approval");
+    console.log(pendingFunds);
+    res.status(200).json(pendingFunds);
+  } catch (error) {
+    // Handle any errors that occurred during the execution
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+module.exports = { addUser, getUserAssets, addFunds, getUser, addAccount , getAllUser, getPendingFunds};

@@ -15,6 +15,7 @@ const ProfileOverview = () => {
   const user = useSelector((store) => store.auth.user);
   const pools = useSelector((state) => state.pools);
   if (!user) {
+    console.log('loading');
     // Render loading state or return null if you prefer
     return <p>Loading...</p>;
   }

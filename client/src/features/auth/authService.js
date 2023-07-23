@@ -23,6 +23,31 @@ const fetchUser = async (userEmail, token) => {
   return response.data;
 };
 
+const fetchAllUser = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+  console.log("made it to fetchalluser");
+  const response = await axios.get(`${API_URL}`, config);
+  console.log("fetchAllUser services");
+  console.log(response);
+  return response.data;
+};
+
+const fetchPendingFunds = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+  console.log("made it to fetch pending funds");
+  const response = await axios.get(`${API_URL}admin/funds`, config);
+  console.log(response);
+  return response.data;
+};
+
 const increaseUserFunds = async (form, token) => {
   const config = {
     headers: {
@@ -70,6 +95,8 @@ const authService = {
   fetchUser,
   increaseUserFunds,
   addAccount,
+  fetchAllUser,
+  fetchPendingFunds
 };
 
 export default authService;

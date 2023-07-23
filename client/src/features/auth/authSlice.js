@@ -5,6 +5,8 @@ const initialState = {
   token: JSON.parse(sessionStorage.getItem('token')) || {},
   auth_token: JSON.parse(sessionStorage.getItem('authToken')) || {},
   user: null,
+  allUser: [],
+  pendingFunds: []
 };
 
 export const fetchUser = createAsyncThunk('auth/fetchUser', async (user, thunkAPI) => {
@@ -13,6 +15,34 @@ export const fetchUser = createAsyncThunk('auth/fetchUser', async (user, thunkAP
     console.log('result of fetchuser let token');
     console.log(token);
     return await authService.fetchUser(user, token);
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+export const fetchAllUsers = createAsyncThunk('auth/fetchAllUsers', async (_,thunkAPI) => {
+  try {
+    console.log("fetchAllUsers Slice");
+    let token = thunkAPI.getState().auth.auth_token;
+    return await authService.fetchAllUser(token);
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+export const fetchPendingFunds = createAsyncThunk('auth/fetchPendingFunds', async (_,thunkAPI) => {
+  try {
+    console.log("fetchPendingFunds Slice");
+    let token = thunkAPI.getState().auth.auth_token;
+    return await authService.fetchPendingFunds(token);
   } catch (error) {
     let message =
       (error.response & error.response.data && error.response.data.message) ||
@@ -86,6 +116,16 @@ const authSlice = createSlice({
         console.log('in the extra reducer we get');
         console.log(action.payload);
         state.user = action.payload;
+      })
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+        console.log('in the extra reducer for fetch all user');
+        console.log(action.payload);
+        state.allUser = action.payload;
+      })
+      .addCase(fetchPendingFunds.fulfilled, (state, action) => {
+        console.log('in the extra reducer for fetch pending funds');
+        console.log(action.payload);
+        state.pendingFunds = action.payload;
       })
       .addCase(increaseUserFunds.fulfilled, (state, action) => {
         console.log('increase user funds extra reducer');
