@@ -4,15 +4,7 @@ import { FaUser, FaMoneyBill } from 'react-icons/fa';
 import JoinForm from './JoinForm';
 import { deletePool } from '../../features/pools/poolsSlice';
 
-const Pool = ({
-  poolId,
-  title,
-  createdBy,
-  listingId,
-  members,
-  totalValue,
-  remaining,
-}) => {
+const Pool = ({ poolId, title, createdBy, listingId, members, totalValue, remaining }) => {
   const token = useSelector((store) => store.auth.token);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -20,7 +12,7 @@ const Pool = ({
 
   const memberFound = members.find((member) => member.email === token.email);
   const memberContribution = memberFound ? memberFound.equity : 0;
-  
+
   const progress = (1 - remaining / totalValue) * 100;
 
   return (

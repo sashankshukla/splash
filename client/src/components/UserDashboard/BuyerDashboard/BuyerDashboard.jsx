@@ -68,7 +68,7 @@ const BuyerDashboard = () => {
           return (
             <Pool
               key={idx}
-              poolId={pool.id}
+              poolId={pool._id}
               title={pool.name}
               createdBy={pool.createdBy}
               listingId={pool.listingId}
