@@ -9,7 +9,10 @@ const {
   getUser,
   addAccount,
   getAllUser,
-  getPendingFunds
+  getPendingFunds,
+  updateUser,
+  updateBank,
+  deleteBank
 } = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware');
 
@@ -21,5 +24,9 @@ router.get('/assets', authMiddleware, getUserAssets);
 router.post('/addFunds', authMiddleware, addFunds);
 router.get('/:email', authMiddleware, getUser);
 router.post('/addAccount', authMiddleware, addAccount);
+router.put('/:email', authMiddleware, updateUser)
+router.put('/assets/:bankId', authMiddleware, updateBank);
+router.delete('/assets/:bankId', authMiddleware, deleteBank);
+
 
 module.exports = router;

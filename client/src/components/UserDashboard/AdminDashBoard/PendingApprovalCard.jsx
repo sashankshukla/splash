@@ -4,11 +4,13 @@ import { BsHourglass } from 'react-icons/bs';
 import { FaPiggyBank } from 'react-icons/fa';
 import { FiMail } from 'react-icons/fi';
 import { AiOutlineFieldNumber } from 'react-icons/ai';
+import { updateBank } from '../../../features/auth/authSlice';
 
 
 
 
 const PendingApprovalCard = (account) => {
+  const dispatch = useDispatch();
 
     const formatDate = (mongoDateString) => {
         const dateObject = new Date(mongoDateString);
@@ -38,13 +40,13 @@ const PendingApprovalCard = (account) => {
       </div>
         <button
           className="m-1 px-4 py-2 text-white bg-primary-green rounded-lg inline-block"
-        //   onClick={() => setModalVisible(true)}
-        >
+          onClick={() => dispatch(updateBank({ account: account, status: true }))}
+          >
           <span>Approve</span>
         </button>
         <button
           className="m-1 px-4 py-2 bg-red-500 text-white rounded-lg inline-block"
-        //   onClick={() => dispatch({ type: 'pools/deletePool', payload: parseInt(poolId) })}
+          onClick={() => dispatch(updateBank({ account: account, status: false }))}
         >
           Deny
         </button>

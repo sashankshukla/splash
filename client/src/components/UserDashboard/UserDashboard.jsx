@@ -4,8 +4,9 @@ import SellerDashboard from './SellerDashboard/SellerDashboard';
 import Toggle from '../Toggle/Toggle';
 import ProfileOverview from './ProfileOverview';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AdminDashboard from './AdminDashBoard/AdminDashboard';
+import { fetchUser } from '../../features/auth/authSlice';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -13,17 +14,24 @@ const UserDashboard = () => {
   const user = useSelector((store) => store.auth.user);
 
   const [toggle, setToggle] = useState('Buyer');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (Object.keys(token).length === 0) {
       navigate('/');
     }
+    dispatch(fetchUser());
   }, [token, navigate]);
 
+  console.log('userDashboard');
   // if (!user) {
   //   // Render loading state or return null if you prefer
   //   return <p>Loading...</p>;
   // }
+  // console.log(user.active);
+  if (user && !user.active) {
+    navigate('/404');
+  }
 
   return (
     Object.keys(token).length > 0 && (

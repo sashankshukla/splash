@@ -17,7 +17,7 @@ const addUser = async (req, res) => {
     ownerships: [],
     admin: false,
   });
-  console.log(user);
+  
   res.status(201).json(user);
 };
 
@@ -42,7 +42,8 @@ const validatePayment = (form) => {
 
 const addFunds = async (req, res) => {
   const form = req.body;
-  console.log(form);
+  
+  
 
   const paymentStatus = validatePayment(form);
 
@@ -54,7 +55,7 @@ const addFunds = async (req, res) => {
       userEmail: req.user.email,
     });
 
-    console.log(bank);
+    
 
     if (!paymentStatus || !bank) {
       res.status(400).json({ message: 'Invalid payment details' });
@@ -80,7 +81,7 @@ const addFunds = async (req, res) => {
 
     res.status(200).json(updatedUser);
   } catch (err) {
-    console.log(err);
+    
     res.status(500).json({ message: err.message });
   }
 };
@@ -102,6 +103,9 @@ const addAccount = async (req, res) => {
     return true;
   }
   const status = validateAccount(form);
+  
+  
+  
   if (!status) {
     res.status(400).json({ message: 'Invalid bank' });
     return;
@@ -126,7 +130,6 @@ const getUser = async (req, res) => {
   try {
     const originalUser = await User.findOne({ email: req.params.email });
     if (!originalUser) {
-      // Handle the case when the user is not found
       return res.status(404).json({ error: 'User not found' });
     }
 
@@ -136,7 +139,6 @@ const getUser = async (req, res) => {
       user.ownerships.map(async (ownership) => {
         const listing = await Listing.findById(ownership.listingId);
         if (!listing) {
-          // Handle the case when the listing is not found
           return {
             ...ownership,
             name: 'Listing not found',
@@ -156,7 +158,6 @@ const getUser = async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
-    // Handle any errors that occurred during the execution
     res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -167,11 +168,10 @@ const getAllUser = async (req, res) => {
     if(!usersList) {
       throw new Error("Unable to get all users for admin");
     };
-    console.log("Found this list of user");
-    console.log(usersList);
+    
+    
     res.status(200).json(usersList);
   } catch (error) {
-    // Handle any errors that occurred during the execution
     res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -182,13 +182,93 @@ const getPendingFunds = async (req, res) => {
     if(!pendingFunds) {
       throw new Error("Unable to get all users for admin");
     };
-    console.log("Found Funds needing approval");
-    console.log(pendingFunds);
+    
+    
     res.status(200).json(pendingFunds);
   } catch (error) {
-    // Handle any errors that occurred during the execution
     res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-module.exports = { addUser, getUserAssets, addFunds, getUser, addAccount , getAllUser, getPendingFunds};
+const updateUser = async (req, res) => {
+  try {
+    
+    const status = req.body.status;
+    const updatedUser = await User.findOneAndUpdate(
+      { email: req.params.email },
+      { $set: { active: status } },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    
+    
+
+    const allUsers = await User.find();
+
+    
+    
+
+    res.status(200).json(allUsers);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const updateBank = async (req, res) => {
+  try {
+    
+    const status = req.body.status;
+    const updatedBank = await Bank.findOneAndUpdate(
+      { _id: req.params.bankId },
+      { $set: { approved: status } },
+      { new: true }
+    );
+
+    if (!updatedBank) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    
+    
+
+    const allPending = await Bank.find({approved: false});
+
+    
+    
+
+    res.status(200).json(allPending);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const deleteBank = async (req, res) => {
+  try {
+    
+    const updatedBank = await Bank.findOneAndDelete(
+      { _id: req.params.bankId },
+    );
+
+    if (!updatedBank) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    
+
+    const allPending = await Bank.find({approved: false});
+
+    
+    
+
+    res.status(200).json(allPending);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+module.exports = { addUser, getUserAssets, addFunds, getUser, addAccount , getAllUser, getPendingFunds, updateUser, updateBank,deleteBank};

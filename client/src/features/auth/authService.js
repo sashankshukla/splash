@@ -29,11 +29,42 @@ const fetchAllUser = async (token) => {
       Authorization: `${token}`,
     },
   };
-  console.log("made it to fetchalluser");
+  
   const response = await axios.get(`${API_URL}`, config);
-  console.log("fetchAllUser services");
-  console.log(response);
+  
+  
   return response.data;
+};
+
+const updateUser = async (data,token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+  
+  const response = await axios.put(`${API_URL}${data.user.email}`, data, config);
+  
+  
+  return response.data;
+};
+
+const updateBank = async (data,token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+  
+  if(data.status) {
+    const response = await axios.put(`${API_URL}assets/${data.account._id}`, data, config);
+    
+    
+    return response.data;
+  } else {
+    const response = await axios.delete(`${API_URL}assets/${data.account._id}`, config);
+    return response.data;
+  }
 };
 
 const fetchPendingFunds = async (token) => {
@@ -42,9 +73,9 @@ const fetchPendingFunds = async (token) => {
       Authorization: `${token}`,
     },
   };
-  console.log("made it to fetch pending funds");
+  
   const response = await axios.get(`${API_URL}admin/funds`, config);
-  console.log(response);
+  
   return response.data;
 };
 
@@ -59,13 +90,13 @@ const increaseUserFunds = async (form, token) => {
     const response = await axios.post(`${API_URL}addFunds`, form, config);
     // Check if the response status is 400 and throw an error if true
     if (response.status === 400) {
-      console.log('error caught'); // TODO not being caught
+      
       throw new Error('Bad request');
     }
     return response.data;
   } catch (error) {
     // Handle any errors during the request
-    console.log('error caught');
+    
     throw error;
   }
 };
@@ -79,12 +110,12 @@ const addAccount = async (form, token) => {
   try {
     const response = await axios.post(`${API_URL}addAccount`, form, config);
     if (response.status === 400) {
-      console.log('error caught'); // TODO not being caught
+      
       throw new Error('Bad request');
     }
     return response.data;
   } catch (error) {
-    console.log('error caught');
+    
     throw error;
   }
 };
@@ -96,7 +127,9 @@ const authService = {
   increaseUserFunds,
   addAccount,
   fetchAllUser,
-  fetchPendingFunds
+  fetchPendingFunds,
+  updateUser,
+  updateBank
 };
 
 export default authService;

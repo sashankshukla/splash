@@ -63,7 +63,7 @@ function Map() {
       try {
         const response = await fetch('https://ipapi.co/json/');
         const data = await response.json();
-        console.log('IP Address at: ' + data.city + ',' + data.country);
+
         const { latitude, longitude } = data;
         setCenter({ lat: latitude, lng: longitude });
       } catch (error) {
@@ -81,7 +81,7 @@ function Map() {
         Geocode.fromAddress(formattedAddress).then(
           (response) => {
             const { lat, lng } = response.results[0].geometry.location;
-            console.log(lat, lng);
+
             const marker = { lat: lat, lng: lng, object: listing };
             setMarkers((prevMarkers) => [...prevMarkers, marker]);
           },
@@ -115,7 +115,7 @@ function Map() {
 
   const handleMarkerClick = (marker) => {
     setSelectedMarker(marker);
-    console.log(marker);
+
     setIsModalOpen(true);
   };
 

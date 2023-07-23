@@ -83,7 +83,6 @@ const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSel
   };
 
   const handleSubmit = (e) => {
-    console.log(isEditing);
     e.preventDefault();
     if (isEditing) {
       dispatch(updateListing({ formData, listingId }));
