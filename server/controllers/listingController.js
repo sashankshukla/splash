@@ -10,7 +10,7 @@ const getListings = async (req, res) => {
 };
 
 const getFilteredListings = async (req, res) => {
-  console.log("req.params.query: " + req.params.query);
+  console.log(req.params.query);
   let max = 1000000000;
   let queryDecoded = "";
   let filterObj = {};
@@ -18,7 +18,7 @@ const getFilteredListings = async (req, res) => {
 
   if(req.params.query) {
     queryDecoded = JSON.parse(decodeURIComponent(req.params.query));
-    //console.log("queryDecoded: " + queryDecoded + " END");
+    console.log(queryDecoded);
   } else {
     const listings = await Listing.find(filterObj);
     res.status(200).json(listings);

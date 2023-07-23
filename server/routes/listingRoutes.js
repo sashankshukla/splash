@@ -17,7 +17,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 // routes
 router.get('/', getListings);
 router.get('/filterBy/:query?', getFilteredListings);
-router.get('/user', authMiddleware, getListingsForUser);
+router.get('/user/', authMiddleware, getListingsForUser);
 router.post('/', authMiddleware, addListing);
 router.put('/:id', authMiddleware, updateListing);
 router.delete('/:id', authMiddleware, deleteListing);

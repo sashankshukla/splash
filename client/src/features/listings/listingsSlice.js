@@ -9,7 +9,7 @@ const initialState = {
     sortPrice: "None",
     price: {
       lower: 0,
-      upper: 0
+      upper: 1000000000
     },
     distance: {
       check: false,

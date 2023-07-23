@@ -19,7 +19,7 @@ const Listings = () => {
   const { listings, listingFilter, isError, isSuccess, isLoading, message } = useSelector(getListingsData);
 
   useEffect(() => {
-    dispatch(fetchListings());
+    dispatch(fetchFilteredListings());
 
     // return () => {
     //   dispatch(reset());
