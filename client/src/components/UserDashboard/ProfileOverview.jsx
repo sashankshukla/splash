@@ -8,7 +8,7 @@ const ProfileOverview = () => {
   const userToken = useSelector((store) => store.auth.token);
   useEffect(() => {
     if (userToken) {
-      dispatch(fetchUser({ email: userToken.email }));
+      dispatch(fetchUser());
     }
   }, [dispatch, userToken]);
 

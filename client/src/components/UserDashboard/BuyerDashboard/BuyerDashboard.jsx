@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PurchaseCard from './PurchaseCard';
 import Pool from '../../Pool/Pool';
 import StockChart from './StockChart.webp';
+import PriceChart from './PriceChart';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPoolsForUser, getPoolsData } from '../../../features/pools/poolsSlice';
 
@@ -85,7 +86,7 @@ const BuyerDashboard = () => {
     <>
       <div className="h-screen w-screen flex flex-col justify-center items-center">
         <h1 className="text-4xl font-bold text-gray-900">Performance</h1>
-        <img src={StockChart} alt="Stock Chart" className="h-2/3 w-3/4 object-cover rounded-lg" />
+        <PriceChart />
       </div>
       <div className="flex flex-col md:flex-row">
         <OwnedAssets />

@@ -10,16 +10,16 @@ const register = async (userData) => {
 
 // Logout user
 const logout = () => {
-  localStorage.removeItem('user');
+  sessionStorage.removeItem('user');
 };
 
-const fetchUser = async (userEmail, token) => {
+const fetchUser = async (token) => {
   const config = {
     headers: {
       Authorization: `${token}`,
     },
   };
-  const response = await axios.get(`${API_URL}${userEmail.email}`, config);
+  const response = await axios.get(API_URL, config);
   return response.data;
 };
 
@@ -45,11 +45,31 @@ const increaseUserFunds = async (form, token) => {
   }
 };
 
+const addAccount = async (form, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+  try {
+    const response = await axios.post(`${API_URL}addAccount`, form, config);
+    if (response.status === 400) {
+      console.log('error caught'); // TODO not being caught
+      throw new Error('Bad request');
+    }
+    return response.data;
+  } catch (error) {
+    console.log('error caught');
+    throw error;
+  }
+};
+
 const authService = {
   register,
   logout,
   fetchUser,
   increaseUserFunds,
+  addAccount,
 };
 
 export default authService;

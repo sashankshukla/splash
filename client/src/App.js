@@ -5,6 +5,7 @@ import Pools from './components/Pools/Pools';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/Home/Home';
 import AddFunds from './components/UserDashboard/AddFunds';
+import AddAccount from './components/UserDashboard/AddAccount';
 import Map from './components/Map/Map.jsx';
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/pools" element={<Pools />} />
           <Route path="/payment" element={<AddFunds />} />
           <Route path="/map" element={<Map />} />
+          <Route path="/account" element={<AddAccount />} />
         </Routes>
       </Router>
     </div>

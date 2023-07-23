@@ -4,10 +4,12 @@ import { deleteListing } from '../../features/listings/listingsSlice';
 import ListingForm from '../Listings/ListingForm';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
+import PoolForm from '../Pools/PoolForm';
 
 const ListingModal = ({ selectedListing, setSelectedListing }) => {
   const user = useSelector((store) => store.auth.token);
   const [formVisible, setFormVisible] = useState(false);
+  const [poolFormVisible, setPoolFormVisible] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -96,6 +98,11 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
         listingId={_id}
         isEditing={true}
       />
+      <PoolForm
+        modalVisible={poolFormVisible}
+        setModalVisible={setPoolFormVisible}
+        listingId={_id}
+      />
       <div
         id="popup-modal"
         tabIndex="-1"
@@ -146,6 +153,14 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
               {status}
             </p>
             {renderButtonsCheck}
+            {user.email != createdBy && (
+              <button
+                onClick={() => setPoolFormVisible(true)}
+                className="mt-4 px-4 py-2 bg-green-700 text-white rounded-lg"
+              >
+                Start New Pool
+              </button>
+            )}
           </div>
         </div>
       </div>

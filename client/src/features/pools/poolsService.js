@@ -20,6 +20,16 @@ const fetchPools = async () => {
   return response.data;
 };
 
+const fetchPrivatePool = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+  const response = await axios.get(`${API_URL}private/${id}`, config);
+  return response.data;
+};
+
 const addPool = async (pool, token) => {
   const config = {
     headers: {
@@ -124,6 +134,7 @@ const poolServices = {
     fetchTotalPoolEquity,
     fetchPoolsCreatedByUser,
     fetchPoolsForUser,
+    fetchPrivatePool,
 };
 
 export default poolServices;

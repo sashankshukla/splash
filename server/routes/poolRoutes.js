@@ -14,6 +14,7 @@ const {
   getPoolsForUser,
   getPoolsCreatedByUser,
   getPoolsCompletedForUser,
+  getPrivatePool,
 } = require('../controllers/poolController');
 
 const authMiddleware = require('../middleware/authMiddleware');
@@ -30,5 +31,6 @@ router.get('/listing/:listingId', getPoolsForListing);
 router.get('/totalEquity/:id', getTotalPoolEquity);
 router.get('/user/joined/', authMiddleware, getPoolsForUser);
 router.get('/user/created/', authMiddleware, getPoolsCreatedByUser);
+router.get('/private/:id', authMiddleware, getPrivatePool);
 
 module.exports = router;
