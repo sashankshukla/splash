@@ -4,31 +4,31 @@ import listingsService from './listingsService';
 const initialState = {
   listings: [],
   listingFilter: {
-    keywordSearch: "", //make this an array separated by space or smth in future?
-    sortTime: "None",
-    sortPrice: "None",
+    keywordSearch: '', //make this an array separated by space or smth in future?
+    sortTime: 'None',
+    sortPrice: 'None',
     price: {
       lower: 0,
-      upper: 1000000000
+      upper: 1000000000,
     },
     distance: {
       check: false,
-      range: 0 //what should default be? what should min and max and increments be?
+      range: 0, //what should default be? what should min and max and increments be?
     },
     status: {
       available: true,
-      sold: false
+      sold: false,
     },
     pools: {
       open: true,
       closed: true,
-      none: true
+      none: true,
     },
     investmentType: {
       residence: true,
       franchise: true,
       gasStation: true,
-      stockPortfolio: true
+      stockPortfolio: true,
     },
   },
   isError: false,
@@ -49,32 +49,38 @@ export const fetchListings = createAsyncThunk('listings/fetchListings', async (_
   }
 });
 
-export const fetchFilteredListings = createAsyncThunk('listings/fetchFilteredListings', async (_, thunkAPI) => {
-  try {
-    const listingFilter  = thunkAPI.getState().listings.listingFilter;
-    console.log(listingFilter);
-    return await listingsService.fetchFilteredListings(listingFilter);
-  } catch (error) {
-    let message =
-      (error.response & error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
-  }
-});
+export const fetchFilteredListings = createAsyncThunk(
+  'listings/fetchFilteredListings',
+  async (_, thunkAPI) => {
+    try {
+      const listingFilter = thunkAPI.getState().listings.listingFilter;
+      console.log(listingFilter);
+      return await listingsService.fetchFilteredListings(listingFilter);
+    } catch (error) {
+      let message =
+        (error.response & error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
 
-export const fetchListingsForUser = createAsyncThunk('listings/fetchListingsForUser', async (_, thunkAPI) => {
-  try {
-    let token = thunkAPI.getState().auth.auth_token;
-    return await listingsService.fetchListingsForUser(token);
-  } catch (error) {
-    let message =
-      (error.response & error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
-  }
-});
+export const fetchListingsForUser = createAsyncThunk(
+  'listings/fetchListingsForUser',
+  async (_, thunkAPI) => {
+    try {
+      let token = thunkAPI.getState().auth.auth_token;
+      return await listingsService.fetchListingsForUser(token);
+    } catch (error) {
+      let message =
+        (error.response & error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
 
 export const addListing = createAsyncThunk('listings/addListing', async (listingData, thunkAPI) => {
   try {
@@ -144,7 +150,7 @@ const listingsSlice = createSlice({
     },
     clearFilter: (state, action) => {
       state.listingFilter = initialState.listingFilter;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder

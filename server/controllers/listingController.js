@@ -5,112 +5,97 @@ const data = require('./initalData.js');
 const mongoose = require('mongoose');
 
 const getListings = async (req, res) => {
-  const listings = await Listing.find({status: 'Available'});
+  const listings = await Listing.find({ status: 'Available' });
   res.status(200).json(listings);
 };
 
 const getFilteredListings = async (req, res) => {
-  console.log(req.params.query);
-  let max = 1000000000;
-  let queryDecoded = "";
+  Listing.createIndexes({ price: 1 });
+  Listing.createIndexes({ createdAt: 1 });
+
+  let queryDecoded = '';
   let filterObj = {};
   let sortObj = {};
 
-  if(req.params.query) {
+  if (req.params.query) {
     queryDecoded = JSON.parse(decodeURIComponent(req.params.query));
-    console.log(queryDecoded);
   } else {
     const listings = await Listing.find(filterObj);
     res.status(200).json(listings);
   }
 
-  // !! FIND OBJ !!
+  // keyword search
   let filterArr = [];
-  // keyword
-  if(queryDecoded.keywordSearch !== "") {
-    filterArr.push({"$text": {"$search": queryDecoded.keywordSearch}});
-    //filterObj.$text = {$search: queryDecoded.keywordSearch};
+  if (queryDecoded.keywordSearch) {
+    filterArr.push({ $text: { $search: queryDecoded.keywordSearch } });
   }
 
   // price
-  if(queryDecoded.price.lower > 0 && queryDecoded.price.upper < max) {
-    filterArr.push({"price": {"$and": [{"$gte": Number(queryDecoded.price.lower)}, {"$lte": Number(queryDecoded.price.upper)}]}});
-    //filterObj.price = {$and: [{$gte: queryDecoded.price.lower}, {$lte: queryDecoded.price.upper}]};
-  } else if(queryDecoded.price.lower > 0) {
-    filterArr.push({"price": {"$gte": Number(queryDecoded.price.lower)}});
-    //filterObj.price = {$gte: queryDecoded.price.lower};
-  } else if(queryDecoded.price.upper < max) {
-    filterArr.push({"price": {"$lte": Number(queryDecoded.price.upper)}});
-    //filterObj.price = {$lte: queryDecoded.price.upper};
-  }
+  const { lower, upper } = queryDecoded.price;
+  console.log(lower, upper);
+  filterArr.push({
+    price: {
+      $gte: parseInt(lower, 10),
+      $lte: parseInt(upper, 10),
+    },
+  });
 
   //status
+  const { available, sold } = queryDecoded.status;
   let statArr = [];
-  if(queryDecoded.status.available) {
+  if (available) {
     statArr.push('Available');
   }
-  if(queryDecoded.status.sold) {
+  if (sold) {
     statArr.push('Sold');
   }
-
-  if(statArr.length > 0) {
-    if(statArr.length > 1) {
-      //both
-      filterArr.push({"status": {"$in": statArr}});
-      //filterObj.status = {$in: statArr};
-    } else {
-      //just one
-      filterArr.push({"status": statArr[0]});
-      //filterObj.status = statArr[0];
-    }
-  }
+  filterArr.push({ status: { $in: statArr } });
 
   //investmentType
   let investArr = [];
-  if(queryDecoded.investmentType.residence) {
-    investArr.push('House/Living Accommodation');
+  if (queryDecoded.investmentType.residence) {
+    investArr.push('Housing/Living Accommodation');
   }
-  if(queryDecoded.investmentType.franchise) {
+  if (queryDecoded.investmentType.franchise) {
     investArr.push('Franchise');
   }
-  if(queryDecoded.investmentType.gasStation) {
+  if (queryDecoded.investmentType.gasStation) {
     investArr.push('Gas Station');
   }
-  if(queryDecoded.investmentType.stockPortfolio) {
+  if (queryDecoded.investmentType.stockPortfolio) {
     investArr.push('Stock Portfolio');
   }
+  filterArr.push({ investmentType: { $in: investArr } });
 
-  if(investArr.length > 0) {
-    if(investArr.length > 1) {
-      //more than one
-      filterArr.push({"investmentType": {"$in": investArr}});
-      //filterObj.investmentType = {$in: investArr};
-    } else {
-      //only one
-      filterArr.push({"investmentType": investArr[0]});
-      //filterObj.investmentType = investArr[0];
-    }
+  const sortArr = [];
+  const { sortTime, sortPrice } = queryDecoded;
+  if (sortPrice == 'High to Low') {
+    sortArr.push({ price: -1 });
+  } else if (sortPrice == 'Low to High') {
+    sortArr.push({ price: 1 });
   }
+  if (sortTime == 'Newest First') {
+    sortArr.push({ createdAt: -1 });
+  } else if (sortTime == 'Oldest First') {
+    sortArr.push({ createdAt: 1 });
+  }
+  sortObj =
+    sortArr.length > 0
+      ? sortArr.reduce((acc, curr, i) => ({
+          ...acc,
+          [`${Object.keys(curr)[0]}`]: Object.values(curr)[0],
+        }))
+      : {};
+  console.log(sortObj);
 
-  // big catch-all that replaces whole query with null if we have query choices that should cause it
-  if((statArr.length > 0 && investArr.length > 0) || filterArr.length == 0) { //remains null
-    if(filterArr.length > 1) { //more than one field filtered on
-      filterObj = filterArr.reduce((acc, curr, i) => ({ ...acc, [`${Object.keys(curr)[0]}`]: Object.values(curr)[0]}), {});
-      // Ref: https://www.appsloveworld.com/nodejs/100/321/how-do-i-add-multiple-optional-parameters-in-express-in-same-route
-    } else { //only one field filtered on
-      filterObj = filterArr[0];
-    }
-  } else {
-    filterObj = {_id: null}; // should always return an empty array if we've not chosen any of the checkbox fields;
-  }
+  filterObj = filterArr.reduce((acc, curr, i) => ({
+    ...acc,
+    [`${Object.keys(curr)[0]}`]: Object.values(curr)[0],
+  }));
   console.log(filterObj);
 
-  // !! TODO: SORT OBJ !!
-  let sortArr = [];
-  
-  const listings = await Listing.find(filterObj);
+  const listings = await Listing.find(filterObj).sort(sortObj);
   res.status(200).json(listings);
-  
 };
 
 const getListingsForUser = async (req, res) => {

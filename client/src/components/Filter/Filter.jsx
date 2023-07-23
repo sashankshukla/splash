@@ -14,31 +14,31 @@ function Filter() {
   const maxP = 1000000000;
 
   const initialState = {
-    keywordSearch: "", //make this an array separated by space or smth in future?
-    sortTime: "None",
-    sortPrice: "None",
+    keywordSearch: '', //make this an array separated by space or smth in future?
+    sortTime: 'None',
+    sortPrice: 'None',
     price: {
       lower: 0, //min range
-      upper: maxP  //max range
+      upper: maxP, //max range
     },
     distance: {
       check: false,
-      range: 0 //what should default be? what should min and max and increments be?
+      range: 0, //what should default be? what should min and max and increments be?
     },
     status: {
       available: true,
-      sold: true
+      sold: true,
     },
     pools: {
       open: true,
       closed: true,
-      none: true
+      none: true,
     },
     investmentType: {
       residence: true,
       franchise: true,
       gasStation: true,
-      stockPortfolio: true
+      stockPortfolio: true,
     },
   };
 
@@ -58,7 +58,7 @@ function Filter() {
       ...listingFilterData,
       [e.target.name]: e.target.value,
     });
-  }
+  };
 
   const handlePriceChange = (e) => {
     setListingFilterData({
@@ -66,20 +66,20 @@ function Filter() {
       price: {
         ...listingFilterData.price,
         [e.target.name]: e.target.value,
-      }
+      },
     });
-    
+
     console.log(e.target.value);
-  }
+  };
 
   const handleDistanceCheckboxChange = (e) => {
-    if(e.target.checked == true) {
+    if (e.target.checked == true) {
       setListingFilterData({
         ...listingFilterData,
         distance: {
           ...listingFilterData.distance,
           [e.target.name]: true,
-        }
+        },
       });
     } else {
       setListingFilterData({
@@ -87,12 +87,12 @@ function Filter() {
         distance: {
           ...listingFilterData.distance,
           [e.target.name]: false,
-        }
+        },
       });
     }
 
     setDistExpand(!distExpand);
-  }
+  };
 
   const handleDistanceChange = (e) => {
     setListingFilterData({
@@ -100,20 +100,20 @@ function Filter() {
       distance: {
         ...listingFilterData.distance,
         [e.target.name]: e.target.value,
-      }
+      },
     });
-    
+
     console.log(e.target.value);
-  }
+  };
 
   const handleStatusChange = (e) => {
-    if(e.target.checked == true) {
+    if (e.target.checked == true) {
       setListingFilterData({
         ...listingFilterData,
         status: {
           ...listingFilterData.status,
           [e.target.name]: true,
-        }
+        },
       });
     } else {
       setListingFilterData({
@@ -121,21 +121,21 @@ function Filter() {
         status: {
           ...listingFilterData.status,
           [e.target.name]: false,
-        }
+        },
       });
     }
-    
+
     console.log(listingFilterData.status);
-  }
+  };
 
   const handlePoolsChange = (e) => {
-    if(e.target.checked == true) {
+    if (e.target.checked == true) {
       setListingFilterData({
         ...listingFilterData,
         pools: {
           ...listingFilterData.pools,
           [e.target.name]: true,
-        }
+        },
       });
     } else {
       setListingFilterData({
@@ -143,21 +143,21 @@ function Filter() {
         pools: {
           ...listingFilterData.pools,
           [e.target.name]: false,
-        }
+        },
       });
     }
-    
+
     console.log(e.target.value);
-  }
+  };
 
   const handleInvestmentChange = (e) => {
-    if(e.target.checked == true) {
+    if (e.target.checked == true) {
       setListingFilterData({
         ...listingFilterData,
         investmentType: {
           ...listingFilterData.investmentType,
           [e.target.name]: true,
-        }
+        },
       });
     } else {
       setListingFilterData({
@@ -165,15 +165,15 @@ function Filter() {
         investmentType: {
           ...listingFilterData.investmentType,
           [e.target.name]: false,
-        }
+        },
       });
     }
-    
+
     console.log(e.target.value);
-  }
+  };
 
   const handleSubmit = (e) => {
-    console.log("submitted the following listingsFilterData: ");
+    console.log('submitted the following listingsFilterData: ');
     console.log(listingFilterData);
 
     dispatch(updateFilter(listingFilterData));
@@ -182,12 +182,12 @@ function Filter() {
   const clearFilters = (e) => {
     setListingFilterData(initialState);
     let cbs = document.querySelectorAll('input[type="checkbox"]');
-    for(let i = 0; i < cbs.length; i++) {
+    for (let i = 0; i < cbs.length; i++) {
       // console.log(cbs[i]);
       cbs[i].checked = true;
     }
 
-    let dl = document.getElementById("distance-limit-cb");
+    let dl = document.getElementById('distance-limit-cb');
     dl.checked = false;
 
     setDistExpand(false);
@@ -197,29 +197,29 @@ function Filter() {
 
   const toggleVis = (e) => {
     setVisibility(!optionsVisible);
-  }
+  };
 
   useEffect(() => {
-    if(optionsVisible) {
-      const statusAvail = document.getElementById("stat-avail-cb");
+    if (optionsVisible) {
+      const statusAvail = document.getElementById('stat-avail-cb');
       statusAvail.checked = listingFilterData.status.available;
-      const statusSold = document.getElementById("stat-sold-cb");
+      const statusSold = document.getElementById('stat-sold-cb');
       statusSold.checked = listingFilterData.status.sold;
 
-      const poolOpen = document.getElementById("open-pool-cb");
+      const poolOpen = document.getElementById('open-pool-cb');
       poolOpen.checked = listingFilterData.pools.open;
-      const poolClosed = document.getElementById("closed-pool-cb");
+      const poolClosed = document.getElementById('closed-pool-cb');
       poolClosed.checked = listingFilterData.pools.closed;
-      const poolNone = document.getElementById("no-pool-cb");
+      const poolNone = document.getElementById('no-pool-cb');
       poolNone.checked = listingFilterData.pools.none;
 
-      const typeResidence = document.getElementById("invest-res-cb");
+      const typeResidence = document.getElementById('invest-res-cb');
       typeResidence.checked = listingFilterData.investmentType.residence;
-      const typeFranchise = document.getElementById("invest-franchise-cb");
+      const typeFranchise = document.getElementById('invest-franchise-cb');
       typeFranchise.checked = listingFilterData.investmentType.franchise;
-      const typeGas = document.getElementById("invest-gas-cb");
+      const typeGas = document.getElementById('invest-gas-cb');
       typeGas.checked = listingFilterData.investmentType.gasStation;
-      const typeStock = document.getElementById("invest-stock-portfolio-cb");
+      const typeStock = document.getElementById('invest-stock-portfolio-cb');
       typeStock.checked = listingFilterData.investmentType.stockPortfolio;
 
       console.log(listingFilterData);
@@ -229,7 +229,6 @@ function Filter() {
   return (
     <div className="min-w-[85%]">
       <div className="flex items-stretch justify-between w-full h-12 bg-white rounded-md border-gray-900 shadow-md hover:shadow-xl focus-within:outline-none focus-within:ring-0 px-2 py-2 relative text-xl transition duration-0 hover:duration-300 ease-in-out">
-        
         {/* Submit Search Spyglass Button */}
         <div className="flex-none">
           <button
@@ -253,16 +252,18 @@ function Filter() {
             placeholder="Search"
           />
         </div>
-        
+
         {/* Filter Options Button */}
         <div className="relative">
           <button
             className="px-2 flex flex-row items-center justify-center text-primary-darkgreen font-medium rounded-lg duration-150 mb-1 w-full h-full"
             onClick={toggleVis}
           >
-            <span><FaFilter /></span>
+            <span>
+              <FaFilter />
+            </span>
           </button>
-          
+
           {/* Options Container */}
           {optionsVisible && (
             <div className="absolute right-0 w-64 mt-2 p-2 bg-white border border-gray-200 rounded shadow-lg divide-y divide-gray-200">
@@ -302,7 +303,9 @@ function Filter() {
               <div className="py-1">
                 <span className="block text-sm text-gray-700">Price Range</span>
 
-                <label className="text-xs text-gray-700" htmlFor="">Lower</label>
+                <label className="text-xs text-gray-700" htmlFor="">
+                  Lower
+                </label>
                 <input
                   id="price-range-lower-input"
                   className="mt-1 w-full px-2 py-1 text-sm rounded border border-gray-200"
@@ -314,7 +317,9 @@ function Filter() {
                   placeholder="Lower range"
                 />
 
-                <label className="text-xs text-gray-700" htmlFor="">Upper</label>
+                <label className="text-xs text-gray-700" htmlFor="">
+                  Upper
+                </label>
                 <input
                   id="price-range-upper-input"
                   className="mt-1 w-full px-2 py-1 text-sm rounded border border-gray-200"
@@ -343,7 +348,6 @@ function Filter() {
                     {/* <label className="text-xs text-gray-700" htmlFor="">Available</label> */}
                   </div>
                 </span>
-                
 
                 {/* <div className="text-sm">Value for range goes here</div> */}
                 {distExpand && (
@@ -368,7 +372,7 @@ function Filter() {
                   {/* Status Checkboxes */}
                   <div className="flex flex-col justify-start items-start">
                     <span className="block text-sm text-gray-700">Status</span>
-                    
+
                     <div className="py-1 flex justify-start items-center">
                       <input
                         id="stat-avail-cb"
@@ -379,7 +383,9 @@ function Filter() {
                         onClick={handleStatusChange}
                         defaultChecked
                       />
-                      <label className="text-xs text-gray-700" htmlFor="">Available</label>
+                      <label className="text-xs text-gray-700" htmlFor="">
+                        Available
+                      </label>
                     </div>
 
                     <div className="flex justify-start items-center">
@@ -392,7 +398,9 @@ function Filter() {
                         onChange={handleStatusChange}
                         defaultChecked
                       />
-                      <label className="text-xs text-gray-700" htmlFor="">Sold</label>
+                      <label className="text-xs text-gray-700" htmlFor="">
+                        Sold
+                      </label>
                     </div>
                   </div>
 
@@ -410,7 +418,9 @@ function Filter() {
                         onChange={handlePoolsChange}
                         defaultChecked
                       />
-                      <label className="text-xs text-gray-700" htmlFor="">Open Pools</label>
+                      <label className="text-xs text-gray-700" htmlFor="">
+                        Open Pools
+                      </label>
                     </div>
 
                     <div className="flex justify-start items-center">
@@ -423,7 +433,9 @@ function Filter() {
                         onChange={handlePoolsChange}
                         defaultChecked
                       />
-                      <label className="text-xs text-gray-700" htmlFor="">Closed Pools</label>
+                      <label className="text-xs text-gray-700" htmlFor="">
+                        Closed Pools
+                      </label>
                     </div>
 
                     <div className="flex justify-start items-center">
@@ -436,7 +448,9 @@ function Filter() {
                         onChange={handlePoolsChange}
                         defaultChecked
                       />
-                      <label className="text-xs text-gray-700" htmlFor="">No Pools</label>
+                      <label className="text-xs text-gray-700" htmlFor="">
+                        No Pools
+                      </label>
                     </div>
                   </div>
                 </div>
@@ -457,7 +471,9 @@ function Filter() {
                           onChange={handleInvestmentChange}
                           defaultChecked
                         />
-                        <label className="text-xs text-gray-700" htmlFor="">Residence</label>
+                        <label className="text-xs text-gray-700" htmlFor="">
+                          Residence
+                        </label>
                       </div>
 
                       <div className="flex justify-start items-center">
@@ -470,7 +486,9 @@ function Filter() {
                           onChange={handleInvestmentChange}
                           defaultChecked
                         />
-                        <label className="text-xs text-gray-700" htmlFor="">Franchise</label>
+                        <label className="text-xs text-gray-700" htmlFor="">
+                          Franchise
+                        </label>
                       </div>
                     </div>
 
@@ -485,7 +503,9 @@ function Filter() {
                           onChange={handleInvestmentChange}
                           defaultChecked
                         />
-                        <label className="text-xs text-gray-700" htmlFor="">Gas Station</label>
+                        <label className="text-xs text-gray-700" htmlFor="">
+                          Gas Station
+                        </label>
                       </div>
 
                       <div className="flex justify-start items-center">
@@ -498,24 +518,18 @@ function Filter() {
                           onChange={handleInvestmentChange}
                           defaultChecked
                         />
-                        <label className="text-xs text-gray-700" htmlFor="">Stock Portfolio</label>
+                        <label className="text-xs text-gray-700" htmlFor="">
+                          Stock Portfolio
+                        </label>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <button
-                  id=""
-                  className="text-sm"
-                  onClick={clearFilters}
-                >
+                <button id="" className="text-sm" onClick={clearFilters}>
                   <u>clear filters</u>
                 </button>
               </div>
-
-
-
-
 
               {/* <div className="py-1">
                 <span className="block text-sm text-gray-700">Status</span>

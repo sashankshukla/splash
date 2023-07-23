@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:5001/listings/';
 const fetchListings = async () => {
   const response = await axios.get(API_URL);
   return response.data;
-}
+};
 
 const fetchFilteredListings = async (listingFilter) => {
   console.log(listingFilter);
@@ -14,7 +14,7 @@ const fetchFilteredListings = async (listingFilter) => {
 
   let query = encodeURIComponent(JSON.stringify(listingFilter));
 
-  const response = await axios.get(API_URL+"filterBy/"+query);
+  const response = await axios.get(API_URL + 'filterBy/' + query);
   return response.data;
 };
 
@@ -26,9 +26,9 @@ const fetchListingsForUser = async (userInfo, token) => {
     },
   };
 
-  const response = axios.get(API_URL+"user/", config);
+  const response = axios.get(API_URL + 'user/', config);
   return response.data;
-}
+};
 
 const addListing = async (listingData, token) => {
   const formData = new FormData();

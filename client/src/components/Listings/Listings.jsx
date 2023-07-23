@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { reset, fetchListings, fetchFilteredListings, getListingsData } from '../../features/listings/listingsSlice'; //Selector functions
+import {
+  reset,
+  fetchListings,
+  fetchFilteredListings,
+  getListingsData,
+} from '../../features/listings/listingsSlice'; //Selector functions
 
 import Listing from '../Listing/Listing';
 import ListingModal from '../Listing/ListingModal';
@@ -16,7 +21,8 @@ const Listings = () => {
   const dispatch = useDispatch();
 
   const token = useSelector((store) => store.auth.token); //auth_token is what we want for header config
-  const { listings, listingFilter, isError, isSuccess, isLoading, message } = useSelector(getListingsData);
+  const { listings, listingFilter, isError, isSuccess, isLoading, message } =
+    useSelector(getListingsData);
 
   useEffect(() => {
     dispatch(fetchFilteredListings());
@@ -68,6 +74,9 @@ const Listings = () => {
         <span>Add New Listing</span>
       </button>
 
+      <h1 className="text-3xl font-bold text-center text-primary-darkgreen">
+        Showing {listings.length} results
+      </h1>
       <ListingForm formVisible={formVisible} setFormVisible={setFormVisible} isEditing={false} />
 
       <ListingModal selectedListing={selectedListing} setSelectedListing={setSelectedListing} />
