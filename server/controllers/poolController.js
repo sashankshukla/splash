@@ -26,21 +26,17 @@ const addPool = async (req, res) => {
 
 const deletePool = async (req, res) => {
   const pool = await Pool.findById(req.params.id);
-  const userPools = await Pool.find({ createdBy: req.user.email });
   if (!pool) {
     res.status(400);
     throw new Error('Pool not found');
   }
-  if (!pool || !userPools.includes(pool)) {
+  if (pool.createdBy !== req.user.email) {
     res.status(400);
     throw new Error('User does not own this pool');
   }
   await Pool.deleteOne({ _id: req.params.id });
-  res.status(200).json(pool.id);
+  res.status(200).json({ id: req.params.id });
 };
-
-// // TODO
-// const updatePool = async (req, res) => {};
 
 const joinPool = async (req, res) => {
   const pool = await Pool.findById(req.params.id);
@@ -48,9 +44,34 @@ const joinPool = async (req, res) => {
     res.status(400);
     throw new Error('Pool not found');
   }
-  // if user in pool, update equity
-  // else below
+
+  if (pool.remaining < req.body.equity) {
+    res.status(400);
+    throw new Error('Contribution is too high');
+  }
+  pool.remaining -= req.body.equity
   pool.users = [...pool.users, { email: req.user.email, equity: req.body.equity }];
+
+  await pool.save();
+  res.status(200).json(pool);
+};
+
+const editPool = async (req, res) => {
+  const pool = await Pool.findById(req.params.id);
+  if (!pool) {
+    res.status(400);
+    throw new Error('Pool not found');
+  }
+
+  poolUser = pool.users.find(user => user.email === req.user.email)
+  pool.remaining += poolUser.equity
+  if (pool.remaining < req.body.equity) {
+    res.status(400);
+    throw new Error('Contribution is too high');
+  }
+  poolUser.equity = req.body.equity
+  pool.remaining -= poolUser.equity
+
   await pool.save();
   res.status(200).json(pool);
 };
@@ -61,7 +82,11 @@ const leavePool = async (req, res) => {
     res.status(400);
     throw new Error('Pool not found');
   }
-  pool.users.pull({ email: req.user.email });
+
+  poolUser = pool.users.find(user => user.email === req.user.email)
+  pool.remaining += poolUser.equity
+
+  pool.users.pull(poolUser);
   await pool.save();
   res.status(200).json(pool);
 };
@@ -131,6 +156,7 @@ module.exports = {
   addPool,
   deletePool,
   joinPool,
+  editPool,
   leavePool,
   getPoolsForListing,
   getTotalPoolEquity,

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FaPlusCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { fetchPools } from '../../features/pools/poolsSlice';
+import { fetchPools, getPoolsData } from '../../features/pools/poolsSlice';
 
 import Pool from '../Pool/Pool';
 
@@ -14,7 +14,7 @@ const Pools = () => {
   const navigate = useNavigate();
   const [formVisible, setFormVisible] = useState(false);
   const token = useSelector((store) => store.auth.token);
-  const pools = useSelector((state) => state.pools);
+  const { pools, isError, isSuccess, isLoading, message } = useSelector(getPoolsData);
 
   useEffect(() => {
     if (Object.keys(token).length === 0) {
@@ -46,12 +46,13 @@ const Pools = () => {
           return (
             <Pool
               key={idx}
-              poolId={pool.id}
+              poolId={pool._id}
               title={pool.name}
               createdBy={pool.createdBy}
               listingId={pool.listingId}
               members={pool.users}
               totalValue={pool.totalValue}
+              remaining={pool.remaining}
             />
           );
         })}
