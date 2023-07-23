@@ -26,10 +26,10 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
     e.preventDefault();
     if (modify) {
       // dispatch({ type: 'pools/editPool', payload: { ...formData, email: token.email } });
-      dispatch(editPool({ id: poolId, equity: parseInt(formData.contribution) }))
+      dispatch(editPool({ id: poolId, equity: parseInt(formData.contribution) }));
     } else {
       // dispatch({ type: 'pools/joinPool', payload: { ...formData, email: token.email } });
-      dispatch(joinPool({ id: poolId, equity: parseInt(formData.contribution) }))
+      dispatch(joinPool({ id: poolId, equity: parseInt(formData.contribution) }));
     }
     setModalVisible(false);
   };

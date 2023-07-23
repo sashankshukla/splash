@@ -78,7 +78,7 @@ const joinPool = async (req, res) => {
     res.status(400);
     throw new Error('Contribution is too high');
   }
-  pool.remaining -= req.body.equity
+  pool.remaining -= req.body.equity;
   pool.users = [...pool.users, { email: req.user.email, equity: req.body.equity }];
 
   await pool.save();
@@ -92,14 +92,14 @@ const editPool = async (req, res) => {
     throw new Error('Pool not found');
   }
 
-  poolUser = pool.users.find(user => user.email === req.user.email)
-  pool.remaining += poolUser.equity
+  poolUser = pool.users.find((user) => user.email === req.user.email);
+  pool.remaining += poolUser.equity;
   if (pool.remaining < req.body.equity) {
     res.status(400);
     throw new Error('Contribution is too high');
   }
-  poolUser.equity = req.body.equity
-  pool.remaining -= poolUser.equity
+  poolUser.equity = req.body.equity;
+  pool.remaining -= poolUser.equity;
 
   await pool.save();
   res.status(200).json(pool);
@@ -112,8 +112,8 @@ const leavePool = async (req, res) => {
     throw new Error('Pool not found');
   }
 
-  poolUser = pool.users.find(user => user.email === req.user.email)
-  pool.remaining += poolUser.equity
+  poolUser = pool.users.find((user) => user.email === req.user.email);
+  pool.remaining += poolUser.equity;
 
   pool.users.pull(poolUser);
   await pool.save();

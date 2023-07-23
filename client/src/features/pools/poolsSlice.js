@@ -78,42 +78,36 @@ export const deletePool = createAsyncThunk('pools/deletePool', async (id, thunkA
   }
 });
 
-export const joinPool = createAsyncThunk(
-  'pools/joinPool',
-  async ({ id, equity }, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.auth_token;
-      return await poolsService.joinPool(id, equity, token);
-    } catch (error) {
-      let message =
-        (error.response & error.response.data && error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+export const joinPool = createAsyncThunk('pools/joinPool', async ({ id, equity }, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.auth_token;
+    return await poolsService.joinPool(id, equity, token);
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+export const editPool = createAsyncThunk('pools/editPool', async ({ id, equity }, thunkAPI) => {
+  try {
+    let token = thunkAPI.getState().auth.auth_token;
+
+    if (equity) {
+      return await poolsService.editPool(id, equity, token);
     }
-  },
-);
 
-export const editPool = createAsyncThunk(
-  'pools/editPool',
-  async ({ id, equity }, thunkAPI) => {
-    try {
-      let token = thunkAPI.getState().auth.auth_token;
-
-      if (equity) {
-        return await poolsService.editPool(id, equity, token);
-      }
-
-      return await poolsService.leavePool(id, token);
-    } catch (error) {
-      let message =
-        (error.response & error.response.data && error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  },
-);
+    return await poolsService.leavePool(id, token);
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
 
 export const fetchPoolsForListing = createAsyncThunk(
   'pools/fetchPoolsForListing',
@@ -245,7 +239,7 @@ const poolsSlice = createSlice({
         state.isError = true;
 
         state.message = action.payload;
-      })
+      });
   },
 });
 
