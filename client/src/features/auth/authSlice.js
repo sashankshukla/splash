@@ -12,9 +12,7 @@ const initialState = {
 export const fetchUser = createAsyncThunk('auth/fetchUser', async (user, thunkAPI) => {
   try {
     let token = thunkAPI.getState().auth.auth_token;
-    
-    
-    return await authService.fetchUser(user, token);
+    return await authService.fetchUser(token);
   } catch (error) {
     let message =
       (error.response & error.response.data && error.response.data.message) ||

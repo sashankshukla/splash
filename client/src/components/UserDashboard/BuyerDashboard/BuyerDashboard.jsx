@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import PurchaseCard from './PurchaseCard';
 import Pool from '../../Pool/Pool';
 import StockChart from './StockChart.webp';
+import PriceChart from './PriceChart';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchPoolsForUser } from '../../../features/pools/poolsSlice';
+import { fetchPoolsForUser, getPoolsData } from '../../../features/pools/poolsSlice';
 
 const BuyerDashboard = () => {
   const user = useSelector((store) => store.auth.user);
-  const pools = useSelector((state) => state.pools);
+  const { pools, isError, isSuccess, isLoading, message } = useSelector(getPoolsData);
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
 
@@ -67,12 +68,13 @@ const BuyerDashboard = () => {
           return (
             <Pool
               key={idx}
-              poolId={pool.id}
+              poolId={pool._id}
               title={pool.name}
               createdBy={pool.createdBy}
               listingId={pool.listingId}
               members={pool.users}
               totalValue={pool.totalValue}
+              remaining={pool.remaining}
             />
           );
         })}
@@ -84,7 +86,7 @@ const BuyerDashboard = () => {
     <>
       <div className="h-screen w-screen flex flex-col justify-center items-center">
         <h1 className="text-4xl font-bold text-gray-900">Performance</h1>
-        <img src={StockChart} alt="Stock Chart" className="h-2/3 w-3/4 object-cover rounded-lg" />
+        <PriceChart />
       </div>
       <div className="flex flex-col md:flex-row">
         <OwnedAssets />

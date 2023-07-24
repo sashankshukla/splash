@@ -37,6 +37,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: true
     }
+    priceDictionary: {
+      type: Object,
+      default: {},
+    },
   },
   { timestamps: true },
 );

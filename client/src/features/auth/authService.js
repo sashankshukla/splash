@@ -13,13 +13,13 @@ const logout = () => {
   sessionStorage.removeItem('user');
 };
 
-const fetchUser = async (userEmail, token) => {
+const fetchUser = async (token) => {
   const config = {
     headers: {
       Authorization: `${token}`,
     },
   };
-  const response = await axios.get(`${API_URL}${userEmail.email}`, config);
+  const response = await axios.get(API_URL, config);
   return response.data;
 };
 
