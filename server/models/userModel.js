@@ -36,7 +36,7 @@ const userSchema = new Schema(
     active: {
       type: Boolean,
       default: true
-    }
+    },
     priceDictionary: {
       type: Object,
       default: {},
