@@ -30,7 +30,7 @@ const fetchAllUser = async (token) => {
     },
   };
   
-  const response = await axios.get(`${API_URL}`, config);
+  const response = await axios.get(`${API_URL}/admin`, config);
   
   
   return response.data;
