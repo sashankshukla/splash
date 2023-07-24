@@ -5,14 +5,68 @@ const initialState = {
   token: JSON.parse(sessionStorage.getItem('token')) || {},
   auth_token: JSON.parse(sessionStorage.getItem('authToken')) || {},
   user: null,
+  allUser: [],
+  pendingFunds: []
 };
 
 export const fetchUser = createAsyncThunk('auth/fetchUser', async (user, thunkAPI) => {
   try {
     let token = thunkAPI.getState().auth.auth_token;
-    console.log('result of fetchuser let token');
-    console.log(token);
     return await authService.fetchUser(token);
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+export const fetchAllUsers = createAsyncThunk('auth/fetchAllUsers', async (_,thunkAPI) => {
+  try {
+    
+    let token = thunkAPI.getState().auth.auth_token;
+    return await authService.fetchAllUser(token);
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+export const updateUser = createAsyncThunk('auth/updateUser', async (data,thunkAPI) => {
+  try {
+    
+    let token = thunkAPI.getState().auth.auth_token;
+    return await authService.updateUser(data, token);
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+export const updateBank = createAsyncThunk('auth/updateBank', async (data,thunkAPI) => {
+  try {
+    let token = thunkAPI.getState().auth.auth_token;
+    return await authService.updateBank(data, token);
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
+export const fetchPendingFunds = createAsyncThunk('auth/fetchPendingFunds', async (_,thunkAPI) => {
+  try {
+    let token = thunkAPI.getState().auth.auth_token;
+    return await authService.fetchPendingFunds(token);
   } catch (error) {
     let message =
       (error.response & error.response.data && error.response.data.message) ||
@@ -26,10 +80,7 @@ export const increaseUserFunds = createAsyncThunk(
   'auth/increaseUserFunds',
   async (data, thunkAPI) => {
     try {
-      console.log('in updateUserThunk');
       let token = thunkAPI.getState().auth.auth_token;
-      console.log('result of increaseuserFunds let token');
-      console.log(token);
       return await authService.increaseUserFunds(data, token);
     } catch (error) {
       let message =
@@ -59,13 +110,13 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     addUser: (state, action) => {
-      console.log(action.payload.token.email, action.payload.token.name);
+      
       const user = authService.register({
         email: action.payload.token.email,
         name: action.payload.token.name,
       });
       if (!user) {
-        console.log('User not found');
+        
         return;
       }
       sessionStorage.setItem('token', JSON.stringify(action.payload.token));
@@ -83,13 +134,33 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchUser.fulfilled, (state, action) => {
-        console.log('in the extra reducer we get');
-        console.log(action.payload);
+        
+        
         state.user = action.payload;
       })
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+        
+        
+        state.allUser = action.payload;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        
+        
+        state.allUser = action.payload;
+      })
+      .addCase(updateBank.fulfilled, (state, action) => {
+        
+        
+        state.pendingFunds = action.payload;
+      })
+      .addCase(fetchPendingFunds.fulfilled, (state, action) => {
+        
+        
+        state.pendingFunds = action.payload;
+      })
       .addCase(increaseUserFunds.fulfilled, (state, action) => {
-        console.log('increase user funds extra reducer');
-        console.log(action.payload);
+        
+        
         const ownerships = state.user.ownerships;
         state.user = action.payload;
         state.user.ownerships = ownerships;
