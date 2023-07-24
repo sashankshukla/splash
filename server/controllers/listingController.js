@@ -91,6 +91,7 @@ const getFilteredListings = async (req, res) => {
   filterObj = filterArr.reduce((acc, curr, i) => ({
     ...acc,
     [`${Object.keys(curr)[0]}`]: Object.values(curr)[0],
+    //Ref: https://www.appsloveworld.com/nodejs/100/321/how-do-i-add-multiple-optional-parameters-in-express-in-same-route
   }));
   console.log(filterObj);
 
