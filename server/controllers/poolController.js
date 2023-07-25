@@ -43,6 +43,10 @@ const addPool = async (req, res) => {
     throw new Error('Please specify a name, private, and listingId');
   }
   const listing = await Listing.findById(req.body.listingId);
+  if (req.body.contribution > listing.price || req.body.contribution <= 0) {
+    res.status(400);
+    throw new Error('Invalid contribution');
+  }
   const pool = await Pool.create({
     ...req.body,
     createdBy: req.user.email,

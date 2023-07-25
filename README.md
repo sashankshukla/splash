@@ -53,8 +53,8 @@ Splash will support several different user types depending on the objective they
 
 - Each seller who lists a property can be able to mint a crypto token for number of “Shares” ie 1 share per dollar value (Super Stretch Goal). (Frankey)
 - Live market bidding (Melinda)
-- ML/ some sort of prediction of appreciation/depreciation in value of asset  ✅
-- Private investment pools, shareable and viewable only by token/uniqueID holders  ✅
+- ML/ some sort of prediction of appreciation/depreciation in value of asset ✅
+- Private investment pools, shareable and viewable only by token/uniqueID holders ✅
 
 # Project Task Requirements
 
@@ -68,16 +68,16 @@ Splash will support several different user types depending on the objective they
 ## Standard Requirements
 
 1. Mock payment on purchase of asset ⚠️
-2. Buyers should be able to view over time price graphs of their assets value  ✅
-3. Users should be able to create and join investment pools and then purchase assets  ✅
+2. Buyers should be able to view over time price graphs of their assets value ✅
+3. Users should be able to create and join investment pools and then purchase assets ✅
 4. Sellers should be able to view active/closed listings, open pools for their listings ✅
-5. Seller should have to approve a purchase of his asset through his dashboard  ✅
+5. Seller should have to approve a purchase of his asset through his dashboard ✅
 
 ## Stretch Requirements
 
-1. ML/AI integration for prediction of user asset price over time  ✅
+1. ML/AI integration for prediction of user asset price over time ✅
 2. Blockchain based fractional ownership - Users transferring fractional shares (blockchain tokens/regular)
-3. Mock funding/ payment methods  ✅
+3. Mock funding/ payment methods ✅
 4. Approval process for listing -> to be approved by admin so illegal items cannot be sold. ⚠️
 5. event-locked fundraisers/bidding - One time in-person event "lobby" accessible by passcode in order to facilitate bidding in-person and cultivate local interest in investment opportunities ⚠️
 
