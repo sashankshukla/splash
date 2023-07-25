@@ -1,7 +1,6 @@
 const Listing = require('../models/listingModel');
 const User = require('../models/userModel');
 const Pool = require('../models/poolModel');
-const data = require('./initalData.js');
 const mongoose = require('mongoose');
 
 const getListings = async (req, res) => {
@@ -10,8 +9,9 @@ const getListings = async (req, res) => {
 };
 
 const getFilteredListings = async (req, res) => {
-  Listing.createIndexes({ price: 1 });
-  Listing.createIndexes({ createdAt: 1 });
+  await Listing.createIndexes({ price: 1 });
+  await Listing.createIndexes({ createdAt: 1 });
+  await Listing.createIndexes({ '$**': 'text' });
 
   let queryDecoded = '';
   let filterObj = {};
@@ -91,7 +91,6 @@ const getFilteredListings = async (req, res) => {
   filterObj = filterArr.reduce((acc, curr, i) => ({
     ...acc,
     [`${Object.keys(curr)[0]}`]: Object.values(curr)[0],
-    //Ref: https://www.appsloveworld.com/nodejs/100/321/how-do-i-add-multiple-optional-parameters-in-express-in-same-route
   }));
   console.log(filterObj);
 

@@ -74,8 +74,8 @@ const Listings = () => {
         <span>Add New Listing</span>
       </button>
 
-      <h1 className="text-3xl font-bold text-center text-primary-darkgreen">
-        Showing {listings.length} results
+      <h1 className="text-2xl mt-8 font-light text-center text-primary-darkgreen">
+        Showing {listings.length} results.....
       </h1>
       <ListingForm formVisible={formVisible} setFormVisible={setFormVisible} isEditing={false} />
 

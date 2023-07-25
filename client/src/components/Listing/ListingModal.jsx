@@ -5,6 +5,7 @@ import ListingForm from '../Listings/ListingForm';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import PoolForm from '../Pools/PoolForm';
+import CopyToClipboard from '../CopyToClipboard/CopyToClipboard';
 
 const ListingModal = ({ selectedListing, setSelectedListing }) => {
   const user = useSelector((store) => store.auth.token);
@@ -128,7 +129,9 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
             See: https://www.material-tailwind.com/docs/react/carousel
           */}
             <h1 className="mt-4 text-2xl font-semibold text-gray-700 capitalize">{name}</h1>
-            <h1 className="mt-4 text-md font-light text-gray-500">id : {_id}</h1>
+            <h1 className="mt-4 flex flex-row justify-center text-md font-light text-gray-500">
+              id : {_id} <CopyToClipboard value={_id} />
+            </h1>
             <h3 className="mt-4 text-xl font-semibold text-gray-700 capitalize">
               {address.street}, {address.city}
               <br />

@@ -228,7 +228,7 @@ function Filter() {
 
   return (
     <div className="min-w-[85%]">
-      <div className="flex items-stretch justify-between w-full h-12 bg-white rounded-md border-gray-900 shadow-md hover:shadow-xl focus-within:outline-none focus-within:ring-0 px-2 py-2 relative text-xl transition duration-0 hover:duration-300 ease-in-out">
+      <div className="flex items-stretch my-8 justify-between w-full h-12 bg-white rounded-md border-gray-900 shadow-md hover:shadow-xl focus-within:outline-none focus-within:ring-0 px-2 py-2 relative text-xl transition duration-0 hover:duration-300 ease-in-out">
         {/* Submit Search Spyglass Button */}
         <div className="flex-none">
           <button
@@ -304,7 +304,7 @@ function Filter() {
                 <span className="block text-sm text-gray-700">Price Range</span>
 
                 <label className="text-xs text-gray-700" htmlFor="">
-                  Lower
+                  Min Price
                 </label>
                 <input
                   id="price-range-lower-input"
@@ -318,7 +318,7 @@ function Filter() {
                 />
 
                 <label className="text-xs text-gray-700" htmlFor="">
-                  Upper
+                  Max Price
                 </label>
                 <input
                   id="price-range-upper-input"
