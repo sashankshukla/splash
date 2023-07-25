@@ -3,7 +3,7 @@ import SellerListings from './SellerListings';
 import ApprovalCard from './ApprovalCard';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from '../../Accessories/LoadingSpinner/LoadingSpinner';
 
 const SellerDashboard = () => {
   const auth_token = useSelector((store) => store.auth.auth_token);

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteListing } from '../../features/listings/listingsSlice';
-import ListingForm from '../Listings/ListingForm';
+import { deleteListing } from '../../../features/listings/listingsSlice';
+import ListingForm from '../ListingForm';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
-import PoolForm from '../Pools/PoolForm';
-import CopyToClipboard from '../CopyToClipboard/CopyToClipboard';
+import PoolForm from '../../Pools/PoolForm';
+import CopyToClipboard from '../../Accessories/CopyToClipboard/CopyToClipboard';
 
 const ListingModal = ({ selectedListing, setSelectedListing }) => {
   const user = useSelector((store) => store.auth.token);

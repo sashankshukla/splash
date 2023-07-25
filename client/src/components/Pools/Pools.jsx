@@ -4,7 +4,7 @@ import { FaPlusCircle, FaLock } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { fetchPools, getPoolsData } from '../../features/pools/poolsSlice';
 
-import Pool from '../Pool/Pool';
+import Pool from './Pool/Pool';
 
 import Filter from '../Filter/Filter';
 import PoolForm from './PoolForm';

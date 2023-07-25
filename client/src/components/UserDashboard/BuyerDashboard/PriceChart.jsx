@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Plot from 'react-plotly.js';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
-import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from '../../Accessories/LoadingSpinner/LoadingSpinner';
 
 const PriceChart = () => {
   const [data, setData] = useState(null);
