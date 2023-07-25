@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { editPool, joinPool } from '../../features/pools/poolsSlice';
 
 const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContribution }) => {
   const [formData, setFormData] = useState({
     contribution: currentContribution || 0,
-    poolId: null,
   });
 
   const dispatch = useDispatch();
@@ -24,13 +24,12 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    formData.poolId = poolId;
     if (modify) {
-      //DAMAN TO add edit contribution / join pool logic
-      // make sure to update the backend as well. Need to update join pool, and complete the controller for edit
-      dispatch({ type: 'pools/editPool', payload: { ...formData, email: token.email } });
+      // dispatch({ type: 'pools/editPool', payload: { ...formData, email: token.email } });
+      dispatch(editPool({ id: poolId, equity: parseInt(formData.contribution) }));
     } else {
-      dispatch({ type: 'pools/joinPool', payload: { ...formData, email: token.email } });
+      // dispatch({ type: 'pools/joinPool', payload: { ...formData, email: token.email } });
+      dispatch(joinPool({ id: poolId, equity: parseInt(formData.contribution) }));
     }
     setModalVisible(false);
   };

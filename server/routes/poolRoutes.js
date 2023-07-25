@@ -7,6 +7,7 @@ const {
   addPool,
   deletePool,
   joinPool,
+  editPool,
   leavePool,
   getPoolsForListing,
   getTotalPoolEquity,
@@ -22,6 +23,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 router.post('/', authMiddleware, addPool);
 router.delete('/:id', authMiddleware, deletePool);
 router.post('/:id/join', authMiddleware, joinPool);
+router.post('/:id/edit', authMiddleware, editPool);
 router.post('/:id/leave', authMiddleware, leavePool);
 router.get('/', getPools);
 router.get('/completed', authMiddleware, getPoolsCompletedForUser);
