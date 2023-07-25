@@ -107,8 +107,12 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
         id="popup-modal"
         tabIndex="-1"
         className={`pt-24 fixed inset-0 z-49 flex items-center justify-center bg-gray-900 bg-opacity-50`}
+        onClick={toggleModalVisibility} // Clicking outside of modal will close it
       >
-        <div className="relative bg-white rounded-lg shadow w-screen h-auto max-w-md max-h-full overflow-y-auto">
+        <div
+          className="relative bg-white rounded-lg shadow w-screen h-auto max-w-md max-h-full overflow-y-auto"
+          onClick={(e) => e.stopPropagation()} // Prevents event from bubbling to overlay div
+        >
           <div className="p-6 text-center">
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
