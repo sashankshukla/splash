@@ -111,7 +111,7 @@ const addListing = async (req, res) => {
     throw new Error('Please specify a name, address, price, and email');
   }
 
-  const images = req.files.map((file) => file.location); // Retrieve the file paths of all the uploaded images
+  const images = req.files.map((file) => file.location);
 
   const listing = await Listing.create({
     ...req.body,
@@ -131,7 +131,7 @@ const updateListing = async (req, res) => {
     throw new Error('listing not found');
   }
 
-  const images = req.files.map((file) => file.location); // Retrieve the file paths of all the uploaded images
+  const images = req.files.map((file) => file.location);
 
   const updatedListing = await Listing.findByIdAndUpdate(
     req.params.id,
@@ -148,6 +148,10 @@ const deleteListing = async (req, res) => {
   if (!listing) {
     res.status(400);
     throw new Error('Listing not found');
+  }
+  if (listing.status === 'Sold') {
+    res.status(400);
+    throw new Error('Cannot delete a sold listing');
   }
   await Listing.deleteOne({ _id: req.params.id });
   res.status(200).json({ id: req.params.id });
@@ -188,8 +192,6 @@ const sellListing = async (req, res) => {
   await Pool.deleteOne({ _id: req.params.poolId });
   res.status(200).json(listing);
 };
-
-// TODO : Filtering listings
 
 module.exports = {
   getListings,
