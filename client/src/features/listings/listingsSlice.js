@@ -3,6 +3,34 @@ import listingsService from './listingsService';
 
 const initialState = {
   listings: [],
+  listingFilter: {
+    keywordSearch: '', //make this an array separated by space or smth in future?
+    sortTime: 'None',
+    sortPrice: 'None',
+    price: {
+      lower: 0,
+      upper: 1000000000,
+    },
+    distance: {
+      check: false,
+      range: 0, //what should default be? what should min and max and increments be?
+    },
+    status: {
+      available: true,
+      sold: false,
+    },
+    pools: {
+      open: true,
+      closed: true,
+      none: true,
+    },
+    investmentType: {
+      residence: true,
+      franchise: true,
+      gasStation: true,
+      stockPortfolio: true,
+    },
+  },
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -11,7 +39,6 @@ const initialState = {
 
 export const fetchListings = createAsyncThunk('listings/fetchListings', async (_, thunkAPI) => {
   try {
-    //const token  = thunkAPI.getState().auth.auth_token;
     return await listingsService.fetchListings();
   } catch (error) {
     let message =
@@ -21,6 +48,39 @@ export const fetchListings = createAsyncThunk('listings/fetchListings', async (_
     return thunkAPI.rejectWithValue(message);
   }
 });
+
+export const fetchFilteredListings = createAsyncThunk(
+  'listings/fetchFilteredListings',
+  async (_, thunkAPI) => {
+    try {
+      const listingFilter = thunkAPI.getState().listings.listingFilter;
+      console.log(listingFilter);
+      return await listingsService.fetchFilteredListings(listingFilter);
+    } catch (error) {
+      let message =
+        (error.response & error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
+export const fetchListingsForUser = createAsyncThunk(
+  'listings/fetchListingsForUser',
+  async (_, thunkAPI) => {
+    try {
+      let token = thunkAPI.getState().auth.auth_token;
+      return await listingsService.fetchListingsForUser(token);
+    } catch (error) {
+      let message =
+        (error.response & error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  },
+);
 
 export const addListing = createAsyncThunk('listings/addListing', async (listingData, thunkAPI) => {
   try {
@@ -85,6 +145,12 @@ const listingsSlice = createSlice({
   initialState: initialState,
   reducers: {
     reset: (state) => initialState,
+    updateFilter: (state, action) => {
+      state.listingFilter = action.payload;
+    },
+    clearFilter: (state, action) => {
+      state.listingFilter = initialState.listingFilter;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -98,6 +164,36 @@ const listingsSlice = createSlice({
         state.listings = action.payload;
       })
       .addCase(fetchListings.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+
+        state.message = action.payload;
+      })
+      .addCase(fetchFilteredListings.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchFilteredListings.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        //Add any fetched listings to the array
+        state.listings = action.payload;
+      })
+      .addCase(fetchFilteredListings.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+
+        state.message = action.payload;
+      })
+      .addCase(fetchListingsForUser.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchListingsForUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        //Add any fetched listings to the array
+        state.listings = action.payload;
+      })
+      .addCase(fetchListingsForUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
 
@@ -155,6 +251,6 @@ const listingsSlice = createSlice({
 export const getListingsData = (state) => state.listings;
 //export const getUserListings = (state) => state.
 
-export const { reset } = listingsSlice.actions;
+export const { reset, updateFilter, clearFilter } = listingsSlice.actions;
 
 export default listingsSlice.reducer;

@@ -7,6 +7,29 @@ const fetchListings = async () => {
   return response.data;
 };
 
+const fetchFilteredListings = async (listingFilter) => {
+  console.log(listingFilter);
+  //check for and collect info for each filter param
+  //encode the URI Components for each aspect
+
+  let query = encodeURIComponent(JSON.stringify(listingFilter));
+
+  const response = await axios.get(API_URL + 'filterBy/' + query);
+  return response.data;
+};
+
+const fetchListingsForUser = async (userInfo, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  };
+
+  const response = axios.get(API_URL + 'user/', config);
+  return response.data;
+};
+
 const addListing = async (listingData, token) => {
   const formData = new FormData();
 
@@ -60,8 +83,6 @@ const updateListing = async (listingData, listingId, token) => {
   return response.data;
 };
 
-//updateListing
-
 const deleteListing = async (id, token) => {
   // console.log(token);
   const config = {
@@ -89,6 +110,8 @@ const sellListing = async (listingId, poolId, token) => {
 
 const listingsService = {
   fetchListings,
+  fetchFilteredListings,
+  fetchListingsForUser,
   addListing,
   deleteListing,
   updateListing,

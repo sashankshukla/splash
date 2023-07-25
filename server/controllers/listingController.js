@@ -4,30 +4,98 @@ const Pool = require('../models/poolModel');
 const data = require('./initalData.js');
 const mongoose = require('mongoose');
 
-// function processListings() {
-//   data.initToronto.forEach((jsonObject) => {
-//     console.log(jsonObject.streetAddress);
-//     Listing.create({
-//       name: jsonObject.streetAddress,
-//       address: {
-//         street: jsonObject.streetAddress,
-//         city: 'Toronto',
-//         country: 'Canada',
-//         postalCode: jsonObject.zipcode,
-//       },
-//       description: `This property at ${jsonObject.streetAddress} has ${jsonObject.bathrooms} bathrooms, ${jsonObject.bedrooms} bedrooms and is ${jsonObject.lotAreaValue} square feet.`,
-//       investmentType: 'Housing/Living Accommodation',
-//       details: [],
-//       price: jsonObject.price,
-//       images: [`${jsonObject.imgSrc}`],
-//       status: 'Available',
-//       createdBy: 'he.frankey@gmail.com',
-//     });
-//   });
-// }
-
 const getListings = async (req, res) => {
   const listings = await Listing.find({ status: 'Available' });
+  res.status(200).json(listings);
+};
+
+const getFilteredListings = async (req, res) => {
+  Listing.createIndexes({ price: 1 });
+  Listing.createIndexes({ createdAt: 1 });
+
+  let queryDecoded = '';
+  let filterObj = {};
+  let sortObj = {};
+
+  if (req.params.query) {
+    queryDecoded = JSON.parse(decodeURIComponent(req.params.query));
+  } else {
+    const listings = await Listing.find(filterObj);
+    res.status(200).json(listings);
+  }
+
+  // keyword search
+  let filterArr = [];
+  if (queryDecoded.keywordSearch) {
+    filterArr.push({ $text: { $search: queryDecoded.keywordSearch } });
+  }
+
+  // price
+  const { lower, upper } = queryDecoded.price;
+  console.log(lower, upper);
+  filterArr.push({
+    price: {
+      $gte: parseInt(lower, 10),
+      $lte: parseInt(upper, 10),
+    },
+  });
+
+  //status
+  const { available, sold } = queryDecoded.status;
+  let statArr = [];
+  if (available) {
+    statArr.push('Available');
+  }
+  if (sold) {
+    statArr.push('Sold');
+  }
+  filterArr.push({ status: { $in: statArr } });
+
+  //investmentType
+  let investArr = [];
+  if (queryDecoded.investmentType.residence) {
+    investArr.push('Housing/Living Accommodation');
+  }
+  if (queryDecoded.investmentType.franchise) {
+    investArr.push('Franchise');
+  }
+  if (queryDecoded.investmentType.gasStation) {
+    investArr.push('Gas Station');
+  }
+  if (queryDecoded.investmentType.stockPortfolio) {
+    investArr.push('Stock Portfolio');
+  }
+  filterArr.push({ investmentType: { $in: investArr } });
+
+  const sortArr = [];
+  const { sortTime, sortPrice } = queryDecoded;
+  if (sortPrice == 'High to Low') {
+    sortArr.push({ price: -1 });
+  } else if (sortPrice == 'Low to High') {
+    sortArr.push({ price: 1 });
+  }
+  if (sortTime == 'Newest First') {
+    sortArr.push({ createdAt: -1 });
+  } else if (sortTime == 'Oldest First') {
+    sortArr.push({ createdAt: 1 });
+  }
+  sortObj =
+    sortArr.length > 0
+      ? sortArr.reduce((acc, curr, i) => ({
+          ...acc,
+          [`${Object.keys(curr)[0]}`]: Object.values(curr)[0],
+        }))
+      : {};
+  console.log(sortObj);
+
+  filterObj = filterArr.reduce((acc, curr, i) => ({
+    ...acc,
+    [`${Object.keys(curr)[0]}`]: Object.values(curr)[0],
+    //Ref: https://www.appsloveworld.com/nodejs/100/321/how-do-i-add-multiple-optional-parameters-in-express-in-same-route
+  }));
+  console.log(filterObj);
+
+  const listings = await Listing.find(filterObj).sort(sortObj);
   res.status(200).json(listings);
 };
 
@@ -126,6 +194,7 @@ const sellListing = async (req, res) => {
 
 module.exports = {
   getListings,
+  getFilteredListings,
   getListingsForUser,
   addListing,
   updateListing,
