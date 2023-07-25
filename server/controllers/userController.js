@@ -5,7 +5,7 @@ const Bank = require('../models/bankModel');
 const Listing = require('../models/listingModel');
 
 const configuration = new Configuration({
-  apiKey: null,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
