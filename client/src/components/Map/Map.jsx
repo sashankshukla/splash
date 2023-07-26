@@ -3,7 +3,7 @@ import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
 import Modal from 'react-modal';
 import { useSelector, useDispatch } from 'react-redux';
-import Listing from '../Listing/Listing';
+import Listing from '../Listings/Listing/Listing';
 import { fetchListings, getListingsData } from '../../features/listings/listingsSlice';
 
 const containerStyle = {

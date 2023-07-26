@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { editPool, joinPool } from '../../features/pools/poolsSlice';
+import { editPool, joinPool } from '../../../features/pools/poolsSlice';
 
 const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContribution }) => {
   const [formData, setFormData] = useState({
@@ -12,7 +12,7 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
   const token = useSelector((store) => store.auth.token);
 
   const toggleModalVisibility = () => {
-    setModalVisible(!modalVisible);
+    setModalVisible(false);
   };
 
   const handleChange = (e) => {
@@ -25,10 +25,8 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
   const handleSubmit = (e) => {
     e.preventDefault();
     if (modify) {
-      // dispatch({ type: 'pools/editPool', payload: { ...formData, email: token.email } });
       dispatch(editPool({ id: poolId, equity: parseInt(formData.contribution) }));
     } else {
-      // dispatch({ type: 'pools/joinPool', payload: { ...formData, email: token.email } });
       dispatch(joinPool({ id: poolId, equity: parseInt(formData.contribution) }));
     }
     setModalVisible(false);
@@ -37,8 +35,14 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
   return (
     <main>
       {modalVisible && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50 p-4">
-          <div className="relative bg-white rounded-md text-gray-600 overflow-y-auto max-h-screen">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50 p-4"
+          onClick={toggleModalVisibility}
+        >
+          <div
+            className="relative bg-white rounded-md text-gray-600 overflow-y-auto max-h-screen"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
               onClick={toggleModalVisibility}
@@ -49,8 +53,7 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
               <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
                 <div className="max-w-lg mx-auto pt-8 space-y-3 sm:text-center">
                   <p className="text-primary-darkgreen rounded-lg text-3xl font-semibold sm:text-4xl">
-                    {modify && 'Modify Pool'}
-                    {!modify && 'Join Pool'}
+                    {modify ? 'Modify Pool' : 'Join Pool'}
                   </p>
                   <p>Empower people from all economic backgrounds to invest</p>
                 </div>
@@ -58,10 +61,10 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
                       <label className="font-medium">
-                        {modify &&
-                          'Modify Contribution. Currently Invested:$' +
-                            currentContribution.toLocaleString()}{' '}
-                        {!modify && 'Join Pool'}
+                        {modify
+                          ? 'Modify Contribution. Currently Invested:$' +
+                            currentContribution.toLocaleString()
+                          : 'Join Pool'}
                       </label>
                       <input
                         type="number"
@@ -76,8 +79,7 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
                       type="submit"
                       className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-primary-darkgreen active:bg-primary-green rounded-lg duration-150 mt-4"
                     >
-                      {modify && 'Modify Contribution'}
-                      {!modify && 'Join Pool'}
+                      {modify ? 'Modify Contribution' : 'Join Pool'}
                     </button>
                   </form>
                 </div>

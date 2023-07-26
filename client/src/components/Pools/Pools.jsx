@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { FaPlusCircle, FaAsterisk } from 'react-icons/fa';
+import { FaPlusCircle, FaLock } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { fetchPools, getPoolsData } from '../../features/pools/poolsSlice';
 
-import Pool from '../Pool/Pool';
+import Pool from './Pool/Pool';
 
 import Filter from '../Filter/Filter';
 import PoolForm from './PoolForm';
@@ -44,7 +44,7 @@ const Pools = () => {
           className="px-4 py-2 mt-8 ml-2 flex flex-row justify-center align-center text-white font-medium bg-primary-darkgreen rounded-lg duration-150"
           onClick={() => setPrivateFormVisible(true)}
         >
-          <FaAsterisk className="mt-1 mr-1" />
+          <FaLock className="mt-1 mr-1" />
           <span>Join Private Pool</span>
         </button>
       </div>
