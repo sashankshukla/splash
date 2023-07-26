@@ -126,6 +126,20 @@ export const fetchPoolsForListing = createAsyncThunk(
   },
 );
 
+export const denyPool = createAsyncThunk('pools/denyPool', async (poolId, thunkAPI) => {
+  try {
+    let token = thunkAPI.getState().auth.auth_token;
+    console.log(typeof(poolId));
+    return await poolsService.denyPool(poolId, token);
+  } catch (error) {
+    let message =
+      (error.response & error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
 const poolsSlice = createSlice({
   name: 'pools',
   initialState: initialState,
@@ -235,6 +249,21 @@ const poolsSlice = createSlice({
         state.pools = action.payload;
       })
       .addCase(fetchPoolsForListing.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+
+        state.message = action.payload;
+      })
+      .addCase(denyPool.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(denyPool.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+
+        // TODO: filter out the pool we just deleted
+      })
+      .addCase(denyPool.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
 
