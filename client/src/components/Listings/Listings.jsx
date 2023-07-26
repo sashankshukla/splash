@@ -13,6 +13,11 @@ import ListingModal from './Listing/ListingModal';
 import ListingForm from './ListingForm';
 import Filter from '../Filter/Filter';
 
+import LoadingSpinner from '../Accessories/LoadingSpinner/LoadingSpinner';
+import NoResults from '../Accessories/NoResults/NoResults';
+import ErrorAlert from '../Accessories/ErrorAlert/ErrorAlert';
+
+
 import './Listings.css';
 import { FaPlusCircle } from 'react-icons/fa';
 
@@ -25,7 +30,10 @@ const Listings = () => {
     useSelector(getListingsData);
 
   useEffect(() => {
-    dispatch(fetchFilteredListings());
+    dispatch(reset());
+    return () => {
+      dispatch(fetchFilteredListings());
+    }
 
     // return () => {
     //   dispatch(reset());
@@ -73,20 +81,33 @@ const Listings = () => {
         <FaPlusCircle className="mt-1 mr-1" />
         <span>Add New Listing</span>
       </button>
-
-      <h1 className="text-2xl mt-8 font-light text-center text-primary-darkgreen">
-        Showing {listings.length} results.....
-      </h1>
       <ListingForm formVisible={formVisible} setFormVisible={setFormVisible} isEditing={false} />
 
       <ListingModal selectedListing={selectedListing} setSelectedListing={setSelectedListing} />
 
-      <div
+      {/* no results check */}
+      {listings.length === 0 && <NoResults />}
+      {listings.length > 0 &&
+        <>
+          <h1 className="text-2xl mt-8 font-light text-center text-primary-darkgreen">
+            Showing {listings.length} results.....
+          </h1>
+
+          <div
+            id="listings-container"
+            className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"
+          >
+            {renderedListings}
+          </div>
+        </>
+      }
+
+      {/* <div
         id="listings-container"
         className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"
       >
         {renderedListings}
-      </div>
+      </div> */}
     </div>
   );
 };
