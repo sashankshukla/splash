@@ -17,7 +17,7 @@ const Pool = ({ poolId, title, createdBy, listingId, members, totalValue, remain
   const progress = (1 - remaining / totalValue) * 100;
 
   return (
-    <div className="bg-white rounded-xl shadow-md m-4 p-4">
+    <div className="bg-white w-full rounded-xl shadow-md m-4 p-4">
       <div className="text-green-900 font-bold text-xl mb-2">{title}</div>
       <div className="text-green-900 flex flex-row font-light text-lg mb-2">
         {poolId} <CopyToClipboard value={poolId} />

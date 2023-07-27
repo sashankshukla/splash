@@ -73,7 +73,7 @@ function Filter() {
   };
 
   const handleDistanceCheckboxChange = (e) => {
-    if (e.target.checked == true) {
+    if (e.target.checked === true) {
       setListingFilterData({
         ...listingFilterData,
         distance: {
@@ -107,7 +107,7 @@ function Filter() {
   };
 
   const handleStatusChange = (e) => {
-    if (e.target.checked == true) {
+    if (e.target.checked === true) {
       setListingFilterData({
         ...listingFilterData,
         status: {
@@ -129,7 +129,7 @@ function Filter() {
   };
 
   const handlePoolsChange = (e) => {
-    if (e.target.checked == true) {
+    if (e.target.checked === true) {
       setListingFilterData({
         ...listingFilterData,
         pools: {
@@ -151,7 +151,7 @@ function Filter() {
   };
 
   const handleInvestmentChange = (e) => {
-    if (e.target.checked == true) {
+    if (e.target.checked === true) {
       setListingFilterData({
         ...listingFilterData,
         investmentType: {

@@ -14,7 +14,7 @@ const ApprovalCard = ({ poolTitle, poolId, listingId, members }) => {
     dispatch(sellListing({ listingId, poolId }));
   };
   return (
-    <div className="flex flex-col items-center mx-4 shadow-lg rounded-lg bg-white">
+    <div className="flex flex-col w-full items-center justify-center text-center mx-4 shadow-lg rounded-lg bg-white">
       <div className="w-full bg-green-50 rounded-t-lg text-center p-2">
         <h2 className="text-3xl font-bold text-green-800">{poolTitle}</h2>
       </div>
