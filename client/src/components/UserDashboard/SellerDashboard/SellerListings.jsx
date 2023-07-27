@@ -61,7 +61,12 @@ const SellerListings = () => {
         >
           {userListings.map((listing, index) => (
             <div key={index} className="flex-none md:w-1/2 lg:w-1/3">
-              <Listing {...listing} />
+              <Listing
+                {...listing}
+                street={listing.address.street}
+                city={listing.address.city}
+                postalCode={listing.address.postalCode}
+              />
             </div>
           ))}
         </div>
