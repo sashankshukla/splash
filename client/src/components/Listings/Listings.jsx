@@ -20,6 +20,7 @@ import ErrorAlert from '../Accessories/ErrorAlert/ErrorAlert';
 
 import './Listings.css';
 import { FaPlusCircle } from 'react-icons/fa';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 const Listings = () => {
   const navigate = useNavigate();
@@ -44,6 +45,9 @@ const Listings = () => {
   const [formVisible, setFormVisible] = useState(false);
 
   //if is loading, return spinner instead of page view?
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   const renderedListings = listings.map(
     (listing, index) =>
@@ -82,7 +86,6 @@ const Listings = () => {
         <span>Add New Listing</span>
       </button>
       <ListingForm formVisible={formVisible} setFormVisible={setFormVisible} isEditing={false} />
-
       <ListingModal selectedListing={selectedListing} setSelectedListing={setSelectedListing} />
 
       {/* no results check */}
@@ -101,7 +104,6 @@ const Listings = () => {
           </div>
         </>
       }
-
       {/* <div
         id="listings-container"
         className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"

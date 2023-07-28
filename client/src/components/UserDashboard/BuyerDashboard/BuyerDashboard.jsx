@@ -20,7 +20,7 @@ const BuyerDashboard = () => {
 
   if (!user) {
     // Render loading state or return null if you prefer
-    return <p>Loading...</p>;
+    return null;
   }
 
   console.log('user assets');
