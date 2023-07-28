@@ -17,7 +17,6 @@ import LoadingSpinner from '../Accessories/LoadingSpinner/LoadingSpinner';
 import NoResults from '../Accessories/NoResults/NoResults';
 import ErrorAlert from '../Accessories/ErrorAlert/ErrorAlert';
 
-
 import './Listings.css';
 import { FaPlusCircle } from 'react-icons/fa';
 
@@ -33,7 +32,7 @@ const Listings = () => {
     dispatch(reset());
     return () => {
       dispatch(fetchFilteredListings());
-    }
+    };
 
     // return () => {
     //   dispatch(reset());
@@ -42,8 +41,6 @@ const Listings = () => {
 
   const [selectedListing, setSelectedListing] = useState(null);
   const [formVisible, setFormVisible] = useState(false);
-
-  //if is loading, return spinner instead of page view?
 
   const renderedListings = listings.map(
     (listing, index) =>
@@ -82,12 +79,11 @@ const Listings = () => {
         <span>Add New Listing</span>
       </button>
       <ListingForm formVisible={formVisible} setFormVisible={setFormVisible} isEditing={false} />
-
       <ListingModal selectedListing={selectedListing} setSelectedListing={setSelectedListing} />
 
       {/* no results check */}
       {listings.length === 0 && <NoResults />}
-      {listings.length > 0 &&
+      {listings.length > 0 && (
         <>
           <h1 className="text-2xl mt-8 font-light text-center text-primary-darkgreen">
             Showing {listings.length} results.....
@@ -100,8 +96,7 @@ const Listings = () => {
             {renderedListings}
           </div>
         </>
-      }
-
+      )}
       {/* <div
         id="listings-container"
         className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"

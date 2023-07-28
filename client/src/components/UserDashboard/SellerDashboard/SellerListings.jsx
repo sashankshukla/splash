@@ -19,7 +19,7 @@ const SellerListings = () => {
       },
     };
 
-    const response = await axios.get(`http://localhost:5001/listings/user`, config);
+    const response = await axios.get(`http://splash-server.onrender.com/listings/user`, config);
     return response.data;
   };
 
@@ -61,18 +61,19 @@ const SellerListings = () => {
           ref={scrollContainer}
           className="flex items-center justify-around overflow-x-scroll px-4 lg:space-x-4 md:space-x-2 space-x-1"
         >
-          {userListings.length === 0 && <NoResults/>}
-          
-          {userListings.length > 0 && userListings.map((listing, index) => (
-            <div key={index} className="flex-none md:w-1/2 lg:w-1/3">
-              <Listing
-                {...listing}
-                street={listing.address.street}
-                city={listing.address.city}
-                postalCode={listing.address.postalCode}
-              />
-            </div>
-          ))}
+          {userListings.length === 0 && <NoResults />}
+
+          {userListings.length > 0 &&
+            userListings.map((listing, index) => (
+              <div key={index} className="flex-none md:w-1/2 lg:w-1/3">
+                <Listing
+                  {...listing}
+                  street={listing.address.street}
+                  city={listing.address.city}
+                  postalCode={listing.address.postalCode}
+                />
+              </div>
+            ))}
         </div>
         <button onClick={() => scroll(15)} className="text-3xl font-bold ml-8">
           <FaArrowAltCircleRight />

@@ -7,6 +7,7 @@ import Home from './components/Home/Home';
 import AddFunds from './components/UserDashboard/AddFunds';
 import AddAccount from './components/UserDashboard/AddAccount';
 import Map from './components/Map/Map.jsx';
+import UserBlocked from './components/ErrorAlert/UserBlocked';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route exact path="/payment" element={<AddFunds />} />
           <Route exact path="/map" element={<Map />} />
           <Route exact path="/account" element={<AddAccount />} />
+          <Route exact path="/404" element={<UserBlocked />} />
         </Routes>
       </Router>
     </div>

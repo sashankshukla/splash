@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FaUser, FaMoneyBill } from 'react-icons/fa';
 import JoinForm from './JoinForm';
 import { deletePool } from '../../../features/pools/poolsSlice';
+
 import CopyToClipboard from '../../Accessories/CopyToClipboard/CopyToClipboard';
 
-const Pool = ({ poolId, title, createdBy, listingId, members, totalValue, remaining }) => {
+const Pool = ({ poolId, title, createdBy, listingId, members, totalValue, remaining, listing, onClick }) => {
   const token = useSelector((store) => store.auth.token);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -49,6 +50,16 @@ const Pool = ({ poolId, title, createdBy, listingId, members, totalValue, remain
           ></div>
         </div>
       </div>
+      <button
+        className="m-1 px-4 py-2 text-white bg-primary-green rounded-lg inline-block"
+        onClick={() => {
+          console.log('Click');
+          console.log(listing);
+          onClick(listing);
+        }}
+      >
+        <span>View</span>
+      </button>
       {!memberFound && (
         <button
           className="m-1 px-4 py-2 text-white bg-primary-green rounded-lg inline-block"

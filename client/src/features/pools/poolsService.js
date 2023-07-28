@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5001/pools/';
+const API_URL = 'http://splash-server.onrender.com/pools/';
 
 const fetchPoolsForUser = async (token) => {
   const config = {

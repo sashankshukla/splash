@@ -37,7 +37,7 @@ const PrivatePoolForm = ({ modalVisible, setModalVisible }) => {
     e.preventDefault();
     console.log(formData.poolId);
     axios
-      .get(`http://localhost:5001/pools/private/${formData.poolId}`, config)
+      .get(`http://splash-server.onrender.com/pools/private/${formData.poolId}`, config)
       .then((res) => {
         console.log(res.data);
         setPool(res.data);

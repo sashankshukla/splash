@@ -48,6 +48,8 @@ const getPoolsForListing = async (req, res) => {
 
 const getPoolsForUser = async (req, res) => {
   const user = req.user;
+  console.log("getpoolforuserserver");
+  console.log(user);
   const pools = await Pool.find({ 'users.email': user.email });
   if (!pools) {
     res.status(400);
