@@ -26,7 +26,7 @@ const SellerDashboard = () => {
   }, [auth_token]);
 
   return (
-    <div className="h-screen mt-48 pb-48 w-screen flex flex-col justify-center items-center">
+    <div className="h-max pb-48 w-screen flex flex-col justify-center items-center">
       <h1 className="text-3xl font-bold">Your Listings</h1>
       <SellerListings />
       <h1 className="text-3xl my-6 font-bold">{`Buyers awaiting your approval ${
