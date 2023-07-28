@@ -3,7 +3,9 @@ import SellerListings from './SellerListings';
 import ApprovalCard from './ApprovalCard';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+
 import LoadingSpinner from '../../Accessories/LoadingSpinner/LoadingSpinner';
+import NoResults from '../../Accessories/NoResults/NoResults';
 
 const SellerDashboard = () => {
   const auth_token = useSelector((store) => store.auth.auth_token);
@@ -31,7 +33,8 @@ const SellerDashboard = () => {
         token.name.split(' ')[0]
       }...`}</h1>
       <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 mx-12">
-        {approvalPools.length === 0 && <LoadingSpinner />}
+        {/* {approvalPools.length === 0 && <LoadingSpinner />} */}
+        {approvalPools.length === 0 && <NoResults />}
         {approvalPools.map((pool, index) => (
           <ApprovalCard
             key={index}

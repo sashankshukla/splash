@@ -123,6 +123,18 @@ const fetchPoolsCreatedByUser = async (token) => {
   return response.data;
 };
 
+const denyPool = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  }
+  console.log(id);
+  const response = await axios.delete(API_URL + id + "/deny", config);
+
+  return response.data;
+}
+
 const poolsService = {
   fetchPools,
   addPool,
@@ -135,6 +147,7 @@ const poolsService = {
   fetchPoolsCreatedByUser,
   fetchPoolsForUser,
   fetchPrivatePool,
+  denyPool,
 };
 
 export default poolsService;

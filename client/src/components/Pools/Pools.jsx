@@ -10,6 +10,8 @@ import Filter from '../Filter/Filter';
 import PoolForm from './PoolForm';
 import PrivatePoolForm from './PrivatePoolForm';
 
+import NoResults from '../Accessories/NoResults/NoResults';
+
 const Pools = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -54,7 +56,8 @@ const Pools = () => {
         id="pools-container"
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
-        {pools.map((pool, idx) => {
+        {pools.length === 0 && <NoResults />}
+        {pools.length > 0 && pools.map((pool, idx) => {
           return (
             <Pool
               key={idx}

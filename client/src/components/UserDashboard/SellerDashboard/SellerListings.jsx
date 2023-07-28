@@ -4,6 +4,8 @@ import axios from 'axios';
 
 import Listing from '../../Listings/Listing/Listing';
 
+import NoResults from '../../Accessories/NoResults/NoResults';
+
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 
 const SellerListings = () => {
@@ -59,7 +61,9 @@ const SellerListings = () => {
           ref={scrollContainer}
           className="flex overflow-x-scroll px-4 lg:space-x-4 md:space-x-2 space-x-1"
         >
-          {userListings.map((listing, index) => (
+          {userListings.length === 0 && <NoResults/>}
+          
+          {userListings.length > 0 && userListings.map((listing, index) => (
             <div key={index} className="flex-none md:w-1/2 lg:w-1/3">
               <Listing {...listing} />
             </div>
