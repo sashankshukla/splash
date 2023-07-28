@@ -5,11 +5,17 @@ import StockChart from './StockChart.webp';
 import PriceChart from './PriceChart';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPoolsForUser, getPoolsData } from '../../../features/pools/poolsSlice';
+import { useState } from 'react';
+import ListingModal from '../../Listings/Listing/ListingModal';
+import { getListingsData } from '../../../features/listings/listingsSlice';
 
 const BuyerDashboard = () => {
   const user = useSelector((store) => store.auth.user);
   const { pools, isError, isSuccess, isLoading, message } = useSelector(getPoolsData);
   const token = useSelector((state) => state.auth.token);
+  const [selectedListing, setSelectedListing] = useState(null);
+  const { listings, isErrorl, isSuccessl, isLoadingl, messagel } = useSelector(getListingsData);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -56,6 +62,7 @@ const BuyerDashboard = () => {
             />
           );
         })}
+        <ListingModal selectedListing={selectedListing} setSelectedListing={setSelectedListing} />
       </div>
     );
   };
@@ -75,6 +82,8 @@ const BuyerDashboard = () => {
               members={pool.users}
               totalValue={pool.totalValue}
               remaining={pool.remaining}
+              listing={listings.find((listing) => listing._id === pool.listingId)}
+              onClick={setSelectedListing}
             />
           );
         })}
