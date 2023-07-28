@@ -14,7 +14,7 @@ const SellerDashboard = () => {
 
   useEffect(() => {
     const fetchApprovalPools = async () => {
-      const response = await axios.get('http://splash-server.onrender.com/pools/completed', {
+      const response = await axios.get('https://splash-server.onrender.com/pools/completed', {
         headers: {
           Authorization: `${auth_token}`,
         },
