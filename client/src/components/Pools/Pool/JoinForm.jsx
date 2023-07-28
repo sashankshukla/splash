@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { editPool, joinPool } from '../../features/pools/poolsSlice';
+import { editPool, joinPool } from '../../../features/pools/poolsSlice';
 
 const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContribution }) => {
   const [formData, setFormData] = useState({

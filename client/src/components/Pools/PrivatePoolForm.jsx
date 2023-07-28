@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchListings } from '../../features/listings/listingsSlice';
-import Pool from '../Pool/Pool';
+import Pool from './Pool/Pool';
 
 const PrivatePoolForm = ({ modalVisible, setModalVisible }) => {
   const dispatch = useDispatch();

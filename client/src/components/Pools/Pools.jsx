@@ -4,13 +4,13 @@ import { FaPlusCircle, FaAsterisk } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { fetchPools, getPoolsData } from '../../features/pools/poolsSlice';
 
-import Pool from '../Pool/Pool';
+import Pool from './Pool/Pool';
 
 import Filter from '../Filter/Filter';
 import PoolForm from './PoolForm';
 import PrivatePoolForm from './PrivatePoolForm';
 import { getListingsData } from '../../features/listings/listingsSlice';
-import ListingModal from '../Listing/ListingModal';
+import ListingModal from '../Listings/Listing/ListingModal';
 
 const Pools = () => {
   const dispatch = useDispatch();

@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { reset, fetchListings, getListingsData } from '../../features/listings/listingsSlice'; //Selector functions
 
-import Listing from '../Listing/Listing';
-import ListingModal from '../Listing/ListingModal';
+import Listing from './Listing/Listing';
+import ListingModal from './Listing/ListingModal';
 import ListingForm from './ListingForm';
 import Filter from '../Filter/Filter';
 

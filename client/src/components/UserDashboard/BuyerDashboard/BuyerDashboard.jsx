@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PurchaseCard from './PurchaseCard';
-import Pool from '../../Pool/Pool';
+import Pool from '../../Pools/Pool/Pool';
 import StockChart from './StockChart.webp';
 import PriceChart from './PriceChart';
 import { useSelector, useDispatch } from 'react-redux';

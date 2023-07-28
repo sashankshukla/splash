@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaUser, FaMoneyBill } from 'react-icons/fa';
 import JoinForm from './JoinForm';
-import { deletePool } from '../../features/pools/poolsSlice';
+import { deletePool } from '../../../features/pools/poolsSlice';
 
 const Pool = ({
   poolId,

@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
-import Listing from '../../Listing/Listing';
+import Listing from '../../Listings/Listing/Listing';
 
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 
