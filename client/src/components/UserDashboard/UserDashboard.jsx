@@ -24,11 +24,6 @@ const UserDashboard = () => {
   }, [token, navigate]);
 
   console.log('userDashboard');
-  // if (!user) {
-  //   // Render loading state or return null if you prefer
-  //   return <p>Loading...</p>;
-  // }
-  // console.log(user.active);
   if (user && !user.active) {
     navigate('/404');
   }

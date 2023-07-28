@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import { useSelector, useDispatch } from 'react-redux';
 import Listing from '../Listing/Listing';
 import { fetchListings, getListingsData } from '../../features/listings/listingsSlice';
+import ListingModal from '../Listing/ListingModal';
 
 const containerStyle = {
   width: '100vw',
@@ -119,13 +120,8 @@ function Map() {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
   return isLoaded ? (
     <div>
-      {' '}
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
@@ -141,39 +137,12 @@ function Map() {
           />
         ))}
       </GoogleMap>
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={handleCloseModal}
-        style={modalStyles}
-        className="fixed right-0 top-0 w-1/4 h-full transform translate-x-full transition-transform duration-300 ease-in-out bg-white p-4"
-        overlayClassName="fixed top-0 left-0 right-0 bottom-0 bg-opacity-0 z-50 w-1/3"
-        ariaHideApp={false}
-      >
-        {selectedMarker && (
-          <div>
-            <Listing
-              id={selectedMarker.object.listingId}
-              name={selectedMarker.object.name}
-              street={selectedMarker.object.address.street}
-              city={selectedMarker.object.address.city}
-              country={selectedMarker.object.address.country}
-              postalCode={selectedMarker.object.address.postalCode}
-              description={selectedMarker.object.description}
-              price={selectedMarker.object.price}
-              images={selectedMarker.object.images}
-              createdBy={selectedMarker.object.createdBy}
-              status={selectedMarker.object.status}
-              onClick={null}
-            />
-          </div>
-        )}
-        <button
-          className="bg-gray-500 text-white px-4 py-2 mt-4 rounded hover:bg-gray-600"
-          onClick={handleCloseModal}
-        >
-          Close Modal
-        </button>
-      </Modal>
+      {selectedMarker && (
+        <ListingModal
+          selectedListing={selectedMarker.object}
+          setSelectedListing={setSelectedMarker}
+        />
+      )}
     </div>
   ) : (
     <></>

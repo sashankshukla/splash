@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchAllUsers, fetchPendingFunds } from '../../../features/auth/authSlice';
 import AdminUserCard from './AdminUserCard';
 import PendingApprovalCard from './PendingApprovalCard';
+import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
 
 const AdminDashBoard = () => {
   const user = useSelector((store) => store.auth.user);
@@ -21,12 +22,12 @@ const AdminDashBoard = () => {
 
   if (!user) {
     // Render loading state or return null if you prefer
-    return <p>Loading User...</p>;
+    return <LoadingSpinner />;
   }
 
   if (userList.length === 0) {
     // Render loading state or return null if you prefer
-    return <p>Loading all the users...</p>;
+    return <LoadingSpinner />;
   }
 
   console.log('Admin Component');

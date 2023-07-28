@@ -9,6 +9,8 @@ import Pool from '../Pool/Pool';
 import Filter from '../Filter/Filter';
 import PoolForm from './PoolForm';
 import PrivatePoolForm from './PrivatePoolForm';
+import { getListingsData } from '../../features/listings/listingsSlice';
+import ListingModal from '../Listing/ListingModal';
 
 const Pools = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,9 @@ const Pools = () => {
   const [privateFormVisible, setPrivateFormVisible] = useState(false);
   const token = useSelector((store) => store.auth.token);
   const { pools, isError, isSuccess, isLoading, message } = useSelector(getPoolsData);
+  const { listings, isErrorl, isSuccessl, isLoadingl, messagel } = useSelector(getListingsData);
+
+  const [selectedListing, setSelectedListing] = useState(null);
 
   useEffect(() => {
     if (Object.keys(token).length === 0) {
@@ -29,6 +34,8 @@ const Pools = () => {
       dispatch(fetchPools());
     }
   }, [dispatch, token]);
+
+  console.log(listings);
 
   return (
     <div id="pools-page-container" className="flex flex-col justify-around items-center pt-16 mx-4">
@@ -56,18 +63,23 @@ const Pools = () => {
       >
         {pools.map((pool, idx) => {
           return (
-            <Pool
-              key={idx}
-              poolId={pool._id}
-              title={pool.name}
-              createdBy={pool.createdBy}
-              listingId={pool.listingId}
-              members={pool.users}
-              totalValue={pool.totalValue}
-              remaining={pool.remaining}
-            />
+            <div>
+              <Pool
+                key={idx}
+                poolId={pool._id}
+                title={pool.name}
+                createdBy={pool.createdBy}
+                listingId={pool.listingId}
+                members={pool.users}
+                totalValue={pool.totalValue}
+                remaining={pool.remaining}
+                listing={listings.find((listing) => listing._id === pool.listingId)}
+                onClick={setSelectedListing}
+              />
+            </div>
           );
         })}
+        <ListingModal selectedListing={selectedListing} setSelectedListing={setSelectedListing} />
       </div>
     </div>
   );

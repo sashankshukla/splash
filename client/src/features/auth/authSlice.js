@@ -24,7 +24,6 @@ export const fetchUser = createAsyncThunk('auth/fetchUser', async (user, thunkAP
 
 export const fetchAllUsers = createAsyncThunk('auth/fetchAllUsers', async (_,thunkAPI) => {
   try {
-    
     let token = thunkAPI.getState().auth.auth_token;
     return await authService.fetchAllUser(token);
   } catch (error) {

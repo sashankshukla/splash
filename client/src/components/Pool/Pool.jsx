@@ -4,7 +4,17 @@ import { FaUser, FaMoneyBill } from 'react-icons/fa';
 import JoinForm from './JoinForm';
 import { deletePool } from '../../features/pools/poolsSlice';
 
-const Pool = ({ poolId, title, createdBy, listingId, members, totalValue, remaining }) => {
+const Pool = ({
+  poolId,
+  title,
+  createdBy,
+  listingId,
+  members,
+  totalValue,
+  remaining,
+  listing,
+  onClick,
+}) => {
   const token = useSelector((store) => store.auth.token);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -16,7 +26,7 @@ const Pool = ({ poolId, title, createdBy, listingId, members, totalValue, remain
   const progress = (1 - remaining / totalValue) * 100;
 
   return (
-    <div className="bg-white rounded-xl shadow-md m-4 p-4">
+    <div id={poolId} className="bg-white rounded-xl shadow-md m-4 p-4">
       <div className="text-green-900 font-bold text-xl mb-2">{title}</div>
       <div className="text-gray-700 text-base">
         <p>Listing ID: {listingId}</p>
@@ -37,6 +47,16 @@ const Pool = ({ poolId, title, createdBy, listingId, members, totalValue, remain
           ></div>
         </div>
       </div>
+      <button
+        className="m-1 px-4 py-2 text-white bg-primary-green rounded-lg inline-block"
+        onClick={() => {
+          console.log('Click');
+          console.log(listing);
+          onClick(listing);
+        }}
+      >
+        <span>View</span>
+      </button>
       {!memberFound && (
         <button
           className="m-1 px-4 py-2 text-white bg-primary-green rounded-lg inline-block"

@@ -2,22 +2,25 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUser } from '../../features/auth/authSlice.js';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.jsx';
+import { fetchPoolsForUser } from '../../features/pools/poolsSlice.js';
+import { getPoolsData } from '../../features/pools/poolsSlice.js';
 
 const ProfileOverview = () => {
   const dispatch = useDispatch();
   const userToken = useSelector((store) => store.auth.token);
+  const { pools, isError, isSuccess, isLoading, message } = useSelector(getPoolsData);
+
   useEffect(() => {
     if (userToken) {
       dispatch(fetchUser());
+      dispatch(fetchPoolsForUser());
     }
   }, [dispatch, userToken]);
 
   const user = useSelector((store) => store.auth.user);
-  const pools = useSelector((state) => state.pools);
   if (!user) {
-    console.log('loading');
-    // Render loading state or return null if you prefer
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
   function sumOwnership(user) {
     if (!user || !Array.isArray(user.ownerships)) {

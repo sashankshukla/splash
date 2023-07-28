@@ -6,7 +6,7 @@ const Toggle = ({ name1, name2, name3, toggle, setToggle }) => {
 
   if (!user) {
     // Render loading state or return null if you prefer
-    return <p>Loading...</p>;
+    return null;
   }
 
   return (
