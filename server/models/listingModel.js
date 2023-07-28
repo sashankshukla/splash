@@ -55,5 +55,16 @@ const listingSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
-
+listingSchema.index({ price: 1 });
+listingSchema.index({ createdAt: 1 });
+listingSchema.index({
+  // "name": "text",
+  // "address.street": "text",
+  // "address.city": "text",
+  // "address.country": "text",
+  // "address.postalCode": "text",
+  // "description": "text",
+  // "investmentType": "text",
+  "$**": "text"
+});
 module.exports = mongoose.model('Listing', listingSchema);

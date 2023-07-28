@@ -5,15 +5,28 @@ const mongoose = require('mongoose');
 
 const getListings = async (req, res) => {
   const listings = await Listing.find({ status: 'Available' });
+  if(!listings) {
+    res.status(400);
+  }
+
   res.status(200).json(listings);
 };
 
 const getFilteredListings = async (req, res) => {
-  await Listing.createIndexes({ price: 1 });
-  await Listing.createIndexes({ createdAt: 1 });
-  await Listing.createIndexes({ '$**': 'text' });
+  // TODO: fix search
+  // TODO: add { score: {$meta: "textScore"} } to find after keyword search, then add again in sort
+
+  // await Listing.createIndexes({ price: 1 });
+  // await Listing.createIndexes({ createdAt: 1 });
+  // await Listing.createIndexes({ name: "text" });
 
   let queryDecoded = '';
+
+  let score = { score: { $meta: "textScore" }};
+
+  const filterArr = [];
+  const sortArr = [];
+
   let filterObj = {};
   let sortObj = {};
 
@@ -21,11 +34,16 @@ const getFilteredListings = async (req, res) => {
     queryDecoded = JSON.parse(decodeURIComponent(req.params.query));
   } else {
     const listings = await Listing.find(filterObj);
+    if(!listings) {
+      res.status(400);
+    }
+
     res.status(200).json(listings);
   }
 
+  // FILTER/FIND
+
   // keyword search
-  let filterArr = [];
   if (queryDecoded.keywordSearch) {
     filterArr.push({ $text: { $search: queryDecoded.keywordSearch } });
   }
@@ -67,7 +85,8 @@ const getFilteredListings = async (req, res) => {
   }
   filterArr.push({ investmentType: { $in: investArr } });
 
-  const sortArr = [];
+  // SORT
+
   const { sortTime, sortPrice } = queryDecoded;
   if (sortPrice == 'High to Low') {
     sortArr.push({ price: -1 });
@@ -95,11 +114,19 @@ const getFilteredListings = async (req, res) => {
   console.log(filterObj);
 
   const listings = await Listing.find(filterObj).sort(sortObj);
+  if(!listings) {
+    res.status(400);
+  }
+
   res.status(200).json(listings);
 };
 
 const getListingsForUser = async (req, res) => {
   const listings = await Listing.find({ createdBy: req.user.email });
+  if(!listings) {
+    res.status(400);
+  }
+
   res.status(200).json(listings);
 };
 
@@ -118,6 +145,10 @@ const addListing = async (req, res) => {
     images,
     createdBy: req.user.email,
   });
+  if(!listing) {
+    res.status(400);
+  }
+
   res.status(200).json(listing);
 };
 
@@ -149,6 +180,7 @@ const deleteListing = async (req, res) => {
     res.status(400);
     throw new Error('Listing not found');
   }
+  // ^^This scenario isn't actually an issue because it's still the desired outcome, right?
   if (listing.status === 'Sold') {
     res.status(400);
     throw new Error('Cannot delete a sold listing');

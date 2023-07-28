@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateFilter, clearFilter } from '../../features/listings/listingsSlice';
 
+import ErrorAlert from '../Accessories/ErrorAlert/ErrorAlert';
+
 import './Filter.css';
 import { FaSearch, FaFilter } from 'react-icons/fa';
 
 function Filter() {
   const dispatch = useDispatch();
+
+  //accessory visibility toggles
+  //const [errorAlertVisible, setErrorVisibility] = useState(false);
 
   const [optionsVisible, setVisibility] = useState(false);
   const [distExpand, setDistExpand] = useState(false);
@@ -61,19 +66,29 @@ function Filter() {
   };
 
   const handlePriceChange = (e) => {
-    setListingFilterData({
-      ...listingFilterData,
-      price: {
-        ...listingFilterData.price,
-        [e.target.name]: e.target.value,
-      },
-    });
+    if(e.target.value < 0) {
+      setListingFilterData({
+        ...listingFilterData,
+        price: {
+          ...listingFilterData.price,
+          [e.target.name]: 0,
+        },
+      });
+    } else {
+      setListingFilterData({
+        ...listingFilterData,
+        price: {
+          ...listingFilterData.price,
+          [e.target.name]: e.target.value,
+        },
+      });
+    }
 
     console.log(e.target.value);
   };
 
   const handleDistanceCheckboxChange = (e) => {
-    if (e.target.checked == true) {
+    if (e.target.checked === true) {
       setListingFilterData({
         ...listingFilterData,
         distance: {
@@ -107,7 +122,7 @@ function Filter() {
   };
 
   const handleStatusChange = (e) => {
-    if (e.target.checked == true) {
+    if (e.target.checked === true) {
       setListingFilterData({
         ...listingFilterData,
         status: {
@@ -129,7 +144,7 @@ function Filter() {
   };
 
   const handlePoolsChange = (e) => {
-    if (e.target.checked == true) {
+    if (e.target.checked === true) {
       setListingFilterData({
         ...listingFilterData,
         pools: {
@@ -151,7 +166,7 @@ function Filter() {
   };
 
   const handleInvestmentChange = (e) => {
-    if (e.target.checked == true) {
+    if (e.target.checked === true) {
       setListingFilterData({
         ...listingFilterData,
         investmentType: {
@@ -175,8 +190,11 @@ function Filter() {
   const handleSubmit = (e) => {
     console.log('submitted the following listingsFilterData: ');
     console.log(listingFilterData);
-
-    dispatch(updateFilter(listingFilterData));
+    if(listingFilterData.price.lower < 0 || listingFilterData.price.upper < 0) {
+      console.log("listing filter validation error placeholder");
+    } else {
+      dispatch(updateFilter(listingFilterData));
+    }
   };
 
   const clearFilters = (e) => {
@@ -226,6 +244,10 @@ function Filter() {
     }
   }, [optionsVisible]);
 
+  useEffect(() => {
+    dispatch(updateFilter(listingFilterData));
+  }, [listingFilterData]);
+
   return (
     <div className="min-w-[85%]">
       <div className="flex items-stretch my-8 justify-between w-full h-12 bg-white rounded-md border-gray-900 shadow-md hover:shadow-xl focus-within:outline-none focus-within:ring-0 px-2 py-2 relative text-xl transition duration-0 hover:duration-300 ease-in-out">
@@ -267,6 +289,7 @@ function Filter() {
           {/* Options Container */}
           {optionsVisible && (
             <div className="absolute right-0 w-64 mt-2 p-2 bg-white border border-gray-200 rounded shadow-lg divide-y divide-gray-200">
+              {/* {errorAlertVisible && <ErrorAlert message="TEST ERROR" />} */}
               {/* SORT */}
               <span className="block text-md text-gray-700">Sort</span>
               <div className="py-1">
