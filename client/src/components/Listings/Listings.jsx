@@ -75,12 +75,28 @@ const Listings = () => {
       <ListingForm formVisible={formVisible} setFormVisible={setFormVisible} isEditing={false} />
       <ListingModal selectedListing={selectedListing} setSelectedListing={setSelectedListing} />
 
-      <div
+      {/* {listings.length === 0 && <NoResults />} */}
+      {listings.length > 0 && (
+        <>
+          <h1 className="text-2xl mt-8 font-light text-center text-primary-darkgreen">
+            Showing {listings.length} results.....
+          </h1>
+
+          <div
+            id="listings-container"
+            className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"
+          >
+            {renderedListings}
+          </div>
+        </>
+      )}
+
+      {/* <div
         id="listings-container"
         className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"
       >
         {renderedListings}
-      </div>
+      </div> */}
     </div>
   );
 };
