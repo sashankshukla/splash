@@ -33,8 +33,12 @@ const upload = multer({
 const app = express();
 connectDB();
 
+const corsOptions = {
+  origin: "https://splash-twqs.onrender.com/", // frontend URI (ReactJS)
+}
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(bodyParser.json());
