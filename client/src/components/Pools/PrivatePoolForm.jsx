@@ -18,7 +18,7 @@ const PrivatePoolForm = ({ modalVisible, setModalVisible }) => {
   });
 
   const toggleModalVisibility = () => {
-    setModalVisible(!modalVisible);
+    setModalVisible(false);
   };
 
   const handleChange = (e) => {
@@ -50,8 +50,14 @@ const PrivatePoolForm = ({ modalVisible, setModalVisible }) => {
   return (
     <main>
       {modalVisible && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50 p-4">
-          <div className="relative bg-white rounded-md text-gray-600 overflow-y-auto max-h-screen">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50 p-4"
+          onClick={toggleModalVisibility}
+        >
+          <div
+            className="relative bg-white rounded-md text-gray-600 overflow-y-auto max-h-screen"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
               onClick={toggleModalVisibility}

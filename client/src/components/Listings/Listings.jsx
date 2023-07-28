@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { reset, fetchListings, getListingsData } from '../../features/listings/listingsSlice'; //Selector functions
+import {
+  reset,
+  fetchListings,
+  fetchFilteredListings,
+  getListingsData,
+} from '../../features/listings/listingsSlice'; //Selector functions
 
 import Listing from './Listing/Listing';
 import ListingModal from './Listing/ListingModal';
 import ListingForm from './ListingForm';
 import Filter from '../Filter/Filter';
+
+import LoadingSpinner from '../Accessories/LoadingSpinner/LoadingSpinner';
+import NoResults from '../Accessories/NoResults/NoResults';
+import ErrorAlert from '../Accessories/ErrorAlert/ErrorAlert';
+
 
 import './Listings.css';
 import { FaPlusCircle } from 'react-icons/fa';
@@ -17,15 +27,19 @@ const Listings = () => {
   const dispatch = useDispatch();
 
   const token = useSelector((store) => store.auth.token); //auth_token is what we want for header config
-  const { listings, isError, isSuccess, isLoading, message } = useSelector(getListingsData);
+  const { listings, listingFilter, isError, isSuccess, isLoading, message } =
+    useSelector(getListingsData);
 
   useEffect(() => {
-    dispatch(fetchListings());
-
+    dispatch(reset());
     return () => {
-      dispatch(reset());
-    };
-  }, [dispatch]);
+      dispatch(fetchFilteredListings());
+    }
+
+    // return () => {
+    //   dispatch(reset());
+    // };
+  }, [dispatch, listingFilter]);
 
   const [selectedListing, setSelectedListing] = useState(null);
   const [formVisible, setFormVisible] = useState(false);
@@ -60,23 +74,23 @@ const Listings = () => {
   return (
     <div
       id="listings-page-container"
-      className="flex flex-col justify-center items-center pt-16 mx-4"
+      className="flex flex-col justify-center items-center pt-16 mx-4 bg-gray-100"
     >
       <Filter />
 
       <button
-        className="px-4 py-2 mt-8 flex flex-row justify-center align-center text-white font-medium bg-primary-darkgreen rounded-lg duration-150"
+        className="px-4 py-2 mt-8 flex flex-row justify-center align-center text-white font-medium bg-primary-darkgreen rounded-lg transition duration-300 ease-in-out"
         onClick={() => setFormVisible(true)}
       >
         <FaPlusCircle className="mt-1 mr-1" />
         <span>Add New Listing</span>
       </button>
-
       <ListingForm formVisible={formVisible} setFormVisible={setFormVisible} isEditing={false} />
       <ListingModal selectedListing={selectedListing} setSelectedListing={setSelectedListing} />
 
-      {/* {listings.length === 0 && <NoResults />} */}
-      {listings.length > 0 && (
+      {/* no results check */}
+      {listings.length === 0 && <NoResults />}
+      {listings.length > 0 &&
         <>
           <h1 className="text-2xl mt-8 font-light text-center text-primary-darkgreen">
             Showing {listings.length} results.....
@@ -89,8 +103,7 @@ const Listings = () => {
             {renderedListings}
           </div>
         </>
-      )}
-
+      }
       {/* <div
         id="listings-container"
         className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"

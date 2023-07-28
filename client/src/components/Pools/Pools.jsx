@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { FaPlusCircle, FaAsterisk } from 'react-icons/fa';
+import { FaPlusCircle, FaLock } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { fetchPools, getPoolsData } from '../../features/pools/poolsSlice';
 
@@ -11,6 +11,8 @@ import PoolForm from './PoolForm';
 import PrivatePoolForm from './PrivatePoolForm';
 import { getListingsData } from '../../features/listings/listingsSlice';
 import ListingModal from '../Listings/Listing/ListingModal';
+
+import NoResults from '../Accessories/NoResults/NoResults';
 
 const Pools = () => {
   const dispatch = useDispatch();
@@ -51,7 +53,7 @@ const Pools = () => {
           className="px-4 py-2 mt-8 ml-2 flex flex-row justify-center align-center text-white font-medium bg-primary-darkgreen rounded-lg duration-150"
           onClick={() => setPrivateFormVisible(true)}
         >
-          <FaAsterisk className="mt-1 mr-1" />
+          <FaLock className="mt-1 mr-1" />
           <span>Join Private Pool</span>
         </button>
       </div>
@@ -61,7 +63,8 @@ const Pools = () => {
         id="pools-container"
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
-        {pools.map((pool, idx) => {
+        {pools.length === 0 && <NoResults />}
+        {pools.length > 0 && pools.map((pool, idx) => {
           return (
             <div>
               <Pool

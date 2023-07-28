@@ -204,10 +204,10 @@ const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSel
                         <option value="" disabled>
                           Select a category
                         </option>
-                        <option value="1">House/Living Accomodation</option>
-                        <option value="2">Franchise</option>
-                        <option value="3">Gas Station</option>
-                        <option value="4">Stock Portfolio</option>
+                        <option value="House/Living Accomodation">House/Living Accomodation</option>
+                        <option value="Franchise">Franchise</option>
+                        <option value="Gas Station">Gas Station</option>
+                        <option value="Stock Portfolio">Stock Portfolio</option>
                       </select>
                     </div>
                     <div>

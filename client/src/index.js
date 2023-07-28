@@ -15,7 +15,6 @@ root.render(
         {' '}
         <App />
       </GoogleOAuthProvider>
-      ;
     </Provider>
   </React.StrictMode>,
 );

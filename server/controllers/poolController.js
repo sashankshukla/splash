@@ -37,89 +37,6 @@ const getPrivatePool = async (req, res) => {
   }
 };
 
-const addPool = async (req, res) => {
-  if (!req.body.name || !req.body.listingId || !req.body.contribution) {
-    res.status(400);
-    throw new Error('Please specify a name, private, and listingId');
-  }
-  const listing = await Listing.findById(req.body.listingId);
-  const pool = await Pool.create({
-    ...req.body,
-    createdBy: req.user.email,
-    users: [{ email: req.user.email, equity: req.body.contribution }],
-    totalValue: listing.price,
-    remaining: listing.price - req.body.contribution,
-  });
-  res.status(200).json(pool);
-};
-
-const deletePool = async (req, res) => {
-  const pool = await Pool.findById(req.params.id);
-  if (!pool) {
-    res.status(400);
-    throw new Error('Pool not found');
-  }
-  if (pool.createdBy !== req.user.email) {
-    res.status(400);
-    throw new Error('User does not own this pool');
-  }
-  await Pool.deleteOne({ _id: req.params.id });
-  res.status(200).json({ id: req.params.id });
-};
-
-const joinPool = async (req, res) => {
-  const pool = await Pool.findById(req.params.id);
-  if (!pool) {
-    res.status(400);
-    throw new Error('Pool not found');
-  }
-
-  if (pool.remaining < req.body.equity) {
-    res.status(400);
-    throw new Error('Contribution is too high');
-  }
-  pool.remaining -= req.body.equity;
-  pool.users = [...pool.users, { email: req.user.email, equity: req.body.equity }];
-
-  await pool.save();
-  res.status(200).json(pool);
-};
-
-const editPool = async (req, res) => {
-  const pool = await Pool.findById(req.params.id);
-  if (!pool) {
-    res.status(400);
-    throw new Error('Pool not found');
-  }
-
-  poolUser = pool.users.find((user) => user.email === req.user.email);
-  pool.remaining += poolUser.equity;
-  if (pool.remaining < req.body.equity) {
-    res.status(400);
-    throw new Error('Contribution is too high');
-  }
-  poolUser.equity = req.body.equity;
-  pool.remaining -= poolUser.equity;
-
-  await pool.save();
-  res.status(200).json(pool);
-};
-
-const leavePool = async (req, res) => {
-  const pool = await Pool.findById(req.params.id);
-  if (!pool) {
-    res.status(400);
-    throw new Error('Pool not found');
-  }
-
-  poolUser = pool.users.find((user) => user.email === req.user.email);
-  pool.remaining += poolUser.equity;
-
-  pool.users.pull(poolUser);
-  await pool.save();
-  res.status(200).json(pool);
-};
-
 const getPoolsForListing = async (req, res) => {
   const pools = await Pool.find({ listingId: req.params.listingId });
   if (!pools) {
@@ -182,17 +99,132 @@ const getPoolsCompletedForUser = async (req, res) => {
   res.status(200).json(completedPools);
 };
 
+const addPool = async (req, res) => {
+  if (!req.body.name || !req.body.listingId || !req.body.contribution) {
+    res.status(400);
+    throw new Error('Please specify a name, private, and listingId');
+  }
+  const listing = await Listing.findById(req.body.listingId);
+  if (req.body.contribution > listing.price || req.body.contribution <= 0) {
+    res.status(400);
+    throw new Error('Invalid contribution');
+  }
+  const pool = await Pool.create({
+    ...req.body,
+    createdBy: req.user.email,
+    users: [{ email: req.user.email, equity: req.body.contribution }],
+    totalValue: listing.price,
+    remaining: listing.price - req.body.contribution,
+  });
+  res.status(200).json(pool);
+};
+
+const joinPool = async (req, res) => {
+  const pool = await Pool.findById(req.params.id);
+  if (!pool) {
+    res.status(400);
+    throw new Error('Pool not found');
+  }
+
+  if (pool.remaining < req.body.equity) {
+    res.status(400);
+    throw new Error('Contribution is too high');
+  }
+  pool.remaining -= req.body.equity;
+  pool.users = [...pool.users, { email: req.user.email, equity: req.body.equity }];
+
+  await pool.save();
+  res.status(200).json(pool);
+};
+
+const editPool = async (req, res) => {
+  const pool = await Pool.findById(req.params.id);
+  if (!pool) {
+    res.status(400);
+    throw new Error('Pool not found');
+  }
+
+  poolUser = pool.users.find((user) => user.email === req.user.email);
+  pool.remaining += poolUser.equity;
+  if (pool.remaining < req.body.equity) {
+    res.status(400);
+    throw new Error('Contribution is too high');
+  }
+  poolUser.equity = req.body.equity;
+  pool.remaining -= poolUser.equity;
+
+  await pool.save();
+  res.status(200).json(pool);
+};
+
+const leavePool = async (req, res) => {
+  const pool = await Pool.findById(req.params.id);
+  if (!pool) {
+    res.status(400);
+    throw new Error('Pool not found');
+  }
+
+  poolUser = pool.users.find((user) => user.email === req.user.email);
+  pool.remaining += poolUser.equity;
+
+  pool.users.pull(poolUser);
+  await pool.save();
+  res.status(200).json(pool);
+};
+
+const deletePool = async (req, res) => {
+  const pool = await Pool.findById(req.params.id);
+  if (!pool) {
+    res.status(400);
+    throw new Error('Pool not found');
+  }
+  if (pool.createdBy !== req.user.email) {
+    res.status(400);
+    throw new Error('User does not own this pool');
+  }
+  await Pool.deleteOne({ _id: req.params.id });
+  res.status(200).json({ id: req.params.id });
+};
+
+const denyPool = async (req, res) => {
+  const user = req.user;
+  const pool = await Pool.findById(req.params.id);
+  if(!pool) {
+    res.status(400);
+    throw new Error('Pool not found');
+  }
+
+  const listing = await Listing.findById(pool.listingId);
+  if(listing.createdBy !== user.email) {
+    res.status(400);
+    throw new Error('User does not own listing for pool');
+  }
+
+  for(let i = 0; i < pool.users.length; i++) {
+    // TODO: send email to each user
+    let currEmail = pool.users[i].email;
+    if(!currEmail) {
+      console.log("error retrieving user email");
+    }
+    console.log("sending email to " + currEmail);
+  }
+  
+  await Pool.deleteOne({ _id: req.params.id });
+  res.status(200).json({ id: req.params.id });
+};
+
 module.exports = {
   getPools,
-  addPool,
-  deletePool,
-  joinPool,
-  editPool,
-  leavePool,
+  getPrivatePool,
   getPoolsForListing,
   getTotalPoolEquity,
   getPoolsForUser,
   getPoolsCreatedByUser,
   getPoolsCompletedForUser,
-  getPrivatePool,
+  addPool,
+  joinPool,
+  editPool,
+  leavePool,
+  deletePool,
+  denyPool,
 };

@@ -5,7 +5,7 @@ import ListingForm from '../ListingForm';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import PoolForm from '../../Pools/PoolForm';
-
+import CopyToClipboard from '../../Accessories/CopyToClipboard/CopyToClipboard';
 const ListingModal = ({ selectedListing, setSelectedListing }) => {
   const user = useSelector((store) => store.auth.token);
   const [formVisible, setFormVisible] = useState(false);
@@ -107,18 +107,30 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
         id="popup-modal"
         tabIndex="-1"
         className={`pt-24 fixed inset-0 z-49 flex items-center justify-center bg-gray-900 bg-opacity-50`}
+        onClick={toggleModalVisibility} // Clicking outside of modal will close it
       >
-        <div className="relative bg-white rounded-lg shadow w-screen h-auto max-w-md max-h-full overflow-y-auto">
-          <div className="p-6 text-center">
+        <div
+          className="relative bg-white rounded-lg shadow w-screen h-auto max-w-md max-h-full overflow-y-auto"
+          onClick={(e) => e.stopPropagation()} // Prevents event from bubbling to overlay div
+        >
+        <div className="p-6 text-center">
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
               onClick={toggleModalVisibility}
             >
               X
             </button>
+            {/* TODO: add role indicator for screen readers */}
+            {/* {renderedImages} */}
             <ImageCarousel images={images}></ImageCarousel>
+            {/*
+            TODO: format into an image carousel
+            See: https://www.material-tailwind.com/docs/react/carousel
+          */}
             <h1 className="mt-4 text-2xl font-semibold text-gray-700 capitalize">{name}</h1>
-            <h1 className="mt-4 text-md font-light text-gray-500">id : {_id}</h1>
+            <h1 className="mt-4 flex flex-row justify-center text-md font-light text-gray-500">
+              id : {_id} <CopyToClipboard value={_id} />
+            </h1>
             <h3 className="mt-4 text-xl font-semibold text-gray-700 capitalize">
               {address.street}, {address.city}
               <br />
@@ -147,7 +159,8 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
               {status}
             </p>
             {renderButtonsCheck}
-            {user.email !== createdBy && (
+
+            {user.email != createdBy && (
               <button
                 onClick={() => setPoolFormVisible(true)}
                 className="mt-4 px-4 py-2 bg-green-700 text-white rounded-lg"
