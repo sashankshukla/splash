@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchAllUsers, fetchPendingFunds } from '../../../features/auth/authSlice';
 import AdminUserCard from './AdminUserCard';
 import PendingApprovalCard from './PendingApprovalCard';
-import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from '../../Accessories/LoadingSpinner/LoadingSpinner';
 
 const AdminDashBoard = () => {
   const user = useSelector((store) => store.auth.user);

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchUser } from '../../features/auth/authSlice.js';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.jsx';
+import LoadingSpinner from '../Accessories/LoadingSpinner/LoadingSpinner.jsx';
 import { fetchPoolsForUser } from '../../features/pools/poolsSlice.js';
 import { getPoolsData } from '../../features/pools/poolsSlice.js';
 
