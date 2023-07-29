@@ -1,6 +1,8 @@
 const Pool = require('../models/poolModel');
 const Listing = require('../models/listingModel');
 const mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
+
 
 const getPools = async (req, res) => {
   // TODO: add filter as well
