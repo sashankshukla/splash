@@ -206,9 +206,31 @@ const denyPool = async (req, res) => {
     if(!currEmail) {
       console.log("error retrieving user email");
     }
-    console.log("sending email to " + currEmail);
+    const emailContent = `
+    Hello from Splash Finance!,
+    Unfortunately it appears that you're pool for ${listing.name} has been rejected.
+    Pool Id: ${pool.listingId}
+    Best of luck on your next splash!
+
+    Best regards,
+    Splash Finance
+  `;
+    const mailOptions = {
+        from: 'splash@frankeyhe.dev',
+        to: currEmail,
+        subject: `Splash Finance: Pool for ${listing.name} has been rejected :(`,
+        text: emailContent,
+      };
+    transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+        console.error('Error sending email:', error);
+        res.status(404).json(error);
+    } else {
+        console.log('Email sent:', info.response);
+        res.status(200).json({});
+    }
+  })
   }
-  
   await Pool.deleteOne({ _id: req.params.id });
   res.status(200).json({ id: req.params.id });
 };
