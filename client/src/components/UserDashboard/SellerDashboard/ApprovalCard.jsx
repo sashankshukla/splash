@@ -6,9 +6,9 @@ import { denyPool } from '../../../features/pools/poolsSlice';
 const ApprovalCard = ({ poolTitle, poolId, listingId, members }) => {
   const dispatch = useDispatch();
   const handleDeny = () => {
-    console.log(typeof(poolId));
+    console.log(typeof poolId);
     dispatch(denyPool(poolId));
-  }
+  };
   const handleSell = () => {
     console.log(listingId, poolId);
     dispatch(sellListing({ listingId, poolId }));

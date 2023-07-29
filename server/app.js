@@ -10,7 +10,6 @@ const connectDB = require('./config/connectDB');
 const cors = require('cors');
 const { errorHandler } = require('./middleware/errorMiddleware');
 
-
 const s3 = new aws.S3({
   accessKeyId: process.env.S3_ACCESS_KEY,
   secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
@@ -35,8 +34,8 @@ const app = express();
 connectDB();
 
 const corsOptions = {
-  origin: "https://splash-twqs.onrender.com", // frontend URI (ReactJS)
-}
+  origin: 'https://splash-twqs.onrender.com', // frontend URI (ReactJS)
+};
 
 // Middleware
 app.use(cors(corsOptions));

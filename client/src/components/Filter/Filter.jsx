@@ -66,7 +66,7 @@ function Filter() {
   };
 
   const handlePriceChange = (e) => {
-    if(e.target.value < 0) {
+    if (e.target.value < 0) {
       setListingFilterData({
         ...listingFilterData,
         price: {
@@ -190,8 +190,8 @@ function Filter() {
   const handleSubmit = (e) => {
     console.log('submitted the following listingsFilterData: ');
     console.log(listingFilterData);
-    if(listingFilterData.price.lower < 0 || listingFilterData.price.upper < 0) {
-      console.log("listing filter validation error placeholder");
+    if (listingFilterData.price.lower < 0 || listingFilterData.price.upper < 0) {
+      console.log('listing filter validation error placeholder');
     } else {
       dispatch(updateFilter(listingFilterData));
     }

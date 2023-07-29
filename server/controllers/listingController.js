@@ -6,16 +6,16 @@ const nodemailer = require('nodemailer');
 
 // Configure Nodemailer with your custom domain email provider's settings
 const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-      user: 'splashfinance455@gmail.com', // Your Gmail email address
-      pass: process.env.GMAIL_API, // Your Gmail password or App Password
-    },
-  });
+  service: 'Gmail',
+  auth: {
+    user: 'splashfinance455@gmail.com', // Your Gmail email address
+    pass: process.env.GMAIL_API, // Your Gmail password or App Password
+  },
+});
 
 const getListings = async (req, res) => {
   const listings = await Listing.find({ status: 'Available' });
-  if(!listings) {
+  if (!listings) {
     res.status(400);
   }
 
@@ -32,7 +32,7 @@ const getFilteredListings = async (req, res) => {
 
   let queryDecoded = '';
 
-  let score = { score: { $meta: "textScore" }};
+  let score = { score: { $meta: 'textScore' } };
 
   const filterArr = [];
   const sortArr = [];
@@ -44,7 +44,7 @@ const getFilteredListings = async (req, res) => {
     queryDecoded = JSON.parse(decodeURIComponent(req.params.query));
   } else {
     const listings = await Listing.find(filterObj);
-    if(!listings) {
+    if (!listings) {
       res.status(400);
     }
 
@@ -124,7 +124,7 @@ const getFilteredListings = async (req, res) => {
   console.log(filterObj);
 
   const listings = await Listing.find(filterObj).sort(sortObj);
-  if(!listings) {
+  if (!listings) {
     res.status(400);
   }
 
@@ -133,7 +133,7 @@ const getFilteredListings = async (req, res) => {
 
 const getListingsForUser = async (req, res) => {
   const listings = await Listing.find({ createdBy: req.user.email });
-  if(!listings) {
+  if (!listings) {
     res.status(400);
   }
 
@@ -155,7 +155,7 @@ const addListing = async (req, res) => {
     images,
     createdBy: req.user.email,
   });
-  if(!listing) {
+  if (!listing) {
     res.status(400);
   }
 
@@ -217,7 +217,7 @@ const sellListing = async (req, res) => {
   const members = pool.users;
   const emailList = [];
   members.forEach(async (member) => {
-    emailList.push(member.email)
+    emailList.push(member.email);
     const user = await User.findOne({ email: member.email });
     if (user.funds < member.equity)
       throw new Error('User does not have enough funds to purchase this listing');
@@ -236,8 +236,7 @@ const sellListing = async (req, res) => {
   await Pool.deleteOne({ _id: req.params.poolId });
   // notifies all members of the pool that the seller as accepted their pool offer
   // Email content with template literals and newline characters
-  const emailContent = 
-  `The following Pool has been sold to you!
+  const emailContent = `The following Pool has been sold to you!
 
   You are now the proud owners of ${listing.name} !
   Breakdown of Equity: Listing Price $ ${listing.price.toLocaleString()}
@@ -269,7 +268,6 @@ function printOwnership(members) {
 
   return ownershipStrings.join('\n');
 }
-
 
 module.exports = {
   getListings,

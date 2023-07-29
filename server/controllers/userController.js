@@ -68,27 +68,26 @@ const addUser = async (req, res) => {
     ...req.body,
     ownerships: [],
     admin: false,
-  }
-  );
+  });
   const emailContent = `
     Welcome to Splash Finance ${req.body.name}, prepare to make a splash into the world of finance!
     Start by adding funds to your account and start browsing, join pools or create pools.
   `;
-    const mailOptions = {
-        from: 'splash@frankeyhe.dev',
-        to: req.body.userEmail,
-        subject: 'Splash Finance: Funding has been denied.',
-        text: emailContent,
-      };
-    transporter.sendMail(mailOptions, (error, info) => {
+  const mailOptions = {
+    from: 'splash@frankeyhe.dev',
+    to: req.body.userEmail,
+    subject: 'Splash Finance: Funding has been denied.',
+    text: emailContent,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-        console.error('Error sending email:', error);
-        res.status(404).json(error);
+      console.error('Error sending email:', error);
+      res.status(404).json(error);
     } else {
-        console.log('Email sent:', info.response);
-        res.status(200).json({});
+      console.log('Email sent:', info.response);
+      res.status(200).json({});
     }
-  })
+  });
   res.status(201).json(user);
 };
 
@@ -211,11 +210,10 @@ const getUser = async (req, res) => {
 const getAllUser = async (req, res) => {
   try {
     const usersList = await User.find({});
-    if(!usersList) {
-      throw new Error("Unable to get all users for admin");
-    };
-    
-    
+    if (!usersList) {
+      throw new Error('Unable to get all users for admin');
+    }
+
     res.status(200).json(usersList);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -224,12 +222,11 @@ const getAllUser = async (req, res) => {
 
 const getPendingFunds = async (req, res) => {
   try {
-    const pendingFunds = await Bank.find({approved: false});
-    if(!pendingFunds) {
-      throw new Error("Unable to get all users for admin");
-    };
-    
-    
+    const pendingFunds = await Bank.find({ approved: false });
+    if (!pendingFunds) {
+      throw new Error('Unable to get all users for admin');
+    }
+
     res.status(200).json(pendingFunds);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -238,25 +235,18 @@ const getPendingFunds = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    
     const status = req.body.status;
     const updatedUser = await User.findOneAndUpdate(
       { email: req.params.email },
       { $set: { active: status } },
-      { new: true } // Return the updated document
+      { new: true }, // Return the updated document
     );
 
     if (!updatedUser) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    
-    
-
     const allUsers = await User.find();
-
-    
-    
 
     res.status(200).json(allUsers);
   } catch (error) {
@@ -266,25 +256,18 @@ const updateUser = async (req, res) => {
 
 const updateBank = async (req, res) => {
   try {
-    
     const status = req.body.status;
     const updatedBank = await Bank.findOneAndUpdate(
       { _id: req.params.bankId },
       { $set: { approved: status } },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedBank) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    
-    
-
-    const allPending = await Bank.find({approved: false});
-
-    
-    
+    const allPending = await Bank.find({ approved: false });
 
     res.status(200).json(allPending);
   } catch (error) {
@@ -294,21 +277,13 @@ const updateBank = async (req, res) => {
 
 const deleteBank = async (req, res) => {
   try {
-    
-    const updatedBank = await Bank.findOneAndDelete(
-      { _id: req.params.bankId },
-    );
+    const updatedBank = await Bank.findOneAndDelete({ _id: req.params.bankId });
 
     if (!updatedBank) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    
-
-    const allPending = await Bank.find({approved: false});
-
-    
-    
+    const allPending = await Bank.find({ approved: false });
 
     res.status(200).json(allPending);
   } catch (error) {
@@ -339,4 +314,15 @@ const getUserAssetPerformance = async (user) => {
   await user.save();
 };
 
-module.exports = { addUser, getUserAssets, addFunds, getUser, addAccount , getAllUser, getPendingFunds, updateUser, updateBank,deleteBank};
+module.exports = {
+  addUser,
+  getUserAssets,
+  addFunds,
+  getUser,
+  addAccount,
+  getAllUser,
+  getPendingFunds,
+  updateUser,
+  updateBank,
+  deleteBank,
+};
