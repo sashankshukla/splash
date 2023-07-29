@@ -246,7 +246,7 @@ const sellListing = async (req, res) => {
   const mailOptions = {
     from: 'splash@frankeyhe.dev',
     to: emailList, // Join the recipients' email addresses with a comma and space
-    subject: `Splash Finance: Your pool ${req.params.poolId} for the listing ${req.params.listingId} was successfully bought!`,
+    subject: `Splash Finance: Your pool ${req.params.poolId} for the listing at ${listing.name} was successfully bought!`,
     text: emailContent,
   };
 
