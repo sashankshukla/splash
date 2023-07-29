@@ -23,6 +23,7 @@
     "openai": "^3.3.0"
   },
   "devDependencies": {
+    "nodemailer": "^6.9.4",
     "nodemon": "^2.0.22"
   }
 }
