@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://splash-server.onrender.com/listings/';
+const API_URL = 'https://splash-server.onrender.com/listings/';
 
 const fetchListings = async () => {
   const response = await axios.get(API_URL);

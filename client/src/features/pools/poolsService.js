@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://splash-server.onrender.com/pools/';
+const API_URL = 'https://splash-server.onrender.com/pools/';
 
 const fetchPoolsForUser = async (token) => {
   const config = {
@@ -128,12 +128,12 @@ const denyPool = async (id, token) => {
     headers: {
       Authorization: `${token}`,
     },
-  }
+  };
   console.log(id);
-  const response = await axios.delete(API_URL + id + "/deny", config);
+  const response = await axios.delete(API_URL + id + '/deny', config);
 
   return response.data;
-}
+};
 
 const poolsService = {
   fetchPools,
