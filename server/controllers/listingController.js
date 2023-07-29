@@ -236,13 +236,13 @@ const sellListing = async (req, res) => {
   await Pool.deleteOne({ _id: req.params.poolId });
   // notifies all members of the pool that the seller as accepted their pool offer
   // Email content with template literals and newline characters
-  const emailContent = `
-    The following Pool has been sold to you!:
-    You are now the proud owners of ${listing.name} !
+  const emailContent = 
+  `The following Pool has been sold to you!
 
-    Breakdown of Equity: Listing Price ${listing.price}
+  You are now the proud owners of ${listing.name} !
+  Breakdown of Equity: Listing Price $ ${listing.price.toLocaleString()}
 
-    ${printOwnership(members)}`;
+  ${printOwnership(members)}`;
   const mailOptions = {
     from: 'splash@frankeyhe.dev',
     to: emailList, // Join the recipients' email addresses with a comma and space
@@ -264,7 +264,7 @@ const sellListing = async (req, res) => {
 
 function printOwnership(members) {
   const ownershipStrings = members.map((member) => {
-    return `Owner: ${member.email}\nEquity: ${member.equity}\n**************`;
+    return `Owner: ${member.email}\nEquity: ${member.equity.toLocaleString()}\n**************`;
   });
 
   return ownershipStrings.join('\n');
