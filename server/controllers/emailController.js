@@ -13,6 +13,7 @@ const transporter = nodemailer.createTransport({
     const emailContent = `
     The following funding account has been approved by the server admin:
     User: ${req.body.userEmail}
+    Name: ${req.body.accountName}
     Account: ${req.body.accountNumber}
     Bank Name: ${req.body.bankName}
   `;
@@ -37,6 +38,7 @@ const transporter = nodemailer.createTransport({
     const emailContent = `
     The following funding account has been approved by the server admin:
     User: ${req.body.userEmail}
+    Name: ${req.body.accountName}
     Account: ${req.body.accountNumber}
     Bank Name: ${req.body.bankName}
   `;
