@@ -216,7 +216,7 @@ const denyPool = async (req, res) => {
     }
     const emailContent = `
     Hello from Splash Finance!,
-    Unfortunately it appears that you're pool for ${listing.name} has been rejected.
+    Unfortunately it appears that your pool for ${listing.name} has been rejected.
     Pool Id: ${pool.listingId}
     Best of luck on your next splash!
 
