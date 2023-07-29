@@ -2,6 +2,16 @@ const Listing = require('../models/listingModel');
 const User = require('../models/userModel');
 const Pool = require('../models/poolModel');
 const mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
+
+// Configure Nodemailer with your custom domain email provider's settings
+const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'splashfinance455@gmail.com', // Your Gmail email address
+      pass: 'etecdbqjiygkctsi', // Your Gmail password or App Password
+    },
+  });
 
 const getListings = async (req, res) => {
   const listings = await Listing.find({ status: 'Available' });
@@ -222,8 +232,44 @@ const sellListing = async (req, res) => {
   user.funds += listing.price;
   await user.save();
   await Pool.deleteOne({ _id: req.params.poolId });
+  // notifies all members of the pool that the seller as accepted their pool offer
+  // Email content with template literals and newline characters
+  const emailContent = `
+    The following funding account has been approved by the server admin:
+
+    User: ${req.body.userEmail}
+    Account: ${req.body.accountNumber}
+    Bank Name: ${req.body.bankName}
+  `;
+  const mailOptions = {
+    from: 'splash@frankeyhe.dev',
+    to: members.join(', '), // Join the recipients' email addresses with a comma and space
+    subject: `Splash Finance: Your pool ${req.params.poolId} for the listing ${req.params.listingId} was successfully bought!
+    Breakdown of Equity: Listing Price ${listing.price}
+    ${printOwnership(members)}`,
+    text: emailContent,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+      res.status(404).json(error);
+    } else {
+      console.log('Email sent:', info.response);
+      res.status(200).json({});
+    }
+  });
   res.status(200).json(listing);
 };
+
+function printOwnership(members) {
+  const ownershipStrings = members.map((member) => {
+    return `Owner: ${member.email}\nEquity: ${member.equity}\n**************`;
+  });
+
+  return ownershipStrings.join('\n');
+}
+
 
 module.exports = {
   getListings,
