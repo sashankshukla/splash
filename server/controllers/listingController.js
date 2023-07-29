@@ -3,6 +3,16 @@ const User = require('../models/userModel');
 const Pool = require('../models/poolModel');
 const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler')
+const nodemailer = require('nodemailer');
+
+// Configure Nodemailer with your custom domain email provider's settings
+const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'splashfinance455@gmail.com', // Your Gmail email address
+      pass: process.env.GMAIL_API, // Your Gmail password or App Password
+    },
+  });
 
 const getListings = asyncHandler(async (req, res) => {
   const listings = await Listing.find({ status: 'Available' });
@@ -206,7 +216,9 @@ const sellListing = asyncHandler(async (req, res) => {
     throw new Error('Pool does not own this listing');
   }
   const members = pool.users;
+  const emailList = [];
   members.forEach(async (member) => {
+    emailList.push(member.email)
     const user = await User.findOne({ email: member.email });
     if (user.funds < member.equity)
       throw new Error('User does not have enough funds to purchase this listing');
@@ -223,8 +235,42 @@ const sellListing = asyncHandler(async (req, res) => {
   user.funds += listing.price;
   await user.save();
   await Pool.deleteOne({ _id: req.params.poolId });
+  // notifies all members of the pool that the seller as accepted their pool offer
+  // Email content with template literals and newline characters
+  const emailContent = 
+  `The following Pool has been sold to you!
+
+  You are now the proud owners of ${listing.name} !
+  Breakdown of Equity: Listing Price $ ${listing.price.toLocaleString()}
+
+  ${printOwnership(members)}`;
+  const mailOptions = {
+    from: 'splash@frankeyhe.dev',
+    to: emailList, // Join the recipients' email addresses with a comma and space
+    subject: `Splash Finance: Your pool ${req.params.poolId} for the listing at ${listing.name} was successfully bought!`,
+    text: emailContent,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+      res.status(404).json(error);
+    } else {
+      console.log('Email sent:', info.response);
+      res.status(200).json({});
+    }
+  });
   res.status(200).json(listing);
 });
+
+function printOwnership(members) {
+  const ownershipStrings = members.map((member) => {
+    return `Owner: ${member.email}\nEquity: ${member.equity.toLocaleString()}\n**************`;
+  });
+
+  return ownershipStrings.join('\n');
+}
+
 
 module.exports = {
   getListings,
