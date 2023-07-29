@@ -1,3 +1,4 @@
+const asyncHandler = require('express-async-handler')
 const nodemailer = require('nodemailer');
 
 // Configure Nodemailer with your custom domain email provider's settings
@@ -9,7 +10,7 @@ const transporter = nodemailer.createTransport({
     },
   });
 
-  const approvedFunds = async (req, res) => {
+  const approvedFunds = asyncHandler(async (req, res) => {
     const emailContent = `
     The following funding account has been approved by the server admin:
     User: ${req.body.userEmail}
@@ -31,10 +32,10 @@ const transporter = nodemailer.createTransport({
         console.log('Email sent:', info.response);
         res.status(200).json({});
     }
-  })}
+  })})
 
 
-  const denyFunds = async (req, res) => {
+  const denyFunds = asyncHandler(async (req, res) => {
     const emailContent = `
     The following funding account has been approved by the server admin:
     User: ${req.body.userEmail}
@@ -56,6 +57,5 @@ const transporter = nodemailer.createTransport({
         console.log('Email sent:', info.response);
         res.status(200).json({});
     }
-  })}
-module.exports = { approvedFunds, denyFunds
-};
+  })})
+module.exports = { approvedFunds, denyFunds };
