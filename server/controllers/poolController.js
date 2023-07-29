@@ -1,14 +1,15 @@
 const Pool = require('../models/poolModel');
 const Listing = require('../models/listingModel');
 const mongoose = require('mongoose');
+const asyncHandler = require('express-async-handler')
 
-const getPools = async (req, res) => {
+const getPools = asyncHandler(async (req, res) => {
   // TODO: add filter as well
   const pools = await Pool.find({ private: false });
   res.status(200).json(pools);
-};
+});
 
-const getPrivatePool = async (req, res) => {
+const getPrivatePool = asyncHandler(async (req, res) => {
   const id = req.params.id;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     console.log('Invalid ID');
@@ -35,18 +36,18 @@ const getPrivatePool = async (req, res) => {
     console.log(err);
     res.status(500).send('Server error');
   }
-};
+});
 
-const getPoolsForListing = async (req, res) => {
+const getPoolsForListing = asyncHandler(async (req, res) => {
   const pools = await Pool.find({ listingId: req.params.listingId });
   if (!pools) {
     res.status(400);
     throw new Error('Pools not found');
   }
   res.status(200).json(pools);
-};
+});
 
-const getPoolsForUser = async (req, res) => {
+const getPoolsForUser = asyncHandler(async (req, res) => {
   const user = req.user;
   console.log("getpoolforuserserver");
   console.log(user);
@@ -55,9 +56,9 @@ const getPoolsForUser = async (req, res) => {
     res.status(400);
   }
   res.status(200).json(pools);
-};
+});
 
-const getPoolsCreatedByUser = async (req, res) => {
+const getPoolsCreatedByUser = asyncHandler(async (req, res) => {
   const user = req.user;
   const pools = await Pool.find({ createdBy: user.email });
   if (!pools) {
@@ -65,9 +66,9 @@ const getPoolsCreatedByUser = async (req, res) => {
     throw new Error('Pools not found');
   }
   res.status(200).json(pools);
-};
+});
 
-const getTotalPoolEquity = async (req, res) => {
+const getTotalPoolEquity = asyncHandler(async (req, res) => {
   const pool = await Pool.findById(req.params.id);
   if (!pool) {
     res.status(400);
@@ -75,9 +76,9 @@ const getTotalPoolEquity = async (req, res) => {
   }
   const totalEquity = pool.users.reduce((total, user) => total + user.equity, 0);
   res.status(200).json(totalEquity);
-};
+});
 
-const getPoolsCompletedForUser = async (req, res) => {
+const getPoolsCompletedForUser = asyncHandler(async (req, res) => {
   const userListings = (await Listing.find({ createdBy: req.user.email, status: 'Available' })).map(
     (listing) => listing._id,
   );
@@ -97,9 +98,9 @@ const getPoolsCompletedForUser = async (req, res) => {
     }
   }
   res.status(200).json(completedPools);
-};
+});
 
-const addPool = async (req, res) => {
+const addPool = asyncHandler(async (req, res) => {
   if (!req.body.name || !req.body.listingId || !req.body.contribution) {
     res.status(400);
     throw new Error('Please specify a name, private, and listingId');
@@ -117,9 +118,9 @@ const addPool = async (req, res) => {
     remaining: listing.price - req.body.contribution,
   });
   res.status(200).json(pool);
-};
+});
 
-const joinPool = async (req, res) => {
+const joinPool = asyncHandler(async (req, res) => {
   const pool = await Pool.findById(req.params.id);
   if (!pool) {
     res.status(400);
@@ -135,9 +136,9 @@ const joinPool = async (req, res) => {
 
   await pool.save();
   res.status(200).json(pool);
-};
+});
 
-const editPool = async (req, res) => {
+const editPool = asyncHandler(async (req, res) => {
   const pool = await Pool.findById(req.params.id);
   if (!pool) {
     res.status(400);
@@ -155,9 +156,9 @@ const editPool = async (req, res) => {
 
   await pool.save();
   res.status(200).json(pool);
-};
+});
 
-const leavePool = async (req, res) => {
+const leavePool = asyncHandler(async (req, res) => {
   const pool = await Pool.findById(req.params.id);
   if (!pool) {
     res.status(400);
@@ -170,9 +171,9 @@ const leavePool = async (req, res) => {
   pool.users.pull(poolUser);
   await pool.save();
   res.status(200).json(pool);
-};
+});
 
-const deletePool = async (req, res) => {
+const deletePool = asyncHandler(async (req, res) => {
   const pool = await Pool.findById(req.params.id);
   if (!pool) {
     res.status(400);
@@ -184,9 +185,9 @@ const deletePool = async (req, res) => {
   }
   await Pool.deleteOne({ _id: req.params.id });
   res.status(200).json({ id: req.params.id });
-};
+});
 
-const denyPool = async (req, res) => {
+const denyPool = asyncHandler(async (req, res) => {
   const user = req.user;
   const pool = await Pool.findById(req.params.id);
   if(!pool) {
@@ -211,7 +212,7 @@ const denyPool = async (req, res) => {
   
   await Pool.deleteOne({ _id: req.params.id });
   res.status(200).json({ id: req.params.id });
-};
+});
 
 module.exports = {
   getPools,

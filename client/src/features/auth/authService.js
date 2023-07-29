@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://splash-server.onrender.com/users/';
+const API_URL = process.env.NODE_ENV === 'production' ? 'https://splash-server.onrender.com/users/' : 'http://localhost:5001/users/';
 
 // Register user
 const register = async (userData) => {

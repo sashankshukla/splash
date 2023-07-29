@@ -2,17 +2,18 @@ const Listing = require('../models/listingModel');
 const User = require('../models/userModel');
 const Pool = require('../models/poolModel');
 const mongoose = require('mongoose');
+const asyncHandler = require('express-async-handler')
 
-const getListings = async (req, res) => {
+const getListings = asyncHandler(async (req, res) => {
   const listings = await Listing.find({ status: 'Available' });
   if(!listings) {
     res.status(400);
   }
 
   res.status(200).json(listings);
-};
+});
 
-const getFilteredListings = async (req, res) => {
+const getFilteredListings = asyncHandler(async (req, res) => {
   // TODO: fix search
   // TODO: add { score: {$meta: "textScore"} } to find after keyword search, then add again in sort
 
@@ -119,18 +120,18 @@ const getFilteredListings = async (req, res) => {
   }
 
   res.status(200).json(listings);
-};
+});
 
-const getListingsForUser = async (req, res) => {
+const getListingsForUser = asyncHandler(async (req, res) => {
   const listings = await Listing.find({ createdBy: req.user.email });
   if(!listings) {
     res.status(400);
   }
 
   res.status(200).json(listings);
-};
+});
 
-const addListing = async (req, res) => {
+const addListing = asyncHandler(async (req, res) => {
   req.body.address = JSON.parse(req.body.address);
   req.body.details = JSON.parse(req.body.details);
   if (!req.body.name || !req.body.address || !req.body.price || !req.user.email) {
@@ -150,9 +151,9 @@ const addListing = async (req, res) => {
   }
 
   res.status(200).json(listing);
-};
+});
 
-const updateListing = async (req, res) => {
+const updateListing = asyncHandler(async (req, res) => {
   req.body.address = JSON.parse(req.body.address);
   req.body.details = JSON.parse(req.body.details);
 
@@ -172,9 +173,9 @@ const updateListing = async (req, res) => {
     },
   );
   res.status(200).json(updatedListing);
-};
+});
 
-const deleteListing = async (req, res) => {
+const deleteListing = asyncHandler(async (req, res) => {
   const listing = await Listing.findById(req.params.id);
   if (!listing) {
     res.status(400);
@@ -187,9 +188,9 @@ const deleteListing = async (req, res) => {
   }
   await Listing.deleteOne({ _id: req.params.id });
   res.status(200).json({ id: req.params.id });
-};
+});
 
-const sellListing = async (req, res) => {
+const sellListing = asyncHandler(async (req, res) => {
   const listing = await Listing.findById(req.params.listingId);
   if (!listing) {
     res.status(400);
@@ -223,7 +224,7 @@ const sellListing = async (req, res) => {
   await user.save();
   await Pool.deleteOne({ _id: req.params.poolId });
   res.status(200).json(listing);
-};
+});
 
 module.exports = {
   getListings,
