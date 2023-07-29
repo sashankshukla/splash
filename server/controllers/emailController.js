@@ -5,7 +5,7 @@ const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
       user: 'splashfinance455@gmail.com', // Your Gmail email address
-      pass: 'etecdbqjiygkctsi', // Your Gmail password or App Password
+      pass: process.env.GMAIL_API, // Your Gmail password or App Password
     },
   });
 
