@@ -35,7 +35,7 @@ const app = express();
 connectDB();
 
 const corsOptions = {
-  origin: "https://splash-twqs.onrender.com", // frontend URI (ReactJS)
+  origin: process.env.NODE_ENV === 'production' ? "https://splash-twqs.onrender.com" : "http://localhost:3000", // frontend URI (ReactJS)
 }
 
 // Middleware

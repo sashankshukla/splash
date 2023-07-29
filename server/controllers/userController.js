@@ -1,4 +1,5 @@
 const { Configuration, OpenAIApi } = require('openai');
+const asyncHandler = require('express-async-handler')
 
 const User = require('../models/userModel');
 const Bank = require('../models/bankModel');
@@ -25,7 +26,7 @@ const formatDate = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-const runPrompt = async (prompt) => {
+const runPrompt = asyncHandler(async (prompt) => {
   const gptResponse = await openai.createCompletion({
     model: 'text-davinci-003',
     prompt: prompt,
@@ -33,7 +34,7 @@ const runPrompt = async (prompt) => {
     temperature: 0.7,
   });
   return gptResponse.data.choices[0].text;
-};
+});
 
 const generatePrompt = (listing, purchasePrice, purchaseDate, currentDate) => {
   let prompt =
@@ -54,7 +55,7 @@ const generatePrompt = (listing, purchasePrice, purchaseDate, currentDate) => {
   return prompt;
 };
 
-const addUser = async (req, res) => {
+const addUser = asyncHandler(async (req, res) => {
   if (!req.body.name || !req.body.email) {
     res.status(400);
     throw new Error('Please specify a name and email');
@@ -90,7 +91,7 @@ const addUser = async (req, res) => {
     }
   })
   res.status(201).json(user);
-};
+});
 
 const validatePayment = (form) => {
   if (!form.accountName || !form.accountNumber || !form.bankName || !form.amount) {
@@ -111,7 +112,7 @@ const validatePayment = (form) => {
   return true;
 };
 
-const addFunds = async (req, res) => {
+const addFunds = asyncHandler(async (req, res) => {
   const form = req.body;
   const paymentStatus = validatePayment(form);
 
@@ -148,9 +149,9 @@ const addFunds = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-};
+});
 
-const addAccount = async (req, res) => {
+const addAccount = asyncHandler(async (req, res) => {
   const form = req.body;
   function validateAccount(form) {
     if (!form.accountName || !form.accountNumber || !form.bankName) {
@@ -176,18 +177,18 @@ const addAccount = async (req, res) => {
     userEmail: req.user.email,
   });
   res.status(200).json(bank);
-};
+});
 
-const getUserAssets = async (req, res) => {
+const getUserAssets = asyncHandler(async (req, res) => {
   const user = req.user;
   if (!user) {
     res.status(400);
     throw new Error('User not found');
   }
   res.status(200).json(user.ownerships);
-};
+});
 
-const getUser = async (req, res) => {
+const getUser = asyncHandler(async (req, res) => {
   const originalUser = req.user;
   await getUserAssetPerformance(originalUser);
   const user = originalUser.toObject();
@@ -206,9 +207,9 @@ const getUser = async (req, res) => {
     }),
   );
   res.status(200).json(user);
-};
+});
 
-const getAllUser = async (req, res) => {
+const getAllUser = asyncHandler(async (req, res) => {
   try {
     const usersList = await User.find({});
     if(!usersList) {
@@ -220,9 +221,9 @@ const getAllUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
-};
+});
 
-const getPendingFunds = async (req, res) => {
+const getPendingFunds = asyncHandler(async (req, res) => {
   try {
     const pendingFunds = await Bank.find({approved: false});
     if(!pendingFunds) {
@@ -234,9 +235,9 @@ const getPendingFunds = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
-};
+});
 
-const updateUser = async (req, res) => {
+const updateUser = asyncHandler(async (req, res) => {
   try {
     
     const status = req.body.status;
@@ -262,9 +263,9 @@ const updateUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
-};
+});
 
-const updateBank = async (req, res) => {
+const updateBank = asyncHandler(async (req, res) => {
   try {
     
     const status = req.body.status;
@@ -290,9 +291,9 @@ const updateBank = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
-};
+});
 
-const deleteBank = async (req, res) => {
+const deleteBank = asyncHandler(async (req, res) => {
   try {
     
     const updatedBank = await Bank.findOneAndDelete(
@@ -314,9 +315,9 @@ const deleteBank = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
-};
+});
 
-const getUserAssetPerformance = async (user) => {
+const getUserAssetPerformance = asyncHandler(async (user) => {
   if (!user) {
     res.status(400);
     throw new Error('User not found');
@@ -337,6 +338,6 @@ const getUserAssetPerformance = async (user) => {
   }
   user.priceDictionary = priceDictionary;
   await user.save();
-};
+});
 
 module.exports = { addUser, getUserAssets, addFunds, getUser, addAccount , getAllUser, getPendingFunds, updateUser, updateBank,deleteBank};
