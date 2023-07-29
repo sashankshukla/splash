@@ -237,18 +237,16 @@ const sellListing = async (req, res) => {
   // notifies all members of the pool that the seller as accepted their pool offer
   // Email content with template literals and newline characters
   const emailContent = `
-    The following funding account has been approved by the server admin:
+    The following Pool has been sold to you!:
+    You are now the proud owners of ${listing.name} !
 
-    User: ${req.body.userEmail}
-    Account: ${req.body.accountNumber}
-    Bank Name: ${req.body.bankName}
-  `;
+    Breakdown of Equity: Listing Price ${listing.price}
+
+    ${printOwnership(members)}`;
   const mailOptions = {
     from: 'splash@frankeyhe.dev',
     to: emailList, // Join the recipients' email addresses with a comma and space
-    subject: `Splash Finance: Your pool ${req.params.poolId} for the listing ${req.params.listingId} was successfully bought!
-    Breakdown of Equity: Listing Price ${listing.price}
-    ${printOwnership(members)}`,
+    subject: `Splash Finance: Your pool ${req.params.poolId} for the listing ${req.params.listingId} was successfully bought!`,
     text: emailContent,
   };
 
