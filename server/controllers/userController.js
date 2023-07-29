@@ -3,6 +3,15 @@ const { Configuration, OpenAIApi } = require('openai');
 const User = require('../models/userModel');
 const Bank = require('../models/bankModel');
 const Listing = require('../models/listingModel');
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'splashfinance455@gmail.com', // Your Gmail email address
+    pass: process.env.GMAIL_API, // Your Gmail password or App Password
+  },
+});
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -59,8 +68,27 @@ const addUser = async (req, res) => {
     ...req.body,
     ownerships: [],
     admin: false,
-  });
-  
+  }
+  );
+  const emailContent = `
+    Welcome to Splash Finance ${req.body.name}, prepare to make a splash into the world of finance!
+    Start by adding funds to your account and start browsing, join pools or create pools.
+  `;
+    const mailOptions = {
+        from: 'splash@frankeyhe.dev',
+        to: req.body.userEmail,
+        subject: 'Splash Finance: Funding has been denied.',
+        text: emailContent,
+      };
+    transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+        console.error('Error sending email:', error);
+        res.status(404).json(error);
+    } else {
+        console.log('Email sent:', info.response);
+        res.status(200).json({});
+    }
+  })
   res.status(201).json(user);
 };
 
@@ -85,9 +113,6 @@ const validatePayment = (form) => {
 
 const addFunds = async (req, res) => {
   const form = req.body;
-  
-  
-
   const paymentStatus = validatePayment(form);
 
   try {
@@ -97,9 +122,6 @@ const addFunds = async (req, res) => {
       bankName: form.bankName,
       userEmail: req.user.email,
     });
-
-    
-
     if (!paymentStatus || !bank) {
       res.status(400).json({ message: 'Invalid payment details' });
       return;
@@ -124,7 +146,6 @@ const addFunds = async (req, res) => {
 
     res.status(200).json(updatedUser);
   } catch (err) {
-    
     res.status(500).json({ message: err.message });
   }
 };
@@ -146,9 +167,6 @@ const addAccount = async (req, res) => {
     return true;
   }
   const status = validateAccount(form);
-  
-  
-  
   if (!status) {
     res.status(400).json({ message: 'Invalid bank' });
     return;

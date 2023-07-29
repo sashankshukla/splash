@@ -1,7 +1,15 @@
 const Pool = require('../models/poolModel');
 const Listing = require('../models/listingModel');
 const mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
 
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'splashfinance455@gmail.com', // Your Gmail email address
+    pass: process.env.GMAIL_API, // Your Gmail password or App Password
+  },
+});
 const getPools = async (req, res) => {
   // TODO: add filter as well
   const pools = await Pool.find({ private: false });
@@ -206,9 +214,31 @@ const denyPool = async (req, res) => {
     if(!currEmail) {
       console.log("error retrieving user email");
     }
-    console.log("sending email to " + currEmail);
+    const emailContent = `
+    Hello from Splash Finance!,
+    Unfortunately it appears that your pool for ${listing.name} has been rejected.
+    Pool Id: ${pool.listingId}
+    Best of luck on your next splash!
+
+    Best regards,
+    Splash Finance
+  `;
+    const mailOptions = {
+        from: 'splash@frankeyhe.dev',
+        to: currEmail,
+        subject: `Splash Finance: Pool for ${listing.name} has been rejected :(`,
+        text: emailContent,
+      };
+    transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+        console.error('Error sending email:', error);
+        res.status(404).json(error);
+    } else {
+        console.log('Email sent:', info.response);
+        res.status(200).json({});
+    }
+  })
   }
-  
   await Pool.deleteOne({ _id: req.params.id });
   res.status(200).json({ id: req.params.id });
 };

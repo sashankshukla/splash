@@ -10,6 +10,7 @@ const connectDB = require('./config/connectDB');
 const cors = require('cors');
 const { errorHandler } = require('./middleware/errorMiddleware');
 
+
 const s3 = new aws.S3({
   accessKeyId: process.env.S3_ACCESS_KEY,
   secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
@@ -49,6 +50,7 @@ app.use(upload.any());
 app.use('/users', require('./routes/userRoutes'));
 app.use('/listings', require('./routes/listingRoutes'));
 app.use('/pools', require('./routes/poolRoutes'));
+app.use('/email', require('./routes/emailRoutes'));
 
 // Error handler
 app.use(errorHandler);
