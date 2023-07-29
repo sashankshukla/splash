@@ -3,7 +3,13 @@ const Listing = require('../models/listingModel');
 const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
 
-
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'splashfinance455@gmail.com', // Your Gmail email address
+    pass: process.env.GMAIL_API, // Your Gmail password or App Password
+  },
+});
 const getPools = async (req, res) => {
   // TODO: add filter as well
   const pools = await Pool.find({ private: false });
