@@ -3,6 +3,7 @@ const { Configuration, OpenAIApi } = require('openai');
 const User = require('../models/userModel');
 const Bank = require('../models/bankModel');
 const Listing = require('../models/listingModel');
+const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
