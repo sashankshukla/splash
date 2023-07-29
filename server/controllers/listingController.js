@@ -215,7 +215,9 @@ const sellListing = async (req, res) => {
     throw new Error('Pool does not own this listing');
   }
   const members = pool.users;
+  const emailList = [];
   members.forEach(async (member) => {
+    emailList.push(member.email)
     const user = await User.findOne({ email: member.email });
     if (user.funds < member.equity)
       throw new Error('User does not have enough funds to purchase this listing');
@@ -243,7 +245,7 @@ const sellListing = async (req, res) => {
   `;
   const mailOptions = {
     from: 'splash@frankeyhe.dev',
-    to: members.join(', '), // Join the recipients' email addresses with a comma and space
+    to: emailList, // Join the recipients' email addresses with a comma and space
     subject: `Splash Finance: Your pool ${req.params.poolId} for the listing ${req.params.listingId} was successfully bought!
     Breakdown of Equity: Listing Price ${listing.price}
     ${printOwnership(members)}`,
