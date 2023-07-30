@@ -65,6 +65,6 @@ listingSchema.index({
   // "address.postalCode": "text",
   // "description": "text",
   // "investmentType": "text",
-  "$**": "text"
+  '$**': 'text',
 });
 module.exports = mongoose.model('Listing', listingSchema);

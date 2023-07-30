@@ -129,7 +129,7 @@ export const fetchPoolsForListing = createAsyncThunk(
 export const denyPool = createAsyncThunk('pools/denyPool', async (poolId, thunkAPI) => {
   try {
     let token = thunkAPI.getState().auth.auth_token;
-    console.log(typeof(poolId));
+    console.log(typeof poolId);
     return await poolsService.denyPool(poolId, token);
   } catch (error) {
     let message =
@@ -184,7 +184,7 @@ const poolsSlice = createSlice({
       .addCase(addPoolsAsync.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.pools.push(action.payload);
+        if (!action.payload.private) state.pools.push(action.payload);
       })
       .addCase(addPoolsAsync.rejected, (state, action) => {
         state.isLoading = false;

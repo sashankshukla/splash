@@ -6,7 +6,7 @@
     "build-client": "cd client && npm run build",
     "start-client": "cd client && npm run start",
     "test": "cd server && npm test"
-    },
+  },
   "devDependencies": {
     "prettier": "^2.8.8"
   }

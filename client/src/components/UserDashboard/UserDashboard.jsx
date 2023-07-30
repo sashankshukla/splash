@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import AdminDashboard from './AdminDashBoard/AdminDashboard';
 import { fetchUser } from '../../features/auth/authSlice';
 
-
 const UserDashboard = () => {
   const navigate = useNavigate();
   const token = useSelector((store) => store.auth.token);

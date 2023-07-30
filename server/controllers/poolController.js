@@ -1,7 +1,7 @@
 const Pool = require('../models/poolModel');
 const Listing = require('../models/listingModel');
 const mongoose = require('mongoose');
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require('express-async-handler');
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
@@ -58,7 +58,7 @@ const getPoolsForListing = asyncHandler(async (req, res) => {
 
 const getPoolsForUser = asyncHandler(async (req, res) => {
   const user = req.user;
-  console.log("getpoolforuserserver");
+  console.log('getpoolforuserserver');
   console.log(user);
   const pools = await Pool.find({ 'users.email': user.email });
   if (!pools) {
@@ -125,6 +125,7 @@ const addPool = asyncHandler(async (req, res) => {
     users: [{ email: req.user.email, equity: req.body.contribution }],
     totalValue: listing.price,
     remaining: listing.price - req.body.contribution,
+    private: req.body.private,
   });
   res.status(200).json(pool);
 });
@@ -199,22 +200,22 @@ const deletePool = asyncHandler(async (req, res) => {
 const denyPool = asyncHandler(async (req, res) => {
   const user = req.user;
   const pool = await Pool.findById(req.params.id);
-  if(!pool) {
+  if (!pool) {
     res.status(400);
     throw new Error('Pool not found');
   }
 
   const listing = await Listing.findById(pool.listingId);
-  if(listing.createdBy !== user.email) {
+  if (listing.createdBy !== user.email) {
     res.status(400);
     throw new Error('User does not own listing for pool');
   }
 
-  for(let i = 0; i < pool.users.length; i++) {
+  for (let i = 0; i < pool.users.length; i++) {
     // TODO: send email to each user
     let currEmail = pool.users[i].email;
-    if(!currEmail) {
-      console.log("error retrieving user email");
+    if (!currEmail) {
+      console.log('error retrieving user email');
     }
     const emailContent = `
     Hello from Splash Finance!,
@@ -226,20 +227,20 @@ const denyPool = asyncHandler(async (req, res) => {
     Splash Finance
   `;
     const mailOptions = {
-        from: 'splash@frankeyhe.dev',
-        to: currEmail,
-        subject: `Splash Finance: Pool for ${listing.name} has been rejected :(`,
-        text: emailContent,
-      };
+      from: 'splash@frankeyhe.dev',
+      to: currEmail,
+      subject: `Splash Finance: Pool for ${listing.name} has been rejected :(`,
+      text: emailContent,
+    };
     transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
+      if (error) {
         console.error('Error sending email:', error);
         res.status(404).json(error);
-    } else {
+      } else {
         console.log('Email sent:', info.response);
         res.status(200).json({});
-    }
-  })
+      }
+    });
   }
   await Pool.deleteOne({ _id: req.params.id });
   res.status(200).json({ id: req.params.id });
