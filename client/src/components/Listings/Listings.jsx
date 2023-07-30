@@ -29,14 +29,9 @@ const Listings = () => {
     useSelector(getListingsData);
 
   useEffect(() => {
-    dispatch(reset());
     return () => {
       dispatch(fetchFilteredListings());
     };
-
-    // return () => {
-    //   dispatch(reset());
-    // };
   }, [dispatch, listingFilter]);
 
   const [selectedListing, setSelectedListing] = useState(null);

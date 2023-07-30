@@ -3,15 +3,17 @@ import { useDispatch } from 'react-redux';
 import { sellListing } from '../../../features/listings/listingsSlice';
 import { denyPool } from '../../../features/pools/poolsSlice';
 
-const ApprovalCard = ({ poolTitle, poolId, listingId, members }) => {
+const ApprovalCard = ({ handleAction, poolTitle, poolId, listingId, members }) => {
   const dispatch = useDispatch();
   const handleDeny = () => {
-    console.log(typeof(poolId));
+    console.log(typeof poolId);
     dispatch(denyPool(poolId));
-  }
+    handleAction();
+  };
   const handleSell = () => {
     console.log(listingId, poolId);
     dispatch(sellListing({ listingId, poolId }));
+    handleAction();
   };
   return (
     <div className="flex flex-col w-full items-center justify-center text-center mx-4 shadow-lg rounded-lg bg-white">

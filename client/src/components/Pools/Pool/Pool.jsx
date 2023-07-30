@@ -6,7 +6,17 @@ import { deletePool } from '../../../features/pools/poolsSlice';
 
 import CopyToClipboard from '../../Accessories/CopyToClipboard/CopyToClipboard';
 
-const Pool = ({ poolId, title, createdBy, listingId, members, totalValue, remaining, listing, onClick }) => {
+const Pool = ({
+  poolId,
+  title,
+  createdBy,
+  listingId,
+  members,
+  totalValue,
+  remaining,
+  listing,
+  onClick,
+}) => {
   const token = useSelector((store) => store.auth.token);
   const [modalVisible, setModalVisible] = useState(false);
 
