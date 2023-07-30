@@ -55,6 +55,12 @@ app.use('/email', require('./routes/emailRoutes'));
 // Error handler
 app.use(errorHandler);
 
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/build/index.html'));
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
