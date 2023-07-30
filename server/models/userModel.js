@@ -31,11 +31,11 @@ const userSchema = new Schema(
     ],
     admin: {
       type: Boolean,
-      default: false
+      default: false,
     },
     active: {
       type: Boolean,
-      default: true
+      default: true,
     },
     priceDictionary: {
       type: Object,

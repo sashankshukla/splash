@@ -24,6 +24,13 @@ const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
   };
 
   const handleChange = (e) => {
+    if (e.target.name === 'private') {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.checked,
+      });
+      return;
+    }
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -32,6 +39,7 @@ const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formData);
     dispatch(
       addPoolsAsync({
         name: formData.title,
@@ -118,7 +126,7 @@ const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
                         type="checkbox"
                         name="private"
                         value={formData.private}
-                        onChange={handleChange}
+                        onClick={handleChange}
                         className="m-2"
                       />
                       <label className="font-medium">Private</label>

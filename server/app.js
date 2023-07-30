@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const aws = require('aws-sdk');
+const path = require('path');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 require('dotenv').config();
@@ -9,7 +10,6 @@ const bodyParser = require('body-parser');
 const connectDB = require('./config/connectDB');
 const cors = require('cors');
 const { errorHandler } = require('./middleware/errorMiddleware');
-
 
 const s3 = new aws.S3({
   accessKeyId: process.env.S3_ACCESS_KEY,
@@ -35,8 +35,11 @@ const app = express();
 connectDB();
 
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' ? "https://splash-twqs.onrender.com" : "http://localhost:3000", // frontend URI (ReactJS)
-}
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? 'https://splash-twqs.onrender.com'
+      : 'http://localhost:3000', // frontend URI (ReactJS)
+};
 
 // Middleware
 app.use(cors(corsOptions));
@@ -54,6 +57,12 @@ app.use('/email', require('./routes/emailRoutes'));
 
 // Error handler
 app.use(errorHandler);
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/build/index.html'));
+});
 
 // Start server
 app.listen(PORT, () => {

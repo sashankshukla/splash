@@ -64,24 +64,25 @@ const Pools = () => {
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
         {pools.length === 0 && <NoResults />}
-        {pools.length > 0 && pools.map((pool, idx) => {
-          return (
-            <div>
-              <Pool
-                key={idx}
-                poolId={pool._id}
-                title={pool.name}
-                createdBy={pool.createdBy}
-                listingId={pool.listingId}
-                members={pool.users}
-                totalValue={pool.totalValue}
-                remaining={pool.remaining}
-                listing={listings.find((listing) => listing._id === pool.listingId)}
-                onClick={setSelectedListing}
-              />
-            </div>
-          );
-        })}
+        {pools.length > 0 &&
+          pools.map((pool, idx) => {
+            return (
+              <div>
+                <Pool
+                  key={idx}
+                  poolId={pool._id}
+                  title={pool.name}
+                  createdBy={pool.createdBy}
+                  listingId={pool.listingId}
+                  members={pool.users}
+                  totalValue={pool.totalValue}
+                  remaining={pool.remaining}
+                  listing={listings.find((listing) => listing._id === pool.listingId)}
+                  onClick={setSelectedListing}
+                />
+              </div>
+            );
+          })}
         <ListingModal selectedListing={selectedListing} setSelectedListing={setSelectedListing} />
       </div>
     </div>

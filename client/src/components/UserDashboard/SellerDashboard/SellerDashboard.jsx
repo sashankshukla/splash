@@ -11,17 +11,17 @@ const SellerDashboard = () => {
   const auth_token = useSelector((store) => store.auth.auth_token);
   const token = useSelector((store) => store.auth.token);
   const [approvalPools, setApprovalPools] = useState([]);
+  const fetchApprovalPools = async () => {
+    const response = await axios.get('https://splash-server.onrender.com/pools/completed', {
+      headers: {
+        Authorization: `${auth_token}`,
+      },
+    });
+    console.log(response.data);
+    setApprovalPools(response.data);
+  };
 
   useEffect(() => {
-    const fetchApprovalPools = async () => {
-      const response = await axios.get('https://splash-server.onrender.com/pools/completed', {
-        headers: {
-          Authorization: `${auth_token}`,
-        },
-      });
-      console.log(response.data);
-      setApprovalPools(response.data);
-    };
     fetchApprovalPools();
   }, [auth_token]);
 
@@ -37,6 +37,7 @@ const SellerDashboard = () => {
         {approvalPools.length === 0 && <NoResults />}
         {approvalPools.map((pool, index) => (
           <ApprovalCard
+            handleAction={fetchApprovalPools}
             key={index}
             poolTitle={pool.name}
             poolId={pool._id}

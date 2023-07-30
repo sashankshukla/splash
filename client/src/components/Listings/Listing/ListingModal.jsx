@@ -113,7 +113,7 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
           className="relative bg-white rounded-lg shadow w-screen h-auto max-w-md max-h-full overflow-y-auto"
           onClick={(e) => e.stopPropagation()} // Prevents event from bubbling to overlay div
         >
-        <div className="p-6 text-center">
+          <div className="p-6 text-center">
             <button
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
               onClick={toggleModalVisibility}

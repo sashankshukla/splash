@@ -6,7 +6,7 @@ const initialState = {
   auth_token: JSON.parse(sessionStorage.getItem('authToken')) || {},
   user: null,
   allUser: [],
-  pendingFunds: []
+  pendingFunds: [],
 };
 
 export const fetchUser = createAsyncThunk('auth/fetchUser', async (user, thunkAPI) => {
@@ -22,7 +22,7 @@ export const fetchUser = createAsyncThunk('auth/fetchUser', async (user, thunkAP
   }
 });
 
-export const fetchAllUsers = createAsyncThunk('auth/fetchAllUsers', async (_,thunkAPI) => {
+export const fetchAllUsers = createAsyncThunk('auth/fetchAllUsers', async (_, thunkAPI) => {
   try {
     let token = thunkAPI.getState().auth.auth_token;
     return await authService.fetchAllUser(token);
@@ -35,9 +35,8 @@ export const fetchAllUsers = createAsyncThunk('auth/fetchAllUsers', async (_,thu
   }
 });
 
-export const updateUser = createAsyncThunk('auth/updateUser', async (data,thunkAPI) => {
+export const updateUser = createAsyncThunk('auth/updateUser', async (data, thunkAPI) => {
   try {
-    
     let token = thunkAPI.getState().auth.auth_token;
     return await authService.updateUser(data, token);
   } catch (error) {
@@ -49,7 +48,7 @@ export const updateUser = createAsyncThunk('auth/updateUser', async (data,thunkA
   }
 });
 
-export const updateBank = createAsyncThunk('auth/updateBank', async (data,thunkAPI) => {
+export const updateBank = createAsyncThunk('auth/updateBank', async (data, thunkAPI) => {
   try {
     let token = thunkAPI.getState().auth.auth_token;
     return await authService.updateBank(data, token);
@@ -62,7 +61,7 @@ export const updateBank = createAsyncThunk('auth/updateBank', async (data,thunkA
   }
 });
 
-export const fetchPendingFunds = createAsyncThunk('auth/fetchPendingFunds', async (_,thunkAPI) => {
+export const fetchPendingFunds = createAsyncThunk('auth/fetchPendingFunds', async (_, thunkAPI) => {
   try {
     let token = thunkAPI.getState().auth.auth_token;
     return await authService.fetchPendingFunds(token);
@@ -109,13 +108,11 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     addUser: (state, action) => {
-      
       const user = authService.register({
         email: action.payload.token.email,
         name: action.payload.token.name,
       });
       if (!user) {
-        
         return;
       }
       sessionStorage.setItem('token', JSON.stringify(action.payload.token));
@@ -133,33 +130,21 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchUser.fulfilled, (state, action) => {
-        
-        
         state.user = action.payload;
       })
       .addCase(fetchAllUsers.fulfilled, (state, action) => {
-        
-        
         state.allUser = action.payload;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
-        
-        
         state.allUser = action.payload;
       })
       .addCase(updateBank.fulfilled, (state, action) => {
-        
-        
         state.pendingFunds = action.payload;
       })
       .addCase(fetchPendingFunds.fulfilled, (state, action) => {
-        
-        
         state.pendingFunds = action.payload;
       })
       .addCase(increaseUserFunds.fulfilled, (state, action) => {
-        
-        
         const ownerships = state.user.ownerships;
         state.user = action.payload;
         state.user.ownerships = ownerships;
