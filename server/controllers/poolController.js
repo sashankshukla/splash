@@ -141,6 +141,10 @@ const joinPool = asyncHandler(async (req, res) => {
     res.status(400).json({message: "Seems like the you are trying to contribute over the remaining balance!"});
     return;
   }
+  if (req.body.equity <= 0) {
+    res.status(400).json({message: "You must contribute more than $0 to join a pool!"});
+    return;
+  }
   pool.remaining -= req.body.equity;
   pool.users = [...pool.users, { email: req.user.email, equity: req.body.equity }];
 
@@ -169,18 +173,16 @@ const editPool = asyncHandler(async (req, res) => {
 });
 
 const leavePool = asyncHandler(async (req, res) => {
-  const pool = await Pool.findById(req.params.id);
-  if (!pool) {
-    res.status(400);
-    throw new Error('Pool not found');
-  }
-
-  poolUser = pool.users.find((user) => user.email === req.user.email);
+  try{  const pool = await Pool.findById(req.params.id);
+    poolUser = pool.users.find((user) => user.email === req.user.email);
   pool.remaining += poolUser.equity;
 
   pool.users.pull(poolUser);
   await pool.save();
   res.status(200).json(pool);
+  } catch (error) {
+    res.status(404).json({message:"Pool not found"});
+  }
 });
 
 const deletePool = asyncHandler(async (req, res) => {

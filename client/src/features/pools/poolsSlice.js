@@ -87,17 +87,13 @@ export const editPool = createAsyncThunk('pools/editPool', async ({ id, equity }
   try {
     let token = thunkAPI.getState().auth.auth_token;
 
-    if (equity) {
+    if (equity>0) {
       return await poolsService.editPool(id, equity, token);
     }
 
     return await poolsService.leavePool(id, token);
   } catch (error) {
-    let message =
-      (error.response & error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    return thunkAPI.rejectWithValue(error.response.data.message);
   }
 });
 
@@ -161,7 +157,6 @@ const poolsSlice = createSlice({
       .addCase(fetchPools.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        //Add any fetched pools to the array
         state.pools = action.payload;
       })
       .addCase(fetchPools.rejected, (state, action) => {
@@ -221,7 +216,7 @@ const poolsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(editPool.fulfilled, (state, action) => {
-        console.log(action.payload);
+        // console.log(action.payload);
         state.isLoading = false;
         state.isSuccess = true;
         const poolIndex = state.pools.findIndex((pool) => pool._id === action.payload._id);
@@ -232,6 +227,7 @@ const poolsSlice = createSlice({
         state.isError = true;
 
         state.message = action.payload;
+        throw Error(action.payload);
       })
       .addCase(fetchPoolsForListing.pending, (state, action) => {
         state.isLoading = true;
