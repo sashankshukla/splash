@@ -108,9 +108,6 @@ const addAccount = async (form, token) => {
   };
   try {
     const response = await axios.post(`${API_URL}addAccount`, form, config);
-    if (response.status === 400) {
-      throw new Error('Bad request');
-    }
     return response.data;
   } catch (error) {
     throw error;

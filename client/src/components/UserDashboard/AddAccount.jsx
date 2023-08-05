@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { addAccount } from '../../features/auth/authSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import ErrorAlert from '../Accessories/ErrorAlert/ErrorAlert';
+import SuccessAlert from '../Accessories/SuccessAlert/SuccessAlert';
 
 const AddAccount = () => {
   const [form, setForm] = useState({
@@ -13,7 +15,8 @@ const AddAccount = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(null);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(null);
 
   const handleInputChange = (event) => {
     setForm({
@@ -26,15 +29,21 @@ const AddAccount = () => {
     event.preventDefault();
     dispatch(addAccount(form))
       .then((response) => {
-        navigate('/profile');
+        setIsSuccessModalOpen(true);
+        setTimeout(() => {
+          setIsSuccessModalOpen(false);
+          navigate('/profile');
+        }, 3000);
       })
       .catch((error) => {
         if (error) {
-          console.log('caught in add account'); // todo not being caught.
-          setIsErrorModalOpen(true);
+          setIsErrorModalOpen(error.message);
+          setTimeout(() => {
+            setIsErrorModalOpen(null);
+          }, 3000);
         }
       });
-    navigate('/profile');
+    // navigate('/profile');
   };
 
   return (
@@ -100,16 +109,11 @@ const AddAccount = () => {
               Add Account
             </button>
           </div>
-          {isErrorModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded shadow-lg">
-                <h2 className="text-xl font-bold mb-2">Error</h2>
-                <p>Oops! Something went wrong. Please try again later.</p>
-                <button className="mt-4 py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600">
-                  Close
-                </button>
-              </div>
-            </div>
+          {isErrorModalOpen && <ErrorAlert message={isErrorModalOpen} />}
+          {isSuccessModalOpen && (
+            <SuccessAlert
+              message={'Account has been successfully added. Waiting for admin approval.'}
+            />
           )}
         </form>
       </div>
