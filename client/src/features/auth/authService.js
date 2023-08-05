@@ -89,13 +89,8 @@ const increaseUserFunds = async (form, token) => {
   try {
     const response = await axios.post(`${API_URL}addFunds`, form, config);
     // Check if the response status is 400 and throw an error if true
-    if (response.status === 400) {
-      throw new Error('Bad request');
-    }
     return response.data;
   } catch (error) {
-    // Handle any errors during the request
-
     throw error;
   }
 };

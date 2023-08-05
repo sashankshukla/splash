@@ -57,11 +57,7 @@ export const addPoolsAsync = createAsyncThunk('pools/addPool', async (pool, thun
     let token = thunkAPI.getState().auth.auth_token;
     return await poolsService.addPool(pool, token);
   } catch (error) {
-    let message =
-      (error.response & error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    return thunkAPI.rejectWithValue(error.response.data.message);
   }
 });
 
@@ -83,11 +79,7 @@ export const joinPool = createAsyncThunk('pools/joinPool', async ({ id, equity }
     const token = thunkAPI.getState().auth.auth_token;
     return await poolsService.joinPool(id, equity, token);
   } catch (error) {
-    let message =
-      (error.response & error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    return thunkAPI.rejectWithValue(error.response.data.message);
   }
 });
 
@@ -191,6 +183,7 @@ const poolsSlice = createSlice({
         state.isError = true;
 
         state.message = action.payload;
+        throw Error(action.payload);
       })
       .addCase(deletePool.pending, (state, action) => {
         state.isLoading = true;
@@ -222,6 +215,7 @@ const poolsSlice = createSlice({
         state.isError = true;
 
         state.message = action.payload;
+        throw Error(action.payload);
       })
       .addCase(editPool.pending, (state, action) => {
         state.isLoading = true;

@@ -81,10 +81,6 @@ export const increaseUserFunds = createAsyncThunk(
       let token = thunkAPI.getState().auth.auth_token;
       return await authService.increaseUserFunds(data, token);
     } catch (error) {
-      let message =
-        (error.response & error.response.data && error.response.data.message) ||
-        error.message ||
-        error.toString();
       return thunkAPI.rejectWithValue(error.response.data.message);
     }
   },

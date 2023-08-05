@@ -39,9 +39,13 @@ const addPool = async (pool, token) => {
       Authorization: `${token}`,
     },
   };
-  const response = await axios.post(`${API_URL}`, pool, config);
-  console.log(response);
-  return response.data;
+  try{
+    const response = await axios.post(`${API_URL}`, pool, config);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const deletePool = async (id, token) => {
@@ -63,9 +67,12 @@ const joinPool = async (id, equity, token) => {
       Authorization: `${token}`,
     },
   };
-
+try{
   const response = await axios.post(API_URL + id + '/join', { equity }, config);
   return response.data;
+}catch (error) {
+  throw error;
+}
 };
 
 const editPool = async (id, equity, token) => {
