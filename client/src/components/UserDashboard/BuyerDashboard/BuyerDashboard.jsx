@@ -62,7 +62,6 @@ const BuyerDashboard = () => {
             />
           );
         })}
-        <ListingModal selectedListing={selectedListing} setSelectedListing={setSelectedListing} />
       </div>
     );
   };
@@ -100,6 +99,7 @@ const BuyerDashboard = () => {
       <div className="flex flex-col md:flex-row">
         <OwnedAssets />
         <UserPools />
+        <ListingModal selectedListing={selectedListing} setSelectedListing={setSelectedListing} />
       </div>
     </>
   );
