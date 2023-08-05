@@ -122,15 +122,19 @@ const addFunds = asyncHandler(async (req, res) => {
       bankName: form.bankName,
       userEmail: req.user.email,
     });
-    if (!paymentStatus || !bank) {
-      res.status(400).json({ message: 'Invalid payment details' });
+    if (!paymentStatus) {
+      res.status(400).json({ message: 'Invalid payment details please check the form.' });
+      return;
+    }
+    if (!bank) {
+      res.status(400).json({ message: 'Account does not exist please try again.' });
       return;
     }
 
     if (!bank.approved) {
       res.status(400).json({
         message:
-          'Bank account not approved. Please wait till our Finance Team verifies your account.',
+          'Bank account not approved. Please wait util our Finance Team verifies your account.',
       });
       return;
     }
