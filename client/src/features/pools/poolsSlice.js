@@ -87,7 +87,7 @@ export const editPool = createAsyncThunk('pools/editPool', async ({ id, equity }
   try {
     let token = thunkAPI.getState().auth.auth_token;
 
-    if (equity>0) {
+    if (equity > 0) {
       return await poolsService.editPool(id, equity, token);
     }
 

@@ -172,15 +172,23 @@ const addAccount = asyncHandler(async (req, res) => {
   }
   const status = validateAccount(form);
   if (!status) {
-    res.status(400).json({ message: 'Oops! Seems like the information provided is not in the right format!' });
+    res
+      .status(400)
+      .json({ message: 'Oops! Seems like the information provided is not in the right format!' });
     return;
   }
   const alreadyAdded = await Bank.findOne({
     ...form,
     userEmail: req.user.email,
   });
-  if(alreadyAdded) {
-    res.status(400).json({ message: `Seems like this account has already been added current status is: ${alreadyAdded.approved? "Approved": "Pending Admin Review"}` });
+  if (alreadyAdded) {
+    res
+      .status(400)
+      .json({
+        message: `Seems like this account has already been added current status is: ${
+          alreadyAdded.approved ? 'Approved' : 'Pending Admin Review'
+        }`,
+      });
     return;
   }
   const bank = await Bank.create({

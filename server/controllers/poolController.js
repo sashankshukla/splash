@@ -25,11 +25,11 @@ const getPrivatePool = asyncHandler(async (req, res) => {
     if (pool.private) {
       res.status(200).json(pool);
     } else {
-      res.status(400).json({message: 'This pool is a public pool!'});
+      res.status(400).json({ message: 'This pool is a public pool!' });
     }
   } catch (err) {
     console.log(err);
-    res.status(400).json({message:"The pool you are trying to access does not exist."});
+    res.status(400).json({ message: 'The pool you are trying to access does not exist.' });
     return;
   }
 });
@@ -99,26 +99,23 @@ const getPoolsCompletedForUser = asyncHandler(async (req, res) => {
 const addPool = asyncHandler(async (req, res) => {
   if (!req.body.name || !req.body.listingId) {
     res.status(400).json({
-      message:
-      'Please specify a name, private, and listingId',
+      message: 'Please specify a name, private, and listingId',
     });
     return;
   }
-  try{
-    const listing = await Listing.findById(req.body.listingId);
-
-  }  catch (error) {
-    res.status(400).json({message: "Seems like the listingId you have entered does not exist!"});
-    return;
+  const listing = await Listing.findById(req.body.listingId);
+  if (!listing) {
+    res.status(400);
+    throw new Error('Listing not found');
   }
   if (req.body.contribution <= 0) {
-    res.status(400).json({message: "Invalid contribution, you must contribute more than $0!"});
-    return;
-  };
+    res.status(400);
+    throw new Error('Invalid contribution, you must contribute more than $0!');
+  }
   if (req.body.contribution > listing.price) {
-    res.status(400).json({message: "You cannot contribute more than what the seller is asking for!"});
-    return;
-  };
+    res.status(400);
+    throw new Error('You cannot contribute more than what the seller is asking for!');
+  }
   const pool = await Pool.create({
     ...req.body,
     createdBy: req.user.email,
@@ -133,21 +130,19 @@ const addPool = asyncHandler(async (req, res) => {
 const joinPool = asyncHandler(async (req, res) => {
   const pool = await Pool.findById(req.params.id);
   if (!pool) {
-    res.status(400).json({message: "Seems like the listingId you have entered does not exist!"});
-    return;
+    res.status(400);
+    throw new Error('Seems like the listingId you have entered does not exist!');
   }
-
   if (pool.remaining < req.body.equity) {
-    res.status(400).json({message: "Seems like the you are trying to contribute over the remaining balance!"});
-    return;
+    res.status(400);
+    throw new Error('Seems like the you are trying to contribute over the remaining balance!');
   }
   if (req.body.equity <= 0) {
-    res.status(400).json({message: "You must contribute more than $0 to join a pool!"});
-    return;
+    res.status(400);
+    throw new Error('You must contribute more than $0 to join a pool!');
   }
   pool.remaining -= req.body.equity;
   pool.users = [...pool.users, { email: req.user.email, equity: req.body.equity }];
-
   await pool.save();
   res.status(200).json(pool);
 });
@@ -173,15 +168,16 @@ const editPool = asyncHandler(async (req, res) => {
 });
 
 const leavePool = asyncHandler(async (req, res) => {
-  try{  const pool = await Pool.findById(req.params.id);
+  try {
+    const pool = await Pool.findById(req.params.id);
     poolUser = pool.users.find((user) => user.email === req.user.email);
-  pool.remaining += poolUser.equity;
+    pool.remaining += poolUser.equity;
 
-  pool.users.pull(poolUser);
-  await pool.save();
-  res.status(200).json(pool);
+    pool.users.pull(poolUser);
+    await pool.save();
+    res.status(200).json(pool);
   } catch (error) {
-    res.status(404).json({message:"Pool not found"});
+    res.status(404).json({ message: 'Pool not found' });
   }
 });
 

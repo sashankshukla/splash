@@ -39,7 +39,7 @@ const addPool = async (pool, token) => {
       Authorization: `${token}`,
     },
   };
-  try{
+  try {
     const response = await axios.post(`${API_URL}`, pool, config);
     console.log(response);
     return response.data;
@@ -67,12 +67,12 @@ const joinPool = async (id, equity, token) => {
       Authorization: `${token}`,
     },
   };
-try{
-  const response = await axios.post(API_URL + id + '/join', { equity }, config);
-  return response.data;
-}catch (error) {
-  throw error;
-}
+  try {
+    const response = await axios.post(API_URL + id + '/join', { equity }, config);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const editPool = async (id, equity, token) => {
@@ -81,12 +81,12 @@ const editPool = async (id, equity, token) => {
       Authorization: `${token}`,
     },
   };
-try{
-  const response = await axios.post(API_URL + id + '/edit', { equity }, config);
-  return response.data;
-} catch (error) {
-  throw error;
-}
+  try {
+    const response = await axios.post(API_URL + id + '/edit', { equity }, config);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const leavePool = async (id, token) => {
@@ -95,12 +95,12 @@ const leavePool = async (id, token) => {
       Authorization: `${token}`,
     },
   };
-try{
-  const response = await axios.post(API_URL + id + '/leave', {}, config);
-  return response.data;
-}catch (error){
- throw error;
-}
+  try {
+    const response = await axios.post(API_URL + id + '/leave', {}, config);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const fetchPoolsForListing = async (listingId, token) => {
