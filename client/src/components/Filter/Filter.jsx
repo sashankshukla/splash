@@ -89,83 +89,83 @@ function Filter() {
     console.log(e.target.value);
   };
 
-  const handleDistanceCheckboxChange = (e) => {
-    if (e.target.checked === true) {
-      setListingFilterData({
-        ...listingFilterData,
-        distance: {
-          ...listingFilterData.distance,
-          [e.target.name]: true,
-        },
-      });
-    } else {
-      setListingFilterData({
-        ...listingFilterData,
-        distance: {
-          ...listingFilterData.distance,
-          [e.target.name]: false,
-        },
-      });
-    }
+  // const handleDistanceCheckboxChange = (e) => {
+  //   if (e.target.checked === true) {
+  //     setListingFilterData({
+  //       ...listingFilterData,
+  //       distance: {
+  //         ...listingFilterData.distance,
+  //         [e.target.name]: true,
+  //       },
+  //     });
+  //   } else {
+  //     setListingFilterData({
+  //       ...listingFilterData,
+  //       distance: {
+  //         ...listingFilterData.distance,
+  //         [e.target.name]: false,
+  //       },
+  //     });
+  //   }
 
-    setDistExpand(!distExpand);
-  };
+  //   setDistExpand(!distExpand);
+  // };
 
-  const handleDistanceChange = (e) => {
-    setListingFilterData({
-      ...listingFilterData,
-      distance: {
-        ...listingFilterData.distance,
-        [e.target.name]: e.target.value,
-      },
-    });
+  // const handleDistanceChange = (e) => {
+  //   setListingFilterData({
+  //     ...listingFilterData,
+  //     distance: {
+  //       ...listingFilterData.distance,
+  //       [e.target.name]: e.target.value,
+  //     },
+  //   });
 
-    console.log(e.target.value);
-  };
+  //   console.log(e.target.value);
+  // };
 
-  const handleStatusChange = (e) => {
-    if (e.target.checked === true) {
-      setListingFilterData({
-        ...listingFilterData,
-        status: {
-          ...listingFilterData.status,
-          [e.target.name]: true,
-        },
-      });
-    } else {
-      setListingFilterData({
-        ...listingFilterData,
-        status: {
-          ...listingFilterData.status,
-          [e.target.name]: false,
-        },
-      });
-    }
+  // const handleStatusChange = (e) => {
+  //   if (e.target.checked === true) {
+  //     setListingFilterData({
+  //       ...listingFilterData,
+  //       status: {
+  //         ...listingFilterData.status,
+  //         [e.target.name]: true,
+  //       },
+  //     });
+  //   } else {
+  //     setListingFilterData({
+  //       ...listingFilterData,
+  //       status: {
+  //         ...listingFilterData.status,
+  //         [e.target.name]: false,
+  //       },
+  //     });
+  //   }
 
-    console.log(listingFilterData.status);
-  };
+  //   console.log(listingFilterData.status);
+  // };
 
-  const handlePoolsChange = (e) => {
-    if (e.target.checked === true) {
-      setListingFilterData({
-        ...listingFilterData,
-        pools: {
-          ...listingFilterData.pools,
-          [e.target.name]: true,
-        },
-      });
-    } else {
-      setListingFilterData({
-        ...listingFilterData,
-        pools: {
-          ...listingFilterData.pools,
-          [e.target.name]: false,
-        },
-      });
-    }
+  // const handlePoolsChange = (e) => {
+  //   if (e.target.checked === true) {
+  //     setListingFilterData({
+  //       ...listingFilterData,
+  //       pools: {
+  //         ...listingFilterData.pools,
+  //         [e.target.name]: true,
+  //       },
+  //     });
+  //   } else {
+  //     setListingFilterData({
+  //       ...listingFilterData,
+  //       pools: {
+  //         ...listingFilterData.pools,
+  //         [e.target.name]: false,
+  //       },
+  //     });
+  //   }
 
-    console.log(e.target.value);
-  };
+  //   console.log(e.target.value);
+  // };
 
   const handleInvestmentChange = (e) => {
     if (e.target.checked === true) {
@@ -374,7 +374,7 @@ function Filter() {
                 </span> */}
 
                 {/* <div className="text-sm">Value for range goes here</div> */}
-                {distExpand && (
+                {/* {distExpand && (
                   <input
                     id="Distance-limit-input"
                     className="min-w-full"
@@ -386,7 +386,7 @@ function Filter() {
                     value={listingFilterData.distance.range}
                     onChange={handleDistanceChange}
                   />
-                )}
+                )} */}
               </div>
 
               <div className="py-1">
