@@ -214,7 +214,8 @@ const deleteListing = asyncHandler(async (req, res) => {
       console.log(rejectedEmailList.length);
     });
   });
-
+  console.log("rejectedemaillist");
+console.log(rejectedEmailList);
   // notifies all members of the listing pools that the seller has deleted the listing
   // Email content with template literals and newline characters
   const deniedEmailContent = `The listing ${listing.name} has been deleted by the seller.
@@ -228,7 +229,7 @@ const deleteListing = asyncHandler(async (req, res) => {
     text: deniedEmailContent,
   };
 
-  transporter.sendMail(deniedMailOptions, (error, info) => {
+ if(rejectedEmailList.length>0) { transporter.sendMail(deniedMailOptions, (error, info) => {
     if (error) {
       console.error('Error sending email:', error);
       res.status(404).json(error);
@@ -237,9 +238,9 @@ const deleteListing = asyncHandler(async (req, res) => {
       res.status(200).json({});
     }
   });
-
-  await Listing.deleteOne({ _id: req.params.id });
-  res.status(200).json({ id: req.params.id });
+}
+await Listing.deleteOne({ _id: req.params.id });
+res.status(200).json({ id: req.params.id });
 });
 
 const sellListing = asyncHandler(async (req, res) => {
@@ -305,7 +306,7 @@ const sellListing = asyncHandler(async (req, res) => {
     text: emailContent,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
+  if(emailList.length>0) {transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Error sending email:', error);
       res.status(404).json(error);
@@ -313,7 +314,7 @@ const sellListing = asyncHandler(async (req, res) => {
       console.log('Email sent:', info.response);
       res.status(200).json({});
     }
-  });
+  });}
 
   // notifies all members of the other pools that the seller has sold the lising to another pool
   // Email content with template literals and newline characters
@@ -328,7 +329,7 @@ const sellListing = asyncHandler(async (req, res) => {
     text: deniedEmailContent,
   };
 
-  transporter.sendMail(deniedMailOptions, (error, info) => {
+  if(rejectedEmailList.length>0) {transporter.sendMail(deniedMailOptions, (error, info) => {
     if (error) {
       console.error('Error sending email:', error);
       res.status(404).json(error);
@@ -336,7 +337,7 @@ const sellListing = asyncHandler(async (req, res) => {
       console.log('Email sent:', info.response);
       res.status(200).json({});
     }
-  });
+  });}
 
   res.status(200).json(listing);
 });
