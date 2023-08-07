@@ -84,12 +84,7 @@ export const joinPool = createAsyncThunk('pools/joinPool', async ({ id, equity }
 export const editPool = createAsyncThunk('pools/editPool', async ({ id, equity }, thunkAPI) => {
   try {
     let token = thunkAPI.getState().auth.auth_token;
-
-    if (equity > 0) {
-      return await poolsService.editPool(id, equity, token);
-    }
-
-    return await poolsService.leavePool(id, token);
+    return await poolsService.editPool(id, equity, token);
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response.data.message);
   }
