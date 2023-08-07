@@ -288,7 +288,8 @@ const sellListing = asyncHandler(async (req, res) => {
   const user = req.user;
   user.funds += listing.price;
   await user.save();
-  await Pool.deleteOne({ _id: req.params.poolId });
+
+  await Pool.deleteMany({ listingId: req.params.listingId });
   // notifies all members of the pool that the seller as accepted their pool offer
   // Email content with template literals and newline characters
   const emailContent = `The following Pool has been sold to you!
