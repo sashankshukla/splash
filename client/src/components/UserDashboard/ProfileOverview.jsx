@@ -55,7 +55,7 @@ const ProfileOverview = () => {
           {greeting}, {user.name}. Your portfolio is worth
         </div>
         <div className="text-5xl font-bold">
-          ${user.funds.toString()}
+          ${user.funds.toLocaleString()}
           <span className="text-2xl text-gray-500">CAD</span>
         </div>
         <hr className="my-4" />
@@ -74,9 +74,7 @@ const ProfileOverview = () => {
               })}{' '}
             </p>
             <p className="mt-2 text-gray-500">Assets Owned: {user.ownerships.length}</p>
-            <p className="mt-2 text-gray-500">
-              Assets Value: ${sumOwnership(user).toString()}
-            </p>
+            <p className="mt-2 text-gray-500">Assets Value: ${sumOwnership(user).toString()}</p>
             <p className="mt-2 text-gray-500">Part of Pools: {pools.length}</p>
           </div>
           <div className="px-4 py-6 mt-8 md:-mt-12 mb-4 text-green-800 border border-green-300 rounded-lg bg-green-50 w-full md:w-2/3">
