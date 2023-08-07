@@ -9,9 +9,9 @@ const PrivatePoolForm = ({ modalVisible, setModalVisible }) => {
   const [pool, setPool] = useState(null);
   const token = useSelector((store) => store.auth.auth_token);
 
-  useEffect(() => {
-    dispatch(fetchListings());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchListings());
+  // }, [dispatch]);
 
   const [formData, setFormData] = useState({
     poolId: '',

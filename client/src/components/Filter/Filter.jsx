@@ -32,7 +32,7 @@ function Filter() {
     },
     status: {
       available: true,
-      sold: true,
+      sold: false,
     },
     pools: {
       open: true,
@@ -66,22 +66,24 @@ function Filter() {
   };
 
   const handlePriceChange = (e) => {
-    if (e.target.value < 0) {
-      setListingFilterData({
-        ...listingFilterData,
-        price: {
-          ...listingFilterData.price,
-          [e.target.name]: 0,
-        },
-      });
-    } else {
-      setListingFilterData({
-        ...listingFilterData,
-        price: {
-          ...listingFilterData.price,
-          [e.target.name]: e.target.value,
-        },
-      });
+    if(e.target.value) {
+      if (e.target.value < 0) {
+        setListingFilterData({
+          ...listingFilterData,
+          price: {
+            ...listingFilterData.price,
+            [e.target.name]: 0,
+          },
+        });
+      } else {
+        setListingFilterData({
+          ...listingFilterData,
+          price: {
+            ...listingFilterData.price,
+            [e.target.name]: e.target.value,
+          },
+        });
+      }
     }
 
     console.log(e.target.value);
@@ -205,8 +207,8 @@ function Filter() {
       cbs[i].checked = true;
     }
 
-    let dl = document.getElementById('distance-limit-cb');
-    dl.checked = false;
+    // let dl = document.getElementById('distance-limit-cb');
+    // dl.checked = false;
 
     setDistExpand(false);
 
@@ -219,17 +221,17 @@ function Filter() {
 
   useEffect(() => {
     if (optionsVisible) {
-      const statusAvail = document.getElementById('stat-avail-cb');
-      statusAvail.checked = listingFilterData.status.available;
-      const statusSold = document.getElementById('stat-sold-cb');
-      statusSold.checked = listingFilterData.status.sold;
+      // const statusAvail = document.getElementById('stat-avail-cb');
+      // statusAvail.checked = listingFilterData.status.available;
+      // const statusSold = document.getElementById('stat-sold-cb');
+      // statusSold.checked = listingFilterData.status.sold;
 
-      const poolOpen = document.getElementById('open-pool-cb');
-      poolOpen.checked = listingFilterData.pools.open;
-      const poolClosed = document.getElementById('closed-pool-cb');
-      poolClosed.checked = listingFilterData.pools.closed;
-      const poolNone = document.getElementById('no-pool-cb');
-      poolNone.checked = listingFilterData.pools.none;
+      // const poolOpen = document.getElementById('open-pool-cb');
+      // poolOpen.checked = listingFilterData.pools.open;
+      // const poolClosed = document.getElementById('closed-pool-cb');
+      // poolClosed.checked = listingFilterData.pools.closed;
+      // const poolNone = document.getElementById('no-pool-cb');
+      // poolNone.checked = listingFilterData.pools.none;
 
       const typeResidence = document.getElementById('invest-res-cb');
       typeResidence.checked = listingFilterData.investmentType.residence;
@@ -357,7 +359,7 @@ function Filter() {
 
               {/* Distance Range -- add expand functionality and show current value */}
               <div className="py-1">
-                <span className="max-w-[45%] flex justify-between items-end text-sm text-gray-700">
+                {/* <span className="max-w-[45%] flex justify-between items-end text-sm text-gray-700">
                   Distance Limit
                   <div className="py-1 flex justify-center items-center">
                     <input
@@ -368,9 +370,8 @@ function Filter() {
                       value={listingFilterData.distance.check}
                       onClick={handleDistanceCheckboxChange}
                     />
-                    {/* <label className="text-xs text-gray-700" htmlFor="">Available</label> */}
                   </div>
-                </span>
+                </span> */}
 
                 {/* <div className="text-sm">Value for range goes here</div> */}
                 {distExpand && (
@@ -391,9 +392,9 @@ function Filter() {
               <div className="py-1">
                 <span className="block text-sm text-gray-700">Show listings with...</span>
 
-                <div className="py-1 flex justify-between">
+                {/* <div className="py-1 flex justify-between"> */}
                   {/* Status Checkboxes */}
-                  <div className="flex flex-col justify-start items-start">
+                  {/* <div className="flex flex-col justify-start items-start">
                     <span className="block text-sm text-gray-700">Status</span>
 
                     <div className="py-1 flex justify-start items-center">
@@ -425,10 +426,10 @@ function Filter() {
                         Sold
                       </label>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Pool Checkboxes */}
-                  <div className="flex flex-col justify-start items-start">
+                  {/* <div className="flex flex-col justify-start items-start">
                     <span className="block text-sm text-gray-700">Pools</span>
 
                     <div className="py-1 flex justify-start items-center">
@@ -476,7 +477,7 @@ function Filter() {
                       </label>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Investment Type Checkboxes */}
                 <div className="py-1 flex flex-col">
