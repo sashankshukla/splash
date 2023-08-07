@@ -9,9 +9,9 @@ const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
   const dispatch = useDispatch();
   const wasListingIdPassed = listingId != null && listingId !== '' && listingId !== undefined;
 
-  useEffect(() => {
-    dispatch(fetchListings());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchListings());
+  // }, [dispatch]);
 
   const [formData, setFormData] = useState({
     title: '',

@@ -58,13 +58,25 @@ const listingSchema = new mongoose.Schema(
 listingSchema.index({ price: 1 });
 listingSchema.index({ createdAt: 1 });
 listingSchema.index({
-  // "name": "text",
-  // "address.street": "text",
-  // "address.city": "text",
-  // "address.country": "text",
-  // "address.postalCode": "text",
-  // "description": "text",
-  // "investmentType": "text",
   '$**': 'text',
 });
+// listingSchema.index({
+//   "mappings": {
+//     "dynamic": false,
+//     "fields": {
+//       "name": [
+//         {
+//           "type": "autocomplete",
+//           "analyzer": "lucene.standard",
+//           "tokenization": "edgeGram",
+//           "minGrams": 3,
+//           "maxGrams": 7,
+//           "foldDiacritics": false
+//         }
+//       ]
+//     }
+//   }
+// },
+// {name: "searchAuto"});
+
 module.exports = mongoose.model('Listing', listingSchema);

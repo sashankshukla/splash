@@ -56,7 +56,13 @@ const getFilteredListings = asyncHandler(async (req, res) => {
 
   // keyword search
   if (queryDecoded.keywordSearch) {
-    filterArr.push({ $text: { $search: queryDecoded.keywordSearch } });
+    //filterArr.push({ $text: { $search: queryDecoded.keywordSearch } });
+    filterArr.push({
+      name: {
+        $regex: new RegExp(queryDecoded.keywordSearch),
+        $options: "i"
+      }
+    });
   }
 
   // price
@@ -163,6 +169,7 @@ const addListing = asyncHandler(async (req, res) => {
   res.status(200).json(listing);
 });
 
+//DO SOMETHING FOR POOL CONTRIBUTORS?
 const updateListing = asyncHandler(async (req, res) => {
   req.body.address = JSON.parse(req.body.address);
   req.body.details = JSON.parse(req.body.details);
@@ -185,6 +192,7 @@ const updateListing = asyncHandler(async (req, res) => {
   res.status(200).json(updatedListing);
 });
 
+//ADD IN DELETING ALL OF THE POOLS AND EMAILING AS WELL
 const deleteListing = asyncHandler(async (req, res) => {
   const listing = await Listing.findById(req.params.id);
   if (!listing) {
@@ -196,6 +204,40 @@ const deleteListing = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Cannot delete a sold listing');
   }
+
+  const deniedPools = await Pool.find({listingId: req.params.listingId});
+  const rejectedEmailList = [];
+  deniedPools.forEach((deniedPool) => {
+    deniedPool.users.forEach((user) => {
+      console.log(user.email);
+      rejectedEmailList.push(user.email);
+      console.log(rejectedEmailList.length);
+    });
+  });
+
+  // notifies all members of the listing pools that the seller has deleted the listing
+  // Email content with template literals and newline characters
+  const deniedEmailContent = `The listing ${listing.name} has been deleted by the seller.
+  Your contribution has been cancelled, and no funds will be removed from your account.
+  
+  Best of luck in your future investment endeavours!`;
+  const deniedMailOptions = {
+    from: 'splash@frankeyhe.dev',
+    to: rejectedEmailList,
+    subject: `Splash Finance: The listing at ${listing.name} was deleted by the seller.`,
+    text: deniedEmailContent,
+  };
+
+  transporter.sendMail(deniedMailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+      res.status(404).json(error);
+    } else {
+      console.log('Email sent:', info.response);
+      res.status(200).json({});
+    }
+  });
+
   await Listing.deleteOne({ _id: req.params.id });
   res.status(200).json({ id: req.params.id });
 });
@@ -229,12 +271,25 @@ const sellListing = asyncHandler(async (req, res) => {
     user.funds -= member.equity;
     await user.save();
   });
+
+  const deniedPools = await Pool.find({listingId: req.params.listingId});
+  const rejectedEmailList = [];
+  deniedPools.forEach((deniedPool) => {
+    deniedPool.users.forEach((user) => {
+      console.log(user.email);
+      rejectedEmailList.push(user.email);
+      console.log(rejectedEmailList.length);
+    });
+  });
+
   listing.status = 'Sold';
   await listing.save();
+
   const user = req.user;
   user.funds += listing.price;
   await user.save();
-  await Pool.deleteOne({ _id: req.params.poolId });
+
+  await Pool.deleteMany({ listingId: req.params.listingId });
   // notifies all members of the pool that the seller as accepted their pool offer
   // Email content with template literals and newline characters
   const emailContent = `The following Pool has been sold to you!
@@ -259,6 +314,30 @@ const sellListing = asyncHandler(async (req, res) => {
       res.status(200).json({});
     }
   });
+
+  // notifies all members of the other pools that the seller has sold the lising to another pool
+  // Email content with template literals and newline characters
+  const deniedEmailContent = `The listing ${listing.name} has been sold to someone else.
+  Your contribution has been cancelled, and no funds will be removed from your account.
+  
+  Best of luck in your future investment endeavours!`;
+  const deniedMailOptions = {
+    from: 'splash@frankeyhe.dev',
+    to: rejectedEmailList,
+    subject: `Splash Finance: The listing at ${listing.name} was sold to another pool.`,
+    text: deniedEmailContent,
+  };
+
+  transporter.sendMail(deniedMailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+      res.status(404).json(error);
+    } else {
+      console.log('Email sent:', info.response);
+      res.status(200).json({});
+    }
+  });
+
   res.status(200).json(listing);
 });
 

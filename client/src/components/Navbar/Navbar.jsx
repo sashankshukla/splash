@@ -23,7 +23,7 @@ const Navbar = () => {
     { title: 'Profile', path: '/profile' },
     { title: 'Map', path: '/map' },
   ];
-  dispatch(fetchListings());
+  //dispatch(fetchListings());
   return (
     <section className="w-screen fixed z-20 border-b-[1px] border-gray-900">
       <nav className="bg-white w-full border-b md:border-0 md:static">
