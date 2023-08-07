@@ -12,7 +12,7 @@ const SellerDashboard = () => {
   const token = useSelector((store) => store.auth.token);
   const [approvalPools, setApprovalPools] = useState([]);
   const fetchApprovalPools = async () => {
-    const response = await axios.get('http://localhost:5001/pools/completed', { //'https://splash-server.onrender.com/pools/completed'
+    const response = await axios.get('https://splash-server.onrender.com/pools/completed', { //'https://splash-server.onrender.com/pools/completed'
       headers: {
         Authorization: `${auth_token}`,
       },

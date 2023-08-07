@@ -19,7 +19,7 @@ const SellerListings = () => {
       },
     };
 
-    const response = await axios.get(`http://localhost:5001/listings/user`, config); //https://splash-server.onrender.com/listings/user
+    const response = await axios.get(`https://splash-server.onrender.com/listings/user`, config); //https://splash-server.onrender.com/listings/user
     return response.data;
   };
 
