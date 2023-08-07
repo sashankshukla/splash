@@ -5,6 +5,7 @@ import LoadingSpinner from '../../Accessories/LoadingSpinner/LoadingSpinner';
 
 const PriceChart = () => {
   const [data, setData] = useState(null);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const user = useSelector((store) => store.auth.user);
 
   const transformData = (data) => {
@@ -33,6 +34,18 @@ const PriceChart = () => {
     setData(transformedData);
   }, [user.priceDictionary]);
 
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, []);
+
   return (
     <div className="">
       {!data && <LoadingSpinner />}
@@ -48,7 +61,7 @@ const PriceChart = () => {
             },
           ]}
           layout={{
-            width: window.innerWidth,
+            width: windowWidth,
             height: 700,
           }}
         />
