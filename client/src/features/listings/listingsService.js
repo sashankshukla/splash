@@ -11,10 +11,6 @@ const fetchListings = async () => {
 };
 
 const fetchFilteredListings = async (listingFilter) => {
-  console.log(listingFilter);
-  //check for and collect info for each filter param
-  //encode the URI Components for each aspect
-
   let query = encodeURIComponent(JSON.stringify(listingFilter));
 
   const response = await axios.get(API_URL + 'filterBy/' + query);
@@ -36,7 +32,6 @@ const fetchListingsForUser = async (userInfo, token) => {
 const addListing = async (listingData, token) => {
   const formData = new FormData();
 
-  //template literals require backticks like `` instead of regular apostrophes like ''
   const config = {
     headers: {
       Authorization: `${token}`,
@@ -87,7 +82,6 @@ const updateListing = async (listingData, listingId, token) => {
 };
 
 const deleteListing = async (id, token) => {
-  // console.log(token);
   const config = {
     headers: {
       Authorization: `${token}`,
@@ -100,13 +94,11 @@ const deleteListing = async (id, token) => {
 };
 
 const sellListing = async (listingId, poolId, token) => {
-  console.log('token', token);
   const config = {
     headers: {
       Authorization: `${token}`,
     },
   };
-  console.log(config);
   const response = await axios.post(`${API_URL}sell/${listingId}/${poolId}`, {}, config);
   return response.data;
 };

@@ -12,9 +12,6 @@ const fetchPoolsForUser = async (token) => {
     },
   };
   const response = await axios.get(`${API_URL}user/joined/`, config);
-  console.log('in fetch pools for user');
-  console.log(response);
-
   return response.data;
 };
 
@@ -41,7 +38,6 @@ const addPool = async (pool, token) => {
   };
   try {
     const response = await axios.post(`${API_URL}`, pool, config);
-    console.log(response);
     return response.data;
   } catch (error) {
     throw error;
@@ -49,7 +45,6 @@ const addPool = async (pool, token) => {
 };
 
 const deletePool = async (id, token) => {
-  // console.log(token);
   const config = {
     headers: {
       Authorization: `${token}`,
@@ -145,7 +140,6 @@ const denyPool = async (id, token) => {
       Authorization: `${token}`,
     },
   };
-  console.log(id);
   const response = await axios.delete(API_URL + id + '/deny', config);
 
   return response.data;

@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import PurchaseCard from './PurchaseCard';
 import Pool from '../../Pools/Pool/Pool';
-import StockChart from './StockChart.webp';
 import PriceChart from './PriceChart';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPoolsForUser, getPoolsData } from '../../../features/pools/poolsSlice';
 import { useState } from 'react';
 import ListingModal from '../../Listings/Listing/ListingModal';
 import { getListingsData } from '../../../features/listings/listingsSlice';
+import ErrorAlert from '../../Accessories/ErrorAlert/ErrorAlert';
+import LoadingSpinner from '../../Accessories/LoadingSpinner/LoadingSpinner';
+import NoResults from '../../Accessories/NoResults/NoResults';
 
 const BuyerDashboard = () => {
   const user = useSelector((store) => store.auth.user);
@@ -25,12 +27,8 @@ const BuyerDashboard = () => {
   }, [dispatch, token]);
 
   if (!user) {
-    // Render loading state or return null if you prefer
     return null;
   }
-
-  console.log('user assets');
-  console.log(user.ownerships);
 
   const OwnedAssets = () => {
     return (
@@ -67,6 +65,15 @@ const BuyerDashboard = () => {
   };
 
   const UserPools = () => {
+    if (isError) {
+      return <ErrorAlert message={message} />;
+    }
+    if (isLoading) {
+      return <LoadingSpinner />;
+    }
+    if (pools.length === 0) {
+      return <NoResults />;
+    }
     return (
       <div className="md:w-1/3 flex flex-col items-start md:h-auto pt-24 md:pt-0 md:px-8">
         <h1 className="text-4xl font-bold text-gray-900">Joined Pools</h1>

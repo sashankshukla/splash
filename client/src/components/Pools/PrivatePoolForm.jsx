@@ -42,17 +42,14 @@ const PrivatePoolForm = ({ modalVisible, setModalVisible }) => {
       },
     };
     e.preventDefault();
-    console.log(formData.poolId);
     axios
       .get(`${API_URL}${formData.poolId}`, config)
       .then((res) => {
-        console.log(res.data);
         setPool(res.data);
       })
       .catch((err) => {
         if (err) {
           setIsErrorModalOpen(err.response.data.message);
-          console.log(err);
           setTimeout(() => {
             setIsErrorModalOpen(null);
           }, 3000);

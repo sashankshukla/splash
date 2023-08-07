@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// destructured controllers
 const {
   addUser,
   getUserAssets,
@@ -16,7 +15,6 @@ const {
 } = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware');
 
-// routes
 router.post('/', addUser);
 router.get('/admin', authMiddleware, getAllUser);
 router.get('/admin/funds', authMiddleware, getPendingFunds);

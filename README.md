@@ -53,7 +53,7 @@ Splash will support several different user types depending on the objective they
 
 - Each seller who lists a property can be able to mint a crypto token for number of “Shares” ie 1 share per dollar value (Super Stretch Goal). (Frankey)
 - Live market bidding (Melinda)
-- ML/ some sort of prediction of appreciation/depreciation in value of asset ✅
+- ML/ some sort of prediction of appreciation/depreciation in value of asset (Sashank) ✅
 - Private investment pools, shareable and viewable only by token/uniqueID holders ✅
 
 # Project Task Requirements
@@ -67,7 +67,7 @@ Splash will support several different user types depending on the objective they
 
 ## Standard Requirements
 
-1. Mock payment on purchase of asset ⚠️
+1. Mock payment on purchase of asset ✅
 2. Buyers should be able to view over time price graphs of their assets value ✅
 3. Users should be able to create and join investment pools and then purchase assets ✅
 4. Sellers should be able to view active/closed listings, open pools for their listings ✅

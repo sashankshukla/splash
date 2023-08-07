@@ -51,7 +51,6 @@ function AccountOptions() {
             <li className="py-2 cursor-pointer text-center hover:bg-light hover:text-primary">
               <button onClick={() => dispatch(clearUser())}>Logout</button>
             </li>
-            {/* Add more options as needed */}
           </ul>
         </div>
       )}

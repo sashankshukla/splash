@@ -1,7 +1,5 @@
 import React from 'react';
 
-import './Listing.css';
-
 const Listing = ({
   id,
   name,
@@ -25,19 +23,17 @@ const Listing = ({
   };
 
   return (
-    <div id={id} className="listing-container" onClick={onClick}>
+    <div id={id} className="bg-white rounded-lg shadow-lg p-4 m-8 w-64" onClick={onClick}>
       <img src={images[0]} width={500} height={500} alt=""></img>
       {moreImages(images)}
-      {/* TODO: have this render more inconspicuously near the bottom right corner of the image */}
-      <h2 className="listing-title">{name}</h2>
+      <h2 className="text-2xl font-bold mb-2">{name}</h2>
       <h5 className="listing-location">
         Located at {street} in {city}, {country} {postalCode}
       </h5>
-      <p className="listing-info">Price: {price}</p>
-      <p className="listing-info">Seller: {createdBy}</p>
-      <p className="listing-info">Open Pools TODO</p>
+      <p className="text-gray-600 mb-2">Price: {price}</p>
+      <p className="text-gray-600 mb-2">Seller: {createdBy}</p>
+      <p className="text-gray-600 mb-2">Open Pools TODO</p>
       <p className="listing-status">{status}</p>
-      {/* How to turn status from bool to open/closed? */}
     </div>
   );
 };

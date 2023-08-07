@@ -30,7 +30,6 @@ const upload = multer({
   }),
 });
 
-// Initialize express
 const app = express();
 connectDB();
 
@@ -38,10 +37,9 @@ const corsOptions = {
   origin:
     process.env.NODE_ENV === 'production'
       ? 'https://splash-twqs.onrender.com'
-      : 'http://localhost:3000', // frontend URI (ReactJS)
+      : 'http://localhost:3000',
 };
 
-// Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded());
@@ -49,13 +47,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.any());
 
-// Routes
 app.use('/users', require('./routes/userRoutes'));
 app.use('/listings', require('./routes/listingRoutes'));
 app.use('/pools', require('./routes/poolRoutes'));
 app.use('/email', require('./routes/emailRoutes'));
 
-// Error handler
 app.use(errorHandler);
 
 app.use(express.static(path.join(__dirname, 'build')));
@@ -64,7 +60,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/build/index.html'));
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });

@@ -22,8 +22,6 @@ const UserDashboard = () => {
     }
     dispatch(fetchUser());
   }, [token, navigate]);
-
-  console.log('userDashboard');
   if (user && !user.active) {
     navigate('/404');
   }

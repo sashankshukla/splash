@@ -42,8 +42,6 @@ const AdminUserCard = (user) => {
           <button
             className="m-1 px-4 py-2 text-white bg-primary-green rounded-lg inline-block"
             onClick={() => {
-              console.log('attempting to unblock');
-              // dispatch({ type: 'auth/updateUser', payload: { user: user, status: true } });
               dispatch(updateUser({ user: user, status: true }));
             }}
           >

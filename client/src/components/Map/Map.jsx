@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import Geocode from 'react-geocode';
-import Modal from 'react-modal';
 import { useSelector, useDispatch } from 'react-redux';
-import Listing from '../Listings/Listing/Listing';
 import { fetchListings, getListingsData } from '../../features/listings/listingsSlice';
 import ListingModal from '../Listings/Listing/ListingModal';
 
@@ -20,32 +18,9 @@ function Map() {
 
   const dispatch = useDispatch();
 
-  //styling
-  const modalStyles = {
-    content: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      width: 'auto',
-      height: 'auto', // Update height to auto
-      background: '#fff',
-      padding: '10px',
-      boxSizing: 'border-box',
-    },
-    overlay: {
-      background: 'rgba(0, 0, 0, 0.0)',
-      zIndex: 9999,
-    },
-  };
-
-  // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
   Geocode.setApiKey('AIzaSyCvLLfCqg_bT9DCOffOazrarR7dX4H2_P8');
-
-  // set response language. Defaults to english.
   Geocode.setLanguage('en');
 
-  // States
   const { listings, isError, isSuccess, isLoading, message } = useSelector(getListingsData);
   const [map, setMap] = useState(null);
   const [center, setCenter] = useState(null);
@@ -53,13 +28,11 @@ function Map() {
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  //grabs users current location
   useEffect(() => {
     dispatch(fetchListings());
   }, [dispatch]);
 
   useEffect(() => {
-    // dispatch(fetchListings());
     const fetchUserLocation = async () => {
       try {
         const response = await fetch('https://ipapi.co/json/');
@@ -101,7 +74,6 @@ function Map() {
 
   const onLoad = React.useCallback(
     function callback(map) {
-      // sets to current IP
       const bounds = new window.google.maps.LatLngBounds(center);
       map.fitBounds(bounds);
 

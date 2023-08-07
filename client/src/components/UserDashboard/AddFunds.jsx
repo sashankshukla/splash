@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { increaseUserFunds } from '../../features/auth/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ErrorAlert from '../Accessories/ErrorAlert/ErrorAlert';
 import SuccessAlert from '../Accessories/SuccessAlert/SuccessAlert';
@@ -12,8 +12,6 @@ const AddFunds = () => {
     bankName: '',
     amount: 0,
   });
-
-  const user = useSelector((store) => store.auth.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -24,7 +24,7 @@ const ProfileOverview = () => {
   }
   function sumOwnership(user) {
     if (!user || !Array.isArray(user.ownerships)) {
-      return 0; // Return 0 if user or user.ownership is not defined or not an array
+      return 0;
     }
 
     let totalAmount = 0;
@@ -55,7 +55,7 @@ const ProfileOverview = () => {
           {greeting}, {user.name}. Your portfolio is worth
         </div>
         <div className="text-5xl font-bold">
-          ${user.funds.toLocaleString()}
+          ${user.funds.toFixed(2).toLocaleString()}
           <span className="text-2xl text-gray-500">CAD</span>
         </div>
         <hr className="my-4" />

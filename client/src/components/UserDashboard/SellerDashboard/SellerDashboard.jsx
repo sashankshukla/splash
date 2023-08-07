@@ -3,21 +3,22 @@ import SellerListings from './SellerListings';
 import ApprovalCard from './ApprovalCard';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-
-import LoadingSpinner from '../../Accessories/LoadingSpinner/LoadingSpinner';
 import NoResults from '../../Accessories/NoResults/NoResults';
 
 const SellerDashboard = () => {
   const auth_token = useSelector((store) => store.auth.auth_token);
   const token = useSelector((store) => store.auth.token);
   const [approvalPools, setApprovalPools] = useState([]);
+  const URL =
+    process.env.NODE_ENV === 'production'
+      ? 'https://splash-server.onrender.com'
+      : 'http://localhost:5001';
   const fetchApprovalPools = async () => {
-    const response = await axios.get('https://splash-server.onrender.com/pools/completed', { //'https://splash-server.onrender.com/pools/completed'
+    const response = await axios.get(`${URL}/pools/completed`, {
       headers: {
         Authorization: `${auth_token}`,
       },
     });
-    console.log(response.data);
     setApprovalPools(response.data);
   };
 
@@ -33,7 +34,6 @@ const SellerDashboard = () => {
         token.name.split(' ')[0]
       }...`}</h1>
       <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 mx-12">
-        {/* {approvalPools.length === 0 && <LoadingSpinner />} */}
         {approvalPools.length === 0 && <NoResults />}
         {approvalPools.map((pool, index) => (
           <ApprovalCard
