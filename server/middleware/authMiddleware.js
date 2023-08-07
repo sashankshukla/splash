@@ -1,7 +1,6 @@
 const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/userModel');
 
-// Replace this with your Google client ID.
 const GOOGLE_CLIENT_ID = '593968135288-s5uf8ttnu4uuk7b2k7uau15sl6v9gctm.apps.googleusercontent.com';
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
@@ -12,13 +11,11 @@ async function validateGoogleToken(idToken) {
   });
   const payload = ticket.getPayload();
   const email = payload['email'];
-  console.log(email);
   return email;
 }
 
 async function authMiddleware(req, res, next) {
   const token = req.headers.authorization;
-  console.log(token);
   if (!token) {
     return res.status(401).send('No token');
   }

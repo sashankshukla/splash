@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { fetchPools, getPoolsData } from '../../features/pools/poolsSlice';
 
 import Pool from './Pool/Pool';
-
-import Filter from '../Filter/Filter';
 import PoolForm from './PoolForm';
 import PrivatePoolForm from './PrivatePoolForm';
 import { getListingsData } from '../../features/listings/listingsSlice';
@@ -36,8 +34,6 @@ const Pools = () => {
       dispatch(fetchPools());
     }
   }, [dispatch, token]);
-
-  console.log(listings);
 
   return (
     <div id="pools-page-container" className="flex flex-col justify-around items-center pt-16 mx-4">

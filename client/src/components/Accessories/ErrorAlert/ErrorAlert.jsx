@@ -1,8 +1,6 @@
 import React from 'react';
 
 const ErrorAlert = ({ message }) => {
-  console.log('in error alert');
-  console.log(message);
   return (
     <div
       role="alert"

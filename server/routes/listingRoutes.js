@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// destructured controllers
 const {
   getListings,
   getFilteredListings,
@@ -14,7 +13,6 @@ const {
 
 const authMiddleware = require('../middleware/authMiddleware');
 
-// routes
 router.get('/', getListings);
 router.get('/filterBy/:query?', getFilteredListings);
 router.get('/user/', authMiddleware, getListingsForUser);

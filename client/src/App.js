@@ -11,7 +11,7 @@ import UserBlocked from './components/ErrorAlert/UserBlocked';
 
 const App = () => {
   return (
-    <div className="App bg-gray-100">
+    <div className="App bg-white">
       <Router>
         <Navbar />
         <Routes>

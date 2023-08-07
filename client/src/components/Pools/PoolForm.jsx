@@ -1,17 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addPoolsAsync } from '../../features/pools/poolsSlice';
-import { fetchListings } from '../../features/listings/listingsSlice';
 import ErrorAlert from '../Accessories/ErrorAlert/ErrorAlert';
 import SuccessAlert from '../Accessories/SuccessAlert/SuccessAlert';
 
 const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
   const dispatch = useDispatch();
   const wasListingIdPassed = listingId != null && listingId !== '' && listingId !== undefined;
-
-  // useEffect(() => {
-  //   dispatch(fetchListings());
-  // }, [dispatch]);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -44,7 +39,6 @@ const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
     dispatch(
       addPoolsAsync({
         name: formData.title,

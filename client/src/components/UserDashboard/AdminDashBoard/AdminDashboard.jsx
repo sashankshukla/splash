@@ -4,6 +4,7 @@ import { fetchAllUsers, fetchPendingFunds } from '../../../features/auth/authSli
 import AdminUserCard from './AdminUserCard';
 import PendingApprovalCard from './PendingApprovalCard';
 import LoadingSpinner from '../../Accessories/LoadingSpinner/LoadingSpinner';
+import NoResults from '../../Accessories/NoResults/NoResults';
 
 const AdminDashBoard = () => {
   const user = useSelector((store) => store.auth.user);
@@ -14,35 +15,26 @@ const AdminDashBoard = () => {
 
   useEffect(() => {
     if (token) {
-      console.log('attempting to fetch all users');
       dispatch(fetchAllUsers());
       dispatch(fetchPendingFunds());
     }
   }, [dispatch, token]);
 
   if (!user) {
-    // Render loading state or return null if you prefer
     return <LoadingSpinner />;
   }
 
   if (userList.length === 0) {
-    // Render loading state or return null if you prefer
-    return <LoadingSpinner />;
+    return <NoResults />;
   }
-
-  console.log('Admin Component');
-  console.log(userList);
 
   const UserArrayForSort = [...userList];
   const FundsForSort = [...pendingFunds];
 
   const sortedUserList = UserArrayForSort.sort((a, b) => {
-    // Sort by active status (true first, then false)
     if (a.active === b.active) {
-      // If active status is the same, sort alphabetically by name
       return a.name.localeCompare(b.name);
     }
-    // Sort active users (true) first, then inactive users (false)
     return a.active ? -1 : 1;
   });
 
@@ -92,7 +84,6 @@ const AdminDashBoard = () => {
     <>
       <div className="h-1/5 w-screen flex flex-col items-center">
         <h1 className="text-4xl font-bold text-gray-900">Admin Controls</h1>
-        {/* <img src={StockChart} alt="Stock Chart" className="h-2/3 w-3/4 object-cover rounded-lg" /> */}
       </div>
       <div className="flex flex-col md:flex-row">
         <UserList />

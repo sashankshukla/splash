@@ -1,12 +1,11 @@
 const asyncHandler = require('express-async-handler');
 const nodemailer = require('nodemailer');
 
-// Configure Nodemailer with your custom domain email provider's settings
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
-    user: 'splashfinance455@gmail.com', // Your Gmail email address
-    pass: process.env.GMAIL_API, // Your Gmail password or App Password
+    user: 'splashfinance455@gmail.com',
+    pass: process.env.GMAIL_API,
   },
 });
 
@@ -26,10 +25,8 @@ const approvedFunds = asyncHandler(async (req, res) => {
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.error('Error sending email:', error);
       res.status(404).json(error);
     } else {
-      console.log('Email sent:', info.response);
       res.status(200).json({});
     }
   });
@@ -51,10 +48,8 @@ const denyFunds = asyncHandler(async (req, res) => {
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.error('Error sending email:', error);
       res.status(404).json(error);
     } else {
-      console.log('Email sent:', info.response);
       res.status(200).json({});
     }
   });

@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// destructured controllers
 const {
   getPools,
   addPool,
@@ -20,7 +19,6 @@ const {
 
 const authMiddleware = require('../middleware/authMiddleware');
 
-// routes
 router.post('/', authMiddleware, addPool);
 router.delete('/:id', authMiddleware, deletePool);
 router.post('/:id/join', authMiddleware, joinPool);

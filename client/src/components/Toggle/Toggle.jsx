@@ -5,7 +5,6 @@ const Toggle = ({ name1, name2, name3, toggle, setToggle }) => {
   const user = useSelector((store) => store.auth.user);
 
   if (!user) {
-    // Render loading state or return null if you prefer
     return null;
   }
 
@@ -33,12 +32,10 @@ const Toggle = ({ name1, name2, name3, toggle, setToggle }) => {
             <button
               onClick={() => {
                 setToggle('Admin');
-                console.log('Admin Button');
-                console.log(user);
-              }} // Change this line to setToggle(true)
+              }}
               className={`py-2 px-4 rounded ${
                 toggle === 'Admin' ? 'bg-green-800 text-white' : 'bg-gray-200'
-              }`} // Change this line to use "toggle" instead of "!toggle"
+              }`}
             >
               {name3}
             </button>

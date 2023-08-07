@@ -4,7 +4,7 @@ import listingsService from './listingsService';
 const initialState = {
   listings: [],
   listingFilter: {
-    keywordSearch: '', //make this an array separated by space or smth in future?
+    keywordSearch: '',
     sortTime: 'None',
     sortPrice: 'None',
     price: {
@@ -13,7 +13,7 @@ const initialState = {
     },
     distance: {
       check: false,
-      range: 0, //what should default be? what should min and max and increments be?
+      range: 0,
     },
     status: {
       available: true,
@@ -54,7 +54,6 @@ export const fetchFilteredListings = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const listingFilter = thunkAPI.getState().listings.listingFilter;
-      console.log(listingFilter);
       return await listingsService.fetchFilteredListings(listingFilter);
     } catch (error) {
       let message =
@@ -160,7 +159,7 @@ const listingsSlice = createSlice({
       .addCase(fetchListings.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        //Add any fetched listings to the array
+
         state.listings = action.payload;
       })
       .addCase(fetchListings.rejected, (state, action) => {
@@ -175,7 +174,7 @@ const listingsSlice = createSlice({
       .addCase(fetchFilteredListings.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        //Add any fetched listings to the array
+
         state.listings = action.payload;
       })
       .addCase(fetchFilteredListings.rejected, (state, action) => {
@@ -190,7 +189,7 @@ const listingsSlice = createSlice({
       .addCase(fetchListingsForUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        //Add any fetched listings to the array
+
         state.listings = action.payload;
       })
       .addCase(fetchListingsForUser.rejected, (state, action) => {
@@ -205,8 +204,7 @@ const listingsSlice = createSlice({
       .addCase(addListing.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        //Add new listing directly to the listing array
-        state.listings.push(action.payload); //is this correct behavior? how to grab _id?
+        state.listings.push(action.payload);
       })
       .addCase(addListing.rejected, (state, action) => {
         state.isLoading = false;
@@ -218,7 +216,6 @@ const listingsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(updateListing.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.isLoading = false;
         state.isSuccess = true;
         state.listings = state.listings.filter((listing) => listing._id !== action.payload._id);
@@ -236,7 +233,6 @@ const listingsSlice = createSlice({
       .addCase(deleteListing.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        console.log(action.payload);
         state.listings = state.listings.filter((listing) => listing._id !== action.payload.id);
       })
       .addCase(deleteListing.rejected, (state, action) => {
@@ -249,7 +245,6 @@ const listingsSlice = createSlice({
 });
 
 export const getListingsData = (state) => state.listings;
-//export const getUserListings = (state) => state.
 
 export const { reset, updateFilter, clearFilter } = listingsSlice.actions;
 

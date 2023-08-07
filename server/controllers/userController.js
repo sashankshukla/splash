@@ -9,8 +9,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
-    user: 'splashfinance455@gmail.com', // Your Gmail email address
-    pass: process.env.GMAIL_API, // Your Gmail password or App Password
+    user: 'splashfinance455@gmail.com',
+    pass: process.env.GMAIL_API,
   },
 });
 
@@ -82,10 +82,8 @@ const addUser = asyncHandler(async (req, res) => {
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.error('Error sending email:', error);
       res.status(404).json(error);
     } else {
-      console.log('Email sent:', info.response);
       res.status(200).json({});
     }
   });
@@ -96,15 +94,12 @@ const validatePayment = (form) => {
   if (!form.accountName || !form.accountNumber || !form.bankName || !form.amount) {
     return false;
   }
-  // Check if account number is a valid number
   if (isNaN(form.accountNumber) || form.accountNumber <= 0) {
     return false;
   }
-  // Check if amount is a valid number
   if (isNaN(form.amount) || form.amount <= 0) {
     return false;
   }
-  // Check if bank name is not empty
   if (form.bankName.trim() === '') {
     return false;
   }
@@ -114,44 +109,35 @@ const validatePayment = (form) => {
 const addFunds = asyncHandler(async (req, res) => {
   const form = req.body;
   const paymentStatus = validatePayment(form);
-
-  try {
-    const bank = await Bank.findOne({
-      accountName: form.accountName,
-      accountNumber: form.accountNumber,
-      bankName: form.bankName,
-      userEmail: req.user.email,
-    });
-    if (!paymentStatus) {
-      res.status(400).json({ message: 'Invalid payment details please check the form.' });
-      return;
-    }
-    if (!bank) {
-      res.status(400).json({ message: 'Account does not exist please try again.' });
-      return;
-    }
-
-    if (!bank.approved) {
-      res.status(400).json({
-        message:
-          'Bank account not approved. Please wait util our Finance Team verifies your account.',
-      });
-      return;
-    }
-
-    const updatedUser = await User.findOneAndUpdate(
-      { email: req.user.email },
-      { $inc: { funds: parseFloat(form.amount) } },
-      {
-        new: true, // Return the updated document
-        useFindAndModify: false,
-      },
-    );
-
-    res.status(200).json(updatedUser);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  const bank = await Bank.findOne({
+    accountName: form.accountName,
+    accountNumber: form.accountNumber,
+    bankName: form.bankName,
+    userEmail: req.user.email,
+  });
+  if (!paymentStatus) {
+    res.status(400);
+    throw new Error('Invalid payment details please check the form.');
   }
+  if (!bank) {
+    res.status(400);
+    throw new Error('Account does not exist please try again.');
+  }
+  if (!bank.approved) {
+    res.status(400);
+    throw new Error(
+      'Bank account not approved. Please wait util our Finance Team verifies your account.',
+    );
+  }
+  const updatedUser = await User.findOneAndUpdate(
+    { email: req.user.email },
+    { $inc: { funds: parseFloat(form.amount) } },
+    {
+      new: true,
+      useFindAndModify: false,
+    },
+  );
+  res.status(200).json(updatedUser);
 });
 
 const addAccount = asyncHandler(async (req, res) => {
@@ -160,11 +146,9 @@ const addAccount = asyncHandler(async (req, res) => {
     if (!form.accountName || !form.accountNumber || !form.bankName) {
       return false;
     }
-    // Check if account number is a valid number
     if (isNaN(form.accountNumber) || form.accountNumber <= 0) {
       return false;
     }
-    // Check if bank name is not empty
     if (form.bankName.trim() === '') {
       return false;
     }
@@ -172,24 +156,20 @@ const addAccount = asyncHandler(async (req, res) => {
   }
   const status = validateAccount(form);
   if (!status) {
-    res
-      .status(400)
-      .json({ message: 'Oops! Seems like the information provided is not in the right format!' });
-    return;
+    res.status(400);
+    throw new Error('Oops! Seems like the information provided is not in the right format!');
   }
   const alreadyAdded = await Bank.findOne({
     ...form,
     userEmail: req.user.email,
   });
   if (alreadyAdded) {
-    res
-      .status(400)
-      .json({
-        message: `Seems like this account has already been added current status is: ${
-          alreadyAdded.approved ? 'Approved' : 'Pending Admin Review'
-        }`,
-      });
-    return;
+    res.status(400);
+    throw new Error(
+      `Seems like this account has already been added current status is: ${
+        alreadyAdded.approved ? 'Approved' : 'Pending Admin Review'
+      }`,
+    );
   }
   const bank = await Bank.create({
     ...form,
@@ -209,7 +189,7 @@ const getUserAssets = asyncHandler(async (req, res) => {
 
 const getUser = asyncHandler(async (req, res) => {
   const originalUser = req.user;
-  await getUserAssetPerformance(originalUser);
+  getUserAssetPerformance(originalUser);
   const user = originalUser.toObject();
   user.ownerships = await Promise.all(
     user.ownerships.map(async (ownership) => {
@@ -229,87 +209,53 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 const getAllUser = asyncHandler(async (req, res) => {
-  try {
-    const usersList = await User.find({});
-    if (!usersList) {
-      throw new Error('Unable to get all users for admin');
-    }
-
-    res.status(200).json(usersList);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
+  const usersList = await User.find({});
+  res.status(200).json(usersList);
 });
 
 const getPendingFunds = asyncHandler(async (req, res) => {
-  try {
-    const pendingFunds = await Bank.find({ approved: false });
-    if (!pendingFunds) {
-      throw new Error('Unable to get all users for admin');
-    }
-
-    res.status(200).json(pendingFunds);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
+  const pendingFunds = await Bank.find({ approved: false });
+  res.status(200).json(pendingFunds);
 });
 
 const updateUser = asyncHandler(async (req, res) => {
-  try {
-    const status = req.body.status;
-    const updatedUser = await User.findOneAndUpdate(
-      { email: req.params.email },
-      { $set: { active: status } },
-      { new: true }, // Return the updated document
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    const allUsers = await User.find();
-
-    res.status(200).json(allUsers);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+  const status = req.body.status;
+  const updatedUser = await User.findOneAndUpdate(
+    { email: req.params.email },
+    { $set: { active: status } },
+    { new: true },
+  );
+  if (!updatedUser) {
+    res.status(404);
+    throw new Error('User not found');
   }
+  const allUsers = await User.find();
+  res.status(200).json(allUsers);
 });
 
 const updateBank = asyncHandler(async (req, res) => {
-  try {
-    const status = req.body.status;
-    const updatedBank = await Bank.findOneAndUpdate(
-      { _id: req.params.bankId },
-      { $set: { approved: status } },
-      { new: true },
-    );
-
-    if (!updatedBank) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    const allPending = await Bank.find({ approved: false });
-
-    res.status(200).json(allPending);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+  const status = req.body.status;
+  const updatedBank = await Bank.findOneAndUpdate(
+    { _id: req.params.bankId },
+    { $set: { approved: status } },
+    { new: true },
+  );
+  if (!updatedBank) {
+    res.status(404);
+    throw new Error('Account not found');
   }
+  const allPending = await Bank.find({ approved: false });
+  res.status(200).json(allPending);
 });
 
 const deleteBank = asyncHandler(async (req, res) => {
-  try {
-    const updatedBank = await Bank.findOneAndDelete({ _id: req.params.bankId });
-
-    if (!updatedBank) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    const allPending = await Bank.find({ approved: false });
-
-    res.status(200).json(allPending);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+  const updatedBank = await Bank.findOneAndDelete({ _id: req.params.bankId });
+  if (!updatedBank) {
+    res.status(404);
+    throw new Error('Account not found');
   }
+  const allPending = await Bank.find({ approved: false });
+  res.status(200).json(allPending);
 });
 
 const getUserAssetPerformance = asyncHandler(async (user) => {
@@ -317,17 +263,18 @@ const getUserAssetPerformance = asyncHandler(async (user) => {
     res.status(400);
     throw new Error('User not found');
   }
-
   const assets = user.ownerships;
   const currentDate = new Date(formatDate(new Date()));
   const priceDictionary = {};
-
   for (const asset of assets) {
     const listing = await Listing.findById(asset.listingId);
     const purchaseDate = new Date(formatDate(listing.updatedAt));
-    const gptResponse = await runPrompt(
+    let gptResponse = await runPrompt(
       generatePrompt(listing, asset.amount, purchaseDate, currentDate),
     );
+    if (gptResponse.includes(':')) {
+      gptResponse = gptResponse.slice(gptResponse.indexOf(':') + 2);
+    }
     const predictions = JSON.parse(gptResponse);
     priceDictionary[asset.listingId] = predictions;
   }

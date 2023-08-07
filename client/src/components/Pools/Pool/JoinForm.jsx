@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { editPool, joinPool } from '../../../features/pools/poolsSlice';
 import ErrorAlert from '../../Accessories/ErrorAlert/ErrorAlert';
 import SuccessAlert from '../../Accessories/SuccessAlert/SuccessAlert';
+
 const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContribution }) => {
   const [formData, setFormData] = useState({
     contribution: currentContribution || 0,
   });
 
   const dispatch = useDispatch();
-
-  const token = useSelector((store) => store.auth.token);
 
   const toggleModalVisibility = () => {
     setModalVisible(false);
@@ -31,7 +30,6 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
     if (modify) {
       dispatch(editPool({ id: poolId, equity: parseInt(formData.contribution) }))
         .then((response) => {
-          console.log(response);
           setIsSuccessModalOpen('Contribution has been successfully updated');
           setTimeout(() => {
             setModalVisible(false);

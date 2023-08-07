@@ -142,7 +142,6 @@ const authSlice = createSlice({
         state.user.ownerships = ownerships;
       })
       .addCase(increaseUserFunds.rejected, (state, action) => {
-        //TODO error catching not working does not display modal.
         throw Error(action.payload);
       })
       .addCase(addAccount.rejected, (state, action) => {

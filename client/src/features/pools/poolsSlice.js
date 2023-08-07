@@ -14,7 +14,6 @@ export const fetchPoolsForUser = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       let token = thunkAPI.getState().auth.auth_token;
-      console.log(token);
       return await poolsService.fetchPoolsForUser(token);
     } catch (error) {
       let message =
@@ -28,7 +27,6 @@ export const fetchPoolsForUser = createAsyncThunk(
 
 export const fetchPools = createAsyncThunk('pools/fetchPools', async (thunkAPI) => {
   try {
-    // let token = thunkAPI.getState().auth.auth_token;
     return await poolsService.fetchPools();
   } catch (error) {
     let message =
@@ -102,7 +100,6 @@ export const fetchPoolsForListing = createAsyncThunk(
   async (listingId, thunkAPI) => {
     try {
       let token = thunkAPI.getState().auth.auth_token;
-      console.log(token);
       return await poolsService.fetchPoolsForListing(listingId, token);
     } catch (error) {
       let message =
@@ -117,7 +114,6 @@ export const fetchPoolsForListing = createAsyncThunk(
 export const denyPool = createAsyncThunk('pools/denyPool', async (poolId, thunkAPI) => {
   try {
     let token = thunkAPI.getState().auth.auth_token;
-    console.log(typeof poolId);
     return await poolsService.denyPool(poolId, token);
   } catch (error) {
     let message =
@@ -142,7 +138,6 @@ const poolsSlice = createSlice({
       .addCase(fetchPoolsForUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        //Add any fetched pools to the array
         state.pools = action.payload;
       })
       .addCase(fetchPoolsForUser.rejected, (state, action) => {
@@ -186,7 +181,6 @@ const poolsSlice = createSlice({
       .addCase(deletePool.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        console.log(action.payload);
         state.pools = state.pools.filter((pool) => pool._id !== action.payload.id);
       })
       .addCase(deletePool.rejected, (state, action) => {
@@ -199,7 +193,6 @@ const poolsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(joinPool.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.isLoading = false;
         state.isSuccess = true;
         const poolIndex = state.pools.findIndex((pool) => pool._id === action.payload._id);
@@ -216,7 +209,6 @@ const poolsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(editPool.fulfilled, (state, action) => {
-        // console.log(action.payload);
         state.isLoading = false;
         state.isSuccess = true;
         const poolIndex = state.pools.findIndex((pool) => pool._id === action.payload._id);
@@ -235,13 +227,11 @@ const poolsSlice = createSlice({
       .addCase(fetchPoolsForListing.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        //Add any fetched pools to the array
         state.pools = action.payload;
       })
       .addCase(fetchPoolsForListing.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-
         state.message = action.payload;
       })
       .addCase(denyPool.pending, (state, action) => {
@@ -250,13 +240,10 @@ const poolsSlice = createSlice({
       .addCase(denyPool.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-
-        // TODO: filter out the pool we just deleted
       })
       .addCase(denyPool.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-
         state.message = action.payload;
       });
   },

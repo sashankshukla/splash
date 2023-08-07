@@ -60,23 +60,5 @@ listingSchema.index({ createdAt: 1 });
 listingSchema.index({
   '$**': 'text',
 });
-// listingSchema.index({
-//   "mappings": {
-//     "dynamic": false,
-//     "fields": {
-//       "name": [
-//         {
-//           "type": "autocomplete",
-//           "analyzer": "lucene.standard",
-//           "tokenization": "edgeGram",
-//           "minGrams": 3,
-//           "maxGrams": 7,
-//           "foldDiacritics": false
-//         }
-//       ]
-//     }
-//   }
-// },
-// {name: "searchAuto"});
 
 module.exports = mongoose.model('Listing', listingSchema);

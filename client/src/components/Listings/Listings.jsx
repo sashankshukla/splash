@@ -1,30 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import {
-  reset,
-  fetchListings,
-  fetchFilteredListings,
-  getListingsData,
-} from '../../features/listings/listingsSlice'; //Selector functions
+import { fetchFilteredListings, getListingsData } from '../../features/listings/listingsSlice';
 
 import Listing from './Listing/Listing';
 import ListingModal from './Listing/ListingModal';
 import ListingForm from './ListingForm';
 import Filter from '../Filter/Filter';
 
-import LoadingSpinner from '../Accessories/LoadingSpinner/LoadingSpinner';
 import NoResults from '../Accessories/NoResults/NoResults';
-import ErrorAlert from '../Accessories/ErrorAlert/ErrorAlert';
-
-import './Listings.css';
 import { FaPlusCircle } from 'react-icons/fa';
 
 const Listings = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const token = useSelector((store) => store.auth.token); //auth_token is what we want for header config
+  const token = useSelector((store) => store.auth.token);
   const { listings, listingFilter, isError, isSuccess, isLoading, message } =
     useSelector(getListingsData);
 
@@ -49,7 +38,6 @@ const Listings = () => {
           country={listing.address.country}
           postalCode={listing.address.postalCode}
           description={listing.description}
-          //details?
           price={listing.price}
           images={listing.images}
           status={listing.status}
@@ -75,8 +63,6 @@ const Listings = () => {
       </button>
       <ListingForm formVisible={formVisible} setFormVisible={setFormVisible} isEditing={false} />
       <ListingModal selectedListing={selectedListing} setSelectedListing={setSelectedListing} />
-
-      {/* no results check */}
       {listings.length === 0 && <NoResults />}
       {listings.length > 0 && (
         <>
@@ -92,12 +78,6 @@ const Listings = () => {
           </div>
         </>
       )}
-      {/* <div
-        id="listings-container"
-        className="flex flex-wrap justify-center items-center content-evenly p-2 overflow-hidden"
-      >
-        {renderedListings}
-      </div> */}
     </div>
   );
 };

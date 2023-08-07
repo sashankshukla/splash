@@ -5,13 +5,11 @@ const API_URL =
     ? 'https://splash-server.onrender.com/users/'
     : 'http://localhost:5001/users/';
 
-// Register user
 const register = async (userData) => {
   const response = await axios.post(API_URL, userData);
   return response.data;
 };
 
-// Logout user
 const logout = () => {
   sessionStorage.removeItem('user');
 };
@@ -88,7 +86,6 @@ const increaseUserFunds = async (form, token) => {
 
   try {
     const response = await axios.post(`${API_URL}addFunds`, form, config);
-    // Check if the response status is 400 and throw an error if true
     return response.data;
   } catch (error) {
     throw error;

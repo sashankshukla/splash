@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsHourglass } from 'react-icons/bs';
 import { FaPiggyBank } from 'react-icons/fa';
@@ -9,8 +9,11 @@ import axios from 'axios';
 
 const PendingApprovalCard = (account) => {
   const auth_token = useSelector((store) => store.auth.auth_token);
-  const token = useSelector((store) => store.auth.token);
   const dispatch = useDispatch();
+  const URL =
+    process.env.NODE_ENV === 'production'
+      ? 'https://splash-server.onrender.com'
+      : 'http://localhost:5001';
 
   const formatDate = (mongoDateString) => {
     const dateObject = new Date(mongoDateString);
@@ -23,20 +26,16 @@ const PendingApprovalCard = (account) => {
   };
 
   const sendApprovalEmail = async (body) => {
-    const response = await axios.post(
-      'https://splash-server.onrender.com/email/approvedFunds',
-      body,
-      {
-        headers: {
-          Authorization: `${auth_token}`,
-        },
+    const response = await axios.post(`${URL}/email/approvedFunds`, body, {
+      headers: {
+        Authorization: `${auth_token}`,
       },
-    );
+    });
     return response;
   };
 
   const sendDenyEmail = async (body) => {
-    const response = await axios.post('https://splash-server.onrender.com/email/denyFunds', body, {
+    const response = await axios.post(`${URL}/email/denyFunds`, body, {
       headers: {
         Authorization: `${auth_token}`,
       },

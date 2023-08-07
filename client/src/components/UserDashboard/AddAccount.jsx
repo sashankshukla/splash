@@ -43,7 +43,6 @@ const AddAccount = () => {
           }, 3000);
         }
       });
-    // navigate('/profile');
   };
 
   return (

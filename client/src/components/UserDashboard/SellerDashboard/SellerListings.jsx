@@ -10,7 +10,10 @@ import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 
 const SellerListings = () => {
   const token = useSelector((state) => state.auth.auth_token);
-  //const { listings, isError, isSuccess, isLoading, message } = useSelector(getListingsData);
+  const URL =
+    process.env.NODE_ENV === 'production'
+      ? 'https://splash-server.onrender.com'
+      : 'http://localhost:5001';
 
   const fetchUserListings = async (token) => {
     const config = {
@@ -19,7 +22,7 @@ const SellerListings = () => {
       },
     };
 
-    const response = await axios.get(`https://splash-server.onrender.com/listings/user`, config); //https://splash-server.onrender.com/listings/user
+    const response = await axios.get(`${URL}/listings/user`, config);
     return response.data;
   };
 
@@ -34,7 +37,6 @@ const SellerListings = () => {
     setUListings();
   }, [token]);
 
-  //console.log(listings);
   const scrollContainer = useRef(null);
 
   const scroll = (scrollOffset) => {
@@ -54,7 +56,7 @@ const SellerListings = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="flex w-screen max-w-6xl overflow-x-hidden">
-        <button onClick={() => scroll(-15)} className="text-3xl font-bold mr-8">
+        <button onClick={() => scroll(-335)} className="text-3xl font-bold mr-8">
           <FaArrowAltCircleLeft />
         </button>
         <div
@@ -75,7 +77,7 @@ const SellerListings = () => {
               </div>
             ))}
         </div>
-        <button onClick={() => scroll(15)} className="text-3xl font-bold ml-8">
+        <button onClick={() => scroll(335)} className="text-3xl font-bold ml-8">
           <FaArrowAltCircleRight />
         </button>
       </div>
