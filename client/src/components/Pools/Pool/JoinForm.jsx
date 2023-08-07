@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editPool, joinPool } from '../../../features/pools/poolsSlice';
-
+import ErrorAlert from '../../Accessories/ErrorAlert/ErrorAlert';
+import SuccessAlert from '../../Accessories/SuccessAlert/SuccessAlert';
 const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContribution }) => {
   const [formData, setFormData] = useState({
     contribution: currentContribution || 0,
@@ -15,6 +16,9 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
     setModalVisible(false);
   };
 
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(null);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -25,11 +29,41 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
   const handleSubmit = (e) => {
     e.preventDefault();
     if (modify) {
-      dispatch(editPool({ id: poolId, equity: parseInt(formData.contribution) }));
+      dispatch(editPool({ id: poolId, equity: parseInt(formData.contribution) }))
+        .then((response) => {
+          console.log(response);
+          setIsSuccessModalOpen('Contribution has been successfully updated');
+          setTimeout(() => {
+            setModalVisible(false);
+            setIsSuccessModalOpen(false);
+          }, 3000);
+        })
+        .catch((error) => {
+          if (error) {
+            setIsErrorModalOpen(error.message);
+            setTimeout(() => {
+              setIsErrorModalOpen(null);
+            }, 3000);
+          }
+        });
     } else {
-      dispatch(joinPool({ id: poolId, equity: parseInt(formData.contribution) }));
+      dispatch(joinPool({ id: poolId, equity: parseInt(formData.contribution) }))
+        .then((response) => {
+          setIsSuccessModalOpen('Pool Successfully Joined');
+          setTimeout(() => {
+            setIsSuccessModalOpen(false);
+            setModalVisible(false);
+          }, 3000);
+        })
+        .catch((error) => {
+          if (error) {
+            setIsErrorModalOpen(error.message);
+            setTimeout(() => {
+              setIsErrorModalOpen(null);
+            }, 3000);
+          }
+        });
     }
-    setModalVisible(false);
   };
 
   return (
@@ -80,6 +114,8 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
                       className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-primary-darkgreen active:bg-primary-green rounded-lg duration-150 mt-4"
                     >
                       {modify ? 'Modify Contribution' : 'Join Pool'}
+                      {isErrorModalOpen && <ErrorAlert message={isErrorModalOpen} />}
+                      {isSuccessModalOpen && <SuccessAlert message={isSuccessModalOpen} />}
                     </button>
                   </form>
                 </div>

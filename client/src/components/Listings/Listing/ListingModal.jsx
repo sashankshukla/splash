@@ -120,13 +120,7 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
             >
               X
             </button>
-            {/* TODO: add role indicator for screen readers */}
-            {/* {renderedImages} */}
             <ImageCarousel images={images}></ImageCarousel>
-            {/*
-            TODO: format into an image carousel
-            See: https://www.material-tailwind.com/docs/react/carousel
-          */}
             <h1 className="mt-4 text-2xl font-semibold text-gray-700 capitalize">{name}</h1>
             <h1 className="mt-4 flex flex-row justify-center text-md font-light text-gray-500">
               id : {_id} <CopyToClipboard value={_id} />
@@ -160,7 +154,7 @@ const ListingModal = ({ selectedListing, setSelectedListing }) => {
             </p>
             {renderButtonsCheck}
 
-            {user.email != createdBy && (
+            {user.email !== createdBy && (
               <button
                 onClick={() => setPoolFormVisible(true)}
                 className="mt-4 px-4 py-2 bg-green-700 text-white rounded-lg"

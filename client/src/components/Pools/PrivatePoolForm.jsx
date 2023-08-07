@@ -3,11 +3,17 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchListings } from '../../features/listings/listingsSlice';
 import Pool from './Pool/Pool';
+import ErrorAlert from '../Accessories/ErrorAlert/ErrorAlert';
 
 const PrivatePoolForm = ({ modalVisible, setModalVisible }) => {
   const dispatch = useDispatch();
   const [pool, setPool] = useState(null);
   const token = useSelector((store) => store.auth.auth_token);
+
+  const API_URL =
+    process.env.NODE_ENV === 'production'
+      ? 'https://splash-server.onrender.com/pools/private/'
+      : 'http://localhost:5001/pools/private/';
 
   useEffect(() => {
     dispatch(fetchListings());
@@ -16,6 +22,7 @@ const PrivatePoolForm = ({ modalVisible, setModalVisible }) => {
   const [formData, setFormData] = useState({
     poolId: '',
   });
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
   const toggleModalVisibility = () => {
     setModalVisible(false);
@@ -37,13 +44,19 @@ const PrivatePoolForm = ({ modalVisible, setModalVisible }) => {
     e.preventDefault();
     console.log(formData.poolId);
     axios
-      .get(`https://splash-server.onrender.com/pools/private/${formData.poolId}`, config)
+      .get(`${API_URL}${formData.poolId}`, config)
       .then((res) => {
         console.log(res.data);
         setPool(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        if (err) {
+          setIsErrorModalOpen(err.response.data.message);
+          console.log(err);
+          setTimeout(() => {
+            setIsErrorModalOpen(null);
+          }, 3000);
+        }
       });
   };
 
@@ -105,6 +118,7 @@ const PrivatePoolForm = ({ modalVisible, setModalVisible }) => {
                 createdBy={pool.createdBy}
               />
             )}
+            {isErrorModalOpen && <ErrorAlert message={isErrorModalOpen} />}
           </div>
         </div>
       )}

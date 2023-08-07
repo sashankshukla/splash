@@ -81,11 +81,7 @@ export const increaseUserFunds = createAsyncThunk(
       let token = thunkAPI.getState().auth.auth_token;
       return await authService.increaseUserFunds(data, token);
     } catch (error) {
-      let message =
-        (error.response & error.response.data && error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+      return thunkAPI.rejectWithValue(error.response.data.message);
     }
   },
 );
@@ -95,11 +91,7 @@ export const addAccount = createAsyncThunk('auth/addAccount', async (data, thunk
     let token = thunkAPI.getState().auth.auth_token;
     return await authService.addAccount(data, token);
   } catch (error) {
-    let message =
-      (error.response & error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    return thunkAPI.rejectWithValue(error.response.data.message);
   }
 });
 
@@ -151,6 +143,9 @@ const authSlice = createSlice({
       })
       .addCase(increaseUserFunds.rejected, (state, action) => {
         //TODO error catching not working does not display modal.
+        throw Error(action.payload);
+      })
+      .addCase(addAccount.rejected, (state, action) => {
         throw Error(action.payload);
       });
   },
