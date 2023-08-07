@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addPoolsAsync } from '../../features/pools/poolsSlice';
 import { fetchListings } from '../../features/listings/listingsSlice';
+import ErrorAlert from '../Accessories/ErrorAlert/ErrorAlert';
+import SuccessAlert from '../Accessories/SuccessAlert/SuccessAlert';
 
 const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
   const dispatch = useDispatch();
@@ -18,6 +20,9 @@ const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
     private: false,
     initialContribution: 0,
   });
+
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(null);
 
   const toggleModalVisibility = () => {
     setModalVisible(!modalVisible);
@@ -47,8 +52,22 @@ const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
         private: formData.private,
         contribution: formData.initialContribution,
       }),
-    );
-    setModalVisible(false);
+    )
+      .then((response) => {
+        setIsSuccessModalOpen(true);
+        setTimeout(() => {
+          setIsSuccessModalOpen(false);
+          setModalVisible(false);
+        }, 2000);
+      })
+      .catch((error) => {
+        if (error) {
+          setIsErrorModalOpen(error.message);
+          setTimeout(() => {
+            setIsErrorModalOpen(null);
+          }, 2000);
+        }
+      });
   };
 
   return (
@@ -139,6 +158,10 @@ const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
                     </button>
                   </form>
                 </div>
+                {isErrorModalOpen && <ErrorAlert message={isErrorModalOpen} />}
+                {isSuccessModalOpen && (
+                  <SuccessAlert message={'New Pool Created! Make a Splash!.'} />
+                )}
               </div>
             </main>
           </div>

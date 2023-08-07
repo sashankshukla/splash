@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { increaseUserFunds } from '../../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import ErrorAlert from '../Accessories/ErrorAlert/ErrorAlert';
+import SuccessAlert from '../Accessories/SuccessAlert/SuccessAlert';
 
 const AddFunds = () => {
   const [form, setForm] = useState({
@@ -17,6 +19,7 @@ const AddFunds = () => {
   const navigate = useNavigate();
 
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(null);
 
   const handleInputChange = (event) => {
     setForm({
@@ -29,15 +32,20 @@ const AddFunds = () => {
     event.preventDefault();
     dispatch(increaseUserFunds(form))
       .then((response) => {
-        navigate('/profile');
+        setIsSuccessModalOpen(true);
+        setTimeout(() => {
+          setIsSuccessModalOpen(false);
+          navigate('/profile');
+        }, 3000);
       })
       .catch((error) => {
         if (error) {
-          console.log('caught in add funds'); // todo not being caught.
-          setIsErrorModalOpen(true);
+          setIsErrorModalOpen(error.message);
+          setTimeout(() => {
+            setIsErrorModalOpen(null);
+          }, 3000);
         }
       });
-    navigate('/profile');
   };
 
   return (
@@ -117,16 +125,9 @@ const AddFunds = () => {
               Confirm Transfer
             </button>
           </div>
-          {isErrorModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded shadow-lg">
-                <h2 className="text-xl font-bold mb-2">Error</h2>
-                <p>Oops! Something went wrong. Please try again later.</p>
-                <button className="mt-4 py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600">
-                  Close
-                </button>
-              </div>
-            </div>
+          {isErrorModalOpen && <ErrorAlert message={isErrorModalOpen} />}
+          {isSuccessModalOpen && (
+            <SuccessAlert message={'Account has been approved! Funds added to your account.'} />
           )}
         </form>
       </div>

@@ -5,6 +5,8 @@ import JoinForm from './JoinForm';
 import { deletePool } from '../../../features/pools/poolsSlice';
 
 import CopyToClipboard from '../../Accessories/CopyToClipboard/CopyToClipboard';
+import SuccessAlert from '../../Accessories/SuccessAlert/SuccessAlert';
+import ErrorAlert from '../../Accessories/ErrorAlert/ErrorAlert';
 
 const Pool = ({
   poolId,
@@ -19,11 +21,13 @@ const Pool = ({
 }) => {
   const token = useSelector((store) => store.auth.token);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
   const dispatch = useDispatch();
 
   const memberFound = members.find((member) => member.email === token.email);
   const memberContribution = memberFound ? memberFound.equity : 0;
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(null);
 
   const progress = (1 - remaining / totalValue) * 100;
 
@@ -63,8 +67,6 @@ const Pool = ({
       <button
         className="m-1 px-4 py-2 text-white bg-primary-green rounded-lg inline-block"
         onClick={() => {
-          console.log('Click');
-          console.log(listing);
           onClick(listing);
         }}
       >
@@ -89,7 +91,23 @@ const Pool = ({
       {createdBy === token.email && (
         <button
           className="m-1 px-4 py-2 bg-red-500 text-white rounded-lg inline-block"
-          onClick={() => dispatch(deletePool(poolId))}
+          onClick={() =>
+            dispatch(deletePool(poolId))
+              .then((response) => {
+                setIsSuccessModalOpen('Pool has been deleted');
+                setTimeout(() => {
+                  setIsSuccessModalOpen(false);
+                }, 1500);
+              })
+              .catch((error) => {
+                if (error) {
+                  setIsErrorModalOpen(error.message);
+                  setTimeout(() => {
+                    setIsErrorModalOpen(null);
+                  }, 1500);
+                }
+              })
+          }
         >
           Delete Pool
         </button>
@@ -101,6 +119,8 @@ const Pool = ({
         modify={memberFound}
         currentContribution={memberContribution}
       />
+      {isErrorModalOpen && <ErrorAlert message={isErrorModalOpen} />}
+      {isSuccessModalOpen && <SuccessAlert message={isSuccessModalOpen} />}
     </div>
   );
 };
