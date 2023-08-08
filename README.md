@@ -84,6 +84,10 @@ We deployed our webapp to Render. We deployed our Express backend as a web servi
 
 ## Daman
 
+• Created and updated 10+ React components related to pools and listings to use Redux and our API
+• Added functionality and error handling to 20+ API routes to increase performance and stability for our entire API
+• Integrated the website and database with an AWS S3 bucket to save and use images of properties uploaded by users
+
 # Breakdown of Minimal Requirements into Smaller Tasks
 
 ## Listings Dashboard
