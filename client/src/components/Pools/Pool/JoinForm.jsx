@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { editPool, joinPool } from '../../../features/pools/poolsSlice';
+import { editPool, joinPool, leavePool } from '../../../features/pools/poolsSlice';
 import ErrorAlert from '../../Accessories/ErrorAlert/ErrorAlert';
 import SuccessAlert from '../../Accessories/SuccessAlert/SuccessAlert';
 
@@ -23,6 +23,25 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleLeave = () => {
+    dispatch(leavePool(poolId))
+      .then((response) => {
+        setIsSuccessModalOpen('You have successfully left the pool');
+        setTimeout(() => {
+          setModalVisible(false);
+          setIsSuccessModalOpen(false);
+        }, 3000);
+      })
+      .catch((error) => {
+        if (error) {
+          setIsErrorModalOpen(error.message);
+          setTimeout(() => {
+            setIsErrorModalOpen(null);
+          }, 3000);
+        }
+      });
   };
 
   const handleSubmit = (e) => {
@@ -108,13 +127,23 @@ const JoinForm = ({ poolId, modalVisible, setModalVisible, modify, currentContri
                       />
                     </div>
                     <button
-                      type="submit"
+                      type="button"
+                      onClick={handleSubmit}
                       className="w-full px-4 py-2 text-white font-medium bg-primary-green hover:bg-primary-darkgreen active:bg-primary-green rounded-lg duration-150 mt-4"
                     >
                       {modify ? 'Modify Contribution' : 'Join Pool'}
                       {isErrorModalOpen && <ErrorAlert message={isErrorModalOpen} />}
                       {isSuccessModalOpen && <SuccessAlert message={isSuccessModalOpen} />}
                     </button>
+                    {modify && (
+                      <button
+                        type="button"
+                        onClick={handleLeave}
+                        className="w-full px-4 py-2 text-white font-medium bg-red-500 hover:bg-red-600 active:bg-red-500 rounded-lg duration-150 mt-4"
+                      >
+                        Leave Pool
+                      </button>
+                    )}
                   </form>
                 </div>
               </div>

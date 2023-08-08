@@ -90,6 +90,15 @@ export const editPool = createAsyncThunk('pools/editPool', async ({ id, equity }
   }
 });
 
+export const leavePool = createAsyncThunk('pools/leavePool', async (id, thunkAPI) => {
+  try {
+    let token = thunkAPI.getState().auth.auth_token;
+    return await poolsService.leavePool(id, token);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data.message);
+  }
+});
+
 export const fetchPoolsForListing = createAsyncThunk(
   'pools/fetchPoolsForListing',
   async (listingId, thunkAPI) => {
@@ -240,6 +249,19 @@ const poolsSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(leavePool.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(leavePool.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        if (action.payload.deleted) {
+          state.pools = state.pools.filter((pool) => pool._id !== action.payload.id);
+        } else {
+          const poolIndex = state.pools.findIndex((pool) => pool._id === action.payload._id);
+          state.pools[poolIndex] = action.payload;
+        }
       });
   },
 });

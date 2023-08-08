@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { clearUser } from '../../features/auth/authSlice';
 
 function AccountOptions() {
@@ -8,6 +8,7 @@ function AccountOptions() {
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const ref = useRef(null);
+  const navigate = useNavigate();
 
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -49,7 +50,14 @@ function AccountOptions() {
               <Link to="/account">Add Account</Link>
             </li>
             <li className="py-2 cursor-pointer text-center hover:bg-light hover:text-primary">
-              <button onClick={() => dispatch(clearUser())}>Logout</button>
+              <button
+                onClick={() => {
+                  dispatch(clearUser());
+                  navigate('/home');
+                }}
+              >
+                Logout
+              </button>
             </li>
           </ul>
         </div>

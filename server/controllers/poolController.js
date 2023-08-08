@@ -174,6 +174,11 @@ const leavePool = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Pool not found');
   }
+  if (pool.createdBy === req.user.email) {
+    await Pool.deleteOne({ _id: req.params.id });
+    res.status(200).json({ deleted: true, id: req.params.id });
+    return;
+  }
   const poolUser = pool.users.find((user) => user.email === req.user.email);
   if (!poolUser) {
     res.status(400);
