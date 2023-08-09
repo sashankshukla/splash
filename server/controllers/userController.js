@@ -189,7 +189,7 @@ const getUserAssets = asyncHandler(async (req, res) => {
 
 const getUser = asyncHandler(async (req, res) => {
   const originalUser = req.user;
-  getUserAssetPerformance(originalUser);
+  await getUserAssetPerformance(originalUser);
   const user = originalUser.toObject();
   user.ownerships = await Promise.all(
     user.ownerships.map(async (ownership) => {
@@ -258,7 +258,7 @@ const deleteBank = asyncHandler(async (req, res) => {
   res.status(200).json(allPending);
 });
 
-const getUserAssetPerformance = asyncHandler(async (user) => {
+const getUserAssetPerformance = async (user) => {
   if (!user) {
     res.status(400);
     throw new Error('User not found');
@@ -280,7 +280,7 @@ const getUserAssetPerformance = asyncHandler(async (user) => {
   }
   user.priceDictionary = priceDictionary;
   await user.save();
-});
+};
 
 module.exports = {
   addUser,
