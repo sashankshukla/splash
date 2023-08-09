@@ -119,6 +119,7 @@ const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSel
         })
         .catch((error) => {
           if (error) {
+            console.log(error);
             setIsErrorModalOpen(error.message);
             setTimeout(() => {
               setIsErrorModalOpen(null);
