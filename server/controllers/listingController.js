@@ -166,6 +166,10 @@ const addListing = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Please specify a name, address, price, and email');
   }
+  if(req.body.price<0){
+    res.status(400);
+    throw new Error('Price invalid! Enter price greater than 0');
+  }
   const images = req.files.map((file) => file.location);
   const listing = await Listing.create({
     ...req.body,
