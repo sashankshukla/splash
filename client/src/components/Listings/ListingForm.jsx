@@ -95,6 +95,7 @@ const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSel
           setTimeout(() => {
             setIsSuccessModalOpen(false);
             setFormVisible(false);
+            setSelectedListing(null);
           }, 2000);
         })
         .catch((error) => {
@@ -102,10 +103,10 @@ const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSel
             setIsErrorModalOpen(error.message);
             setTimeout(() => {
               setIsErrorModalOpen(null);
+              setSelectedListing(null);
             }, 2000);
           }
         });
-      setSelectedListing(null);
     } else {
       dispatch(addListing(formData))
         .then((response) => {
@@ -113,6 +114,7 @@ const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSel
           setTimeout(() => {
             setIsSuccessModalOpen(false);
             setFormVisible(false);
+            setSelectedListing(null);
           }, 2000);
         })
         .catch((error) => {
@@ -120,10 +122,10 @@ const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSel
             setIsErrorModalOpen(error.message);
             setTimeout(() => {
               setIsErrorModalOpen(null);
+              setSelectedListing(null);
             }, 2000);
           }
         });
-      setSelectedListing(null);
     }
   };
 
