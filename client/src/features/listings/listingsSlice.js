@@ -207,6 +207,7 @@ const listingsSlice = createSlice({
         state.isError = true;
 
         state.message = action.payload;
+        throw Error(action.payload);
       })
       .addCase(updateListing.pending, (state, action) => {
         state.isLoading = true;
