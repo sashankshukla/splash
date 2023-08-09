@@ -10,15 +10,16 @@ const ProfileOverview = () => {
   const dispatch = useDispatch();
   const userToken = useSelector((store) => store.auth.token);
   const { pools, isError, isSuccess, isLoading, message } = useSelector(getPoolsData);
-
+  const user = useSelector((store) => store.auth.user);
   useEffect(() => {
     if (userToken) {
       dispatch(fetchUser());
-      dispatch(fetchPoolsForUser());
+      if (user) {
+        dispatch(fetchPoolsForUser());
+      }
     }
   }, [dispatch, userToken]);
 
-  const user = useSelector((store) => store.auth.user);
   console.log('user');
   console.log(user);
   if (!user) {
