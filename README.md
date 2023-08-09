@@ -114,6 +114,11 @@ Apart from the normal buy and sell with fixed prices, we also want to have oppur
 • Approved PR's, aided with problem solving for other issues, and created issues to track progress
 
 ## Melinda
+• Created and updated 10+ components related to Listings and Search/Filtering
+• Implemented full-stack functionality (including Redux handling of async Thunks) for all components involved with fetching, creating, editing, selling, and deleting Listings
+• Maintained consistency between data model, redux state, local state, and component behavior for Listings object throughout the entire project
+• Worked with MongoDB Atlas and Mongoose to implement real-time server-side search and filtering of Listings.
+• Approved PR's, assisted in troubleshooting for otther issues, and created issues to track progress
 
 ## Frankey
 Deployed on renderer.
