@@ -19,9 +19,13 @@ const ProfileOverview = () => {
   }, [dispatch, userToken]);
 
   const user = useSelector((store) => store.auth.user);
+  console.log('user');
+  console.log(user);
   if (!user) {
     return <LoadingSpinner />;
   }
+  // dispatch(fetchPoolsForUser());
+
   function sumOwnership(user) {
     if (!user || !Array.isArray(user.ownerships)) {
       return 0; // Return 0 if user or user.ownership is not defined or not an array
