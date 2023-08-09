@@ -73,7 +73,9 @@ We deployed our webapp to Render. We deployed our Express backend as a web servi
 # Above and Beyond Functionality
 
 ## Asset Price-Time Graph
-Since our assets can range from houses to gas stations to franchises, it is somewhat difficult to say how they are performing as investments over time. To build the price chart for a users assets, we utilized OpenAI's API to build a price dictionary. The dictionary is assigned to each user and re determined every time the user logs in or performs a transaction. The dictionary has the following structure : 
+
+Since our assets can range from houses to gas stations to franchises, it is somewhat difficult to say how they are performing as investments over time. To build the price chart for a users assets, we utilized OpenAI's API to build a price dictionary. The dictionary is assigned to each user and re determined every time the user logs in or performs a transaction. The dictionary has the following structure :
+
 ```
 {
  listingId : [p1, p2, p3, p4 .... pn]
@@ -82,17 +84,21 @@ where pn is today and p1 is the day the asset was purchased
 ```
 
 ## Email notifications
+
 Throughout our app, we have several features that either require admin approval, or approval from other users.
 These include:
- - Adding a bank account to load funds into Splash
- - A seller approving a pool to purchase thier investment
- - A seller denying a pool from purchasing
-We believed these actions required some sort of notifications service to inform users when these occur, thus we made use of NodeMailer to send email notifications to the users.
+
+- Adding a bank account to load funds into Splash
+- A seller approving a pool to purchase thier investment
+- A seller denying a pool from purchasing
+  We believed these actions required some sort of notifications service to inform users when these occur, thus we made use of NodeMailer to send email notifications to the users.
 
 ## Google Maps Integration
+
 Though it is useful to view listings as a list of cards, filter through them etc., some users may be more interested in viewing what investment oppurtunities are available in their neighbourhoods/cities. Thus we also have a map feature that allows you to view all our listings as pins throughout the globe, allowing you to view things like popular cities for investment, or those that may be close to you.
 
 # Next steps
+
 As of right now, all payments, transactions, bank accounts are mocks. One of the most important steps is to actually allow users to perform real-time, secure transactions with actual funds. Our next step would be to integrate a payment platform like Stripe to our app to enable this.
 
 Apart from the normal buy and sell with fixed prices, we also want to have oppurtunities for bidding sessions. These listings have a starting purchase value assigned by the seller, and a live bidding takes place allowing multiple users to participate in these sessions.
@@ -100,6 +106,12 @@ Apart from the normal buy and sell with fixed prices, we also want to have oppur
 # Contributions
 
 ## Sashank
+
+• Wrote controller methods for 20+ API methods to interact with database using mongoose, also adding auth middleware using google oauth to protect routes, and error middleware to handle validation and server errors
+• Integrated openAI to get data points for the user price chart feature. Engineered prompt, wrote algorithm to construct a dictionary for the data points by listing, and used react-plotly to build the actual chart
+• Created navbar component allowing navigation between pages
+• Completed full-stack functionality for the following components: BuyerDashboard, ProfileOverview, Home, ApprovalCard, SellerListings, Toggle, ListingForm
+• Approved PR's, aided with problem solving for other issues, and created issues to track progress
 
 ## Melinda
 
