@@ -101,7 +101,7 @@ const Navbar = () => {
                   navigate('/profile');
                 }}
                 onError={() => {
-                  console.log('Login Failed');
+                  navigate('/profile');
                 }}
                 useOneTap
               />
