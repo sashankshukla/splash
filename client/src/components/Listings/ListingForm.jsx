@@ -351,7 +351,7 @@ const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSel
                 </div>
                 {isErrorModalOpen && <ErrorAlert message={isErrorModalOpen} />}
                 {isSuccessModalOpen && (
-                  <SuccessAlert message={'New Pool Created! Make a Splash!.'} />
+                  <SuccessAlert message={'New Listing Created! Good Luck!.'} />
                 )}
               </div>
             </main>
