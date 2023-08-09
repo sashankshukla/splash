@@ -118,7 +118,7 @@ Apart from the normal buy and sell with fixed prices, we also want to have oppur
 • Implemented full-stack functionality (including Redux handling of async Thunks) for all components involved with fetching, creating, editing, selling, and deleting Listings
 • Maintained consistency between data model, redux state, local state, and component behavior for Listings object throughout the entire project
 • Worked with MongoDB Atlas and Mongoose to implement real-time server-side search and filtering of Listings.
-• Approved PR's, assisted in troubleshooting for otther issues, and created issues to track progress
+• Approved PR's, assisted in troubleshooting for other issues, and created issues to track progress
 
 ## Frankey
 Deployed on renderer.
