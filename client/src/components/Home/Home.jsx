@@ -69,7 +69,7 @@ const Home = () => {
                     navigate('/profile');
                   }}
                   onError={() => {
-                    console.log('Login Failed');
+                    navigate('/');
                   }}
                 />
               )}

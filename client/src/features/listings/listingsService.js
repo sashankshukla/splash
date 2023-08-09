@@ -51,8 +51,11 @@ const addListing = async (listingData, token) => {
     }
   }
 
-  const response = await axios.post(API_URL, formData, config);
-  return response.data;
+  try{const response = await axios.post(API_URL, formData, config);
+  return response.data;}
+  catch(error){
+    throw error;
+  }
 };
 
 const updateListing = async (listingData, listingId, token) => {

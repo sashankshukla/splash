@@ -86,11 +86,7 @@ export const addListing = createAsyncThunk('listings/addListing', async (listing
     let token = thunkAPI.getState().auth.auth_token;
     return await listingsService.addListing(listingData, token);
   } catch (error) {
-    let message =
-      (error.response & error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    return thunkAPI.rejectWithValue(error.response.data.message);
   }
 });
 
@@ -211,6 +207,7 @@ const listingsSlice = createSlice({
         state.isError = true;
 
         state.message = action.payload;
+        throw Error(action.payload);
       })
       .addCase(updateListing.pending, (state, action) => {
         state.isLoading = true;
