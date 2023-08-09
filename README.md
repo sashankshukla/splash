@@ -10,51 +10,17 @@ Splash will support several different user types depending on the objective they
 
 ### Buyer
 
-- View listing of available assets to purchase
+- Add bank accounts and funds to the webapp
+- View and filter listings of available assets to purchase
+- Create public/private pools in order to invest in those assets
 - View progress of funding for an investment pool
-- Purchase up to $value of full purchase price but not over
+- Recieve email notifications for transactions and approvals
 
 ### Seller
 
 - Add listings (Photos, Descriptions, Price, additional fees)
 - Remove listings if not full funded
-- Buyers should not be charged / refunded if removed
-
-## Data Storage
-
-**Listings**
-
-- Listing id
-- Owned/ still on market
-- User id (owner of listing)
-
-**User Data:**
-
-- User login
-- Username and password (encrypted with some hashing) is required, all other info is optional
-- List of id’s of assets this user owns and his percentage share
-- List of id’s of their created listings
-
-**Investment Pools**
-
-- Pool id
-- List of {uid , amount}
-- Listing id
-
-## User Interaction with Data
-
-- **Listings Dashboard:** Users will be able to view all listings and filter by preferences
-- **User Dashboard**
-  - **Seller side Dashboard:** View funding progress towards item seller is selling, select a broker / view a broker to help with the transaction.
-  - **Buyer side Dashboard:** View investment breakdown, breakdown of investments purchased history, appreciation / depreciation of assets, and pools they're a part of.
-- **Pools Dashboard:** View open pools, filter pools, join pools.
-
-## Additional Functionality
-
-- Each seller who lists a property can be able to mint a crypto token for number of “Shares” ie 1 share per dollar value (Super Stretch Goal). (Frankey)
-- Live market bidding (Melinda)
-- ML/ some sort of prediction of appreciation/depreciation in value of asset (Sashank) ✅
-- Private investment pools, shareable and viewable only by token/uniqueID holders ✅
+- Approve purchases of their assets
 
 # Project Task Requirements
 
@@ -76,10 +42,111 @@ Splash will support several different user types depending on the objective they
 ## Stretch Requirements
 
 1. ML/AI integration for prediction of user asset price over time ✅
-2. Blockchain based fractional ownership - Users transferring fractional shares (blockchain tokens/regular)
+2. Blockchain based fractional ownership - Users transferring fractional shares (blockchain tokens/regular) ❌
 3. Mock funding/ payment methods ✅
-4. Approval process for listing -> to be approved by admin so illegal items cannot be sold. ⚠️
-5. event-locked fundraisers/bidding - One time in-person event "lobby" accessible by passcode in order to facilitate bidding in-person and cultivate local interest in investment opportunities ⚠️
+4. Approval process for members and bank accounts (admins) ✅
+5. event-locked fundraisers/bidding - One time in-person event "lobby" accessible by passcode in order to facilitate bidding in-person and cultivate local interest in investment opportunities ❌
+6. Private investment pools, shareable and viewable only by token/uniqueID holders ✅
+
+# Technologies
+
+## HTML,CSS, and JS
+
+We used TailwindCSS (a CSS library) for styling all of our React components. HTML tags are present throughout our react components (divs, h1, etc) and `index.html` is the entry point for our React App. Javascript was used both in the front end(React) and backend(Express).
+
+## React & Redux
+
+We used React to create our frontend, enabling us to build serveral reusable components that we integrated throughout the webapp. We utilized redux to globally manage our state for us, utilizing redux thunks to make our API calls, and appropriately handle state changes using builder cases to see changes occur asynchronously on the frontend, giving a more pleasing experience.
+
+## Node and Express
+
+We built our backend using Express.js running on Node. This is where the entirety of our API lives, which we used to communicate between the front end and the database appropriately. We built out both auth and error middlewares for our express backend, to secure necessary api routes and handle both validation and server errors that we then display on the front end.
+
+## MongoDB
+
+We used MongoDB collections to store all of our app data, including users, listings, pools, and banks. We made use of mongoose to build out schemas for these collections and interact with this modelled data (CRUD) to provide all necessary functionality.
+
+## Builds and Deployment
+
+We deployed our webapp to Render. We deployed our Express backend as a web service, and hosted our front end as a static asset website on render.
+
+# Above and Beyond Functionality
+
+## Asset Price-Time Graph
+
+Since our assets can range from houses to gas stations to franchises, it is somewhat difficult to say how they are performing as investments over time. To build the price chart for a users assets, we utilized OpenAI's API to build a price dictionary. The dictionary is assigned to each user and re determined every time the user logs in or performs a transaction. The dictionary has the following structure :
+
+```
+{
+ listingId : [p1, p2, p3, p4 .... pn]
+}
+where pn is today and p1 is the day the asset was purchased
+```
+
+## Email notifications
+
+Throughout our app, we have several features that either require admin approval, or approval from other users.
+These include:
+
+- Adding a bank account to load funds into Splash
+- A seller approving a pool to purchase thier investment
+- A seller denying a pool from purchasing
+  We believed these actions required some sort of notifications service to inform users when these occur, thus we made use of NodeMailer to send email notifications to the users.
+
+## Google Maps Integration
+
+Though it is useful to view listings as a list of cards, filter through them etc., some users may be more interested in viewing what investment oppurtunities are available in their neighbourhoods/cities. Thus we also have a map feature that allows you to view all our listings as pins throughout the globe, allowing you to view things like popular cities for investment, or those that may be close to you.
+
+# Next steps
+
+As of right now, all payments, transactions, bank accounts are mocks. One of the most important steps is to actually allow users to perform real-time, secure transactions with actual funds. Our next step would be to integrate a payment platform like Stripe to our app to enable this.
+
+Apart from the normal buy and sell with fixed prices, we also want to have oppurtunities for bidding sessions. These listings have a starting purchase value assigned by the seller, and a live bidding takes place allowing multiple users to participate in these sessions.
+
+# Contributions
+
+## Sashank
+
+• Wrote controller methods for 20+ API methods to interact with database using mongoose, also adding auth middleware using google oauth to protect routes, and error middleware to handle validation and server errors
+• Integrated openAI to get data points for the user price chart feature. Engineered prompt, wrote algorithm to construct a dictionary for the data points by listing, and used react-plotly to build the actual chart
+• Created navbar component allowing navigation between pages
+• Completed full-stack functionality for the following components: BuyerDashboard, ProfileOverview, Home, ApprovalCard, SellerListings, Toggle, ListingForm
+• Approved PR's, aided with problem solving for other issues, and created issues to track progress
+
+## Melinda
+• Created and updated 10+ components related to Listings and Search/Filtering
+• Implemented full-stack functionality (including Redux handling of async Thunks) for all components involved with fetching, creating, editing, selling, and deleting Listings
+• Maintained consistency between data model, redux state, local state, and component behavior for Listings object throughout the entire project
+• Worked with MongoDB Atlas and Mongoose to implement real-time server-side search and filtering of Listings.
+• Approved PR's, assisted in troubleshooting for otther issues, and created issues to track progress
+
+## Frankey
+Deployed on renderer.
+Set up of MongoDB for team to contribute.
+Google Oauth Setup and Deployment
+Google Maps API set up and Deployment
+  • Ability to drop pins on all current listings and to be able to show listing component.
+Error Handling and prompts
+  • Refuses the users to enter invalid formatted forms and display errors.
+  • Shows success / failure on joining / adding listings.
+Backend hookup and error handling of Add Funds and Add Account
+Profile Dashboard 
+  • Hooked up all profile page to show user information.
+  • Displaying pools components of pools the user is currently in.
+  • Creation of administrative dashboard to approve / deny funds.
+  • Ability to block users (error then redirect / force logout) and to display all current users.
+Added View, Join Pools and Modify contribution functionality.
+  • Hooked up to the bankend.
+Set up gmail account and node mailer transporter for email notifications.
+  • Utilization of gmail APP key to be able to bypass 2FA for utilization in app based environment.
+Implemented tailwindCSS functionality to display images in a sliding modal.
+  • Implemented and utilized RAPIDAPI's Zillow API to initially load all the information and example data we currently have to be able to test functionality and to have our website prepopulated. (This was only done once to populate our database so that we do not need to continuously call the API due to cost.)
+
+## Daman
+
+• Created and updated 10+ React components related to pools and listings to use Redux and our API
+• Added functionality and error handling to 20+ API routes to increase performance and stability for our entire API
+• Integrated the website and database with an AWS S3 bucket to save and use images of properties uploaded by users
 
 # Breakdown of Minimal Requirements into Smaller Tasks
 

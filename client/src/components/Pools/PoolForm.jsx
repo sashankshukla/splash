@@ -11,7 +11,6 @@ const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
   const [formData, setFormData] = useState({
     title: '',
     listingId: listingId || '',
-    description: '',
     private: false,
     initialContribution: 0,
   });
@@ -123,16 +122,6 @@ const PoolForm = ({ modalVisible, setModalVisible, listingId }) => {
                         required
                         className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
                       />
-                    </div>
-                    <div>
-                      <label className="font-medium">Description</label>
-                      <textarea
-                        name="description"
-                        value={formData.description}
-                        onChange={handleChange}
-                        required
-                        className="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-primary-green shadow-sm rounded-lg"
-                      ></textarea>
                     </div>
                     <div>
                       <input

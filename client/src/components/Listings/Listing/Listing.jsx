@@ -32,7 +32,6 @@ const Listing = ({
       </h5>
       <p className="text-gray-600 mb-2">Price: {price}</p>
       <p className="text-gray-600 mb-2">Seller: {createdBy}</p>
-      <p className="text-gray-600 mb-2">Open Pools TODO</p>
       <p className="listing-status">{status}</p>
     </div>
   );
