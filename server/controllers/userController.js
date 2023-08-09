@@ -312,7 +312,7 @@ const deleteBank = asyncHandler(async (req, res) => {
   }
 });
 
-const getUserAssetPerformance = asyncHandler(async (user) => {
+const getUserAssetPerformance = (async (user) => {
   if (!user) {
     res.status(400);
     throw new Error('User not found');

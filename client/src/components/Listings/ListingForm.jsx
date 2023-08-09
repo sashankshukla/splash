@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import { FaMinusCircle } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { addListing, updateListing } from '../../features/listings/listingsSlice';
+import SuccessAlert from '../Accessories/SuccessAlert/SuccessAlert';
+import ErrorAlert from '../Accessories/ErrorAlert/ErrorAlert';
 
 const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSelectedListing }) => {
   const dispatch = useDispatch();
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -85,12 +89,42 @@ const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSel
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isEditing) {
-      dispatch(updateListing({ formData, listingId }));
+      dispatch(updateListing({ formData, listingId }))
+        .then((response) => {
+          setIsSuccessModalOpen(true);
+          setTimeout(() => {
+            setIsSuccessModalOpen(false);
+            setFormVisible(false);
+          }, 2000);
+        })
+        .catch((error) => {
+          if (error) {
+            setIsErrorModalOpen(error.message);
+            setTimeout(() => {
+              setIsErrorModalOpen(null);
+            }, 2000);
+          }
+        });
       setSelectedListing(null);
     } else {
-      dispatch(addListing(formData));
+      dispatch(addListing(formData))
+        .then((response) => {
+          setIsSuccessModalOpen(true);
+          setTimeout(() => {
+            setIsSuccessModalOpen(false);
+            setFormVisible(false);
+          }, 2000);
+        })
+        .catch((error) => {
+          if (error) {
+            setIsErrorModalOpen(error.message);
+            setTimeout(() => {
+              setIsErrorModalOpen(null);
+            }, 2000);
+          }
+        });
+      setSelectedListing(null);
     }
-    setFormVisible(false);
   };
 
   return (
@@ -310,6 +344,10 @@ const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSel
                     </button>
                   </form>
                 </div>
+                {isErrorModalOpen && <ErrorAlert message={isErrorModalOpen} />}
+                {isSuccessModalOpen && (
+                  <SuccessAlert message={'New Pool Created! Make a Splash!.'} />
+                )}
               </div>
             </main>
           </div>
