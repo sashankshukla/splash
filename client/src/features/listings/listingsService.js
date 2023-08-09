@@ -54,7 +54,7 @@ const addListing = async (listingData, token) => {
   try{const response = await axios.post(API_URL, formData, config);
   return response.data;}
   catch(error){
-    throw new Error(error);
+    throw error;
   }
 };
 
