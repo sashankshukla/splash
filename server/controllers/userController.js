@@ -209,7 +209,7 @@ const getUserAssets = asyncHandler(async (req, res) => {
 
 const getUser = asyncHandler(async (req, res) => {
   const originalUser = req.user;
-  await getUserAssetPerformance(originalUser);
+  getUserAssetPerformance(originalUser);
   const user = originalUser.toObject();
   user.ownerships = await Promise.all(
     user.ownerships.map(async (ownership) => {
