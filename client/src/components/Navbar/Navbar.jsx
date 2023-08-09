@@ -101,7 +101,7 @@ const Navbar = () => {
                   navigate('/profile');
                 }}
                 onError={() => {
-                  navigate('/profile');
+                  navigate('/');
                 }}
                 useOneTap
               />

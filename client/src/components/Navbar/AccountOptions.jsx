@@ -53,7 +53,7 @@ function AccountOptions() {
               <button
                 onClick={() => {
                   dispatch(clearUser());
-                  navigate('/home');
+                  navigate('/');
                 }}
               >
                 Logout
