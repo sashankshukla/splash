@@ -241,7 +241,9 @@ const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSel
                         <option value="" disabled>
                           Select a category
                         </option>
-                        <option value="House/Living Accomodation">House/Living Accomodation</option>
+                        <option value="Housing/Living Accommodation">
+                          House/Living Accomodation
+                        </option>
                         <option value="Franchise">Franchise</option>
                         <option value="Gas Station">Gas Station</option>
                         <option value="Stock Portfolio">Stock Portfolio</option>
@@ -349,7 +351,7 @@ const ListingForm = ({ formVisible, setFormVisible, isEditing, listingId, setSel
                 </div>
                 {isErrorModalOpen && <ErrorAlert message={isErrorModalOpen} />}
                 {isSuccessModalOpen && (
-                  <SuccessAlert message={'New Pool Created! Make a Splash!.'} />
+                  <SuccessAlert message={'New Listing Created! Good Luck!.'} />
                 )}
               </div>
             </main>
