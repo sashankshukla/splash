@@ -116,6 +116,26 @@ Apart from the normal buy and sell with fixed prices, we also want to have oppur
 ## Melinda
 
 ## Frankey
+Deployed on renderer.
+Set up of MongoDB for team to contribute.
+Google Oauth Setup and Deployment
+Google Maps API set up and Deployment
+  • Ability to drop pins on all current listings and to be able to show listing component.
+Error Handling and prompts
+  • Refuses the users to enter invalid formatted forms and display errors.
+  • Shows success / failure on joining / adding listings.
+Backend hookup and error handling of Add Funds and Add Account
+Profile Dashboard 
+  • Hooked up all profile page to show user information.
+  • Displaying pools components of pools the user is currently in.
+  • Creation of administrative dashboard to approve / deny funds.
+  • Ability to block users (error then redirect / force logout) and to display all current users.
+Added View, Join Pools and Modify contribution functionality.
+  • Hooked up to the bankend.
+Set up gmail account and node mailer transporter for email notifications.
+  • Utilization of gmail APP key to be able to bypass 2FA for utilization in app based environment.
+Implemented tailwindCSS functionality to display images in a sliding modal.
+  • Implemented and utilized RAPIDAPI's Zillow API to initially load all the information and example data we currently have to be able to test functionality and to have our website prepopulated. (This was only done once to populate our database so that we do not need to continuously call the API due to cost.)
 
 ## Daman
 
